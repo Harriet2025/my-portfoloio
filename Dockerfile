@@ -3,8 +3,8 @@ FROM nginx:1.27-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Site files (see .dockerignore for what is left out)
-COPY . /usr/share/nginx/html/
+# Only the public site files go into the web root
+COPY index.html headshot.jpg shot-*.jpg Harriet_Ayim_CV.pdf /usr/share/nginx/html/
 
 EXPOSE 80
 
