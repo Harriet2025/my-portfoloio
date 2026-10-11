@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Harriet Ama-Adubea Ayim: Computer Science student, software developer and AI automation specialist based in Accra, Ghana.">
+<meta name="theme-color" content="#FAF6EF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B85C38'/%3E%3Ctext x='16' y='22' font-size='16' font-weight='700' text-anchor='middle' fill='white' font-family='Arial'%3EHA%3C/text%3E%3C/svg%3E">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Harriet Ayim Developer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#FAF6EF', sand: '#E8DCCB', terra: '#B85C38', terrad: '#84391B',
+          char: '#292524', slate: '#57534E', line: '#D8C8B5', sage: '#71816A', saged: '#44533E', sagel: '#E3EADF',
+        },
+        fontFamily: {
+          display: ['"Bricolage Grotesque"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'Consolas', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  /* Layout: sticky nav, asymmetric bento hero, then alternating cream / sand bands for about, skills, tools, projects, journey and contact. */
+  :root { color-scheme: light; --cream: #FAF6EF; --sand: #E8DCCB; --terra: #B85C38; --char: #292524; --slate: #57534E; --line: #D8C8B5; --sage: #71816A; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--char); font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif; }
+  .no-scrollbar { scrollbar-width: none; } .no-scrollbar::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .animate-ping { animation: none !important; } }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--terra); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+const { motion, AnimatePresence, MotionConfig } = Motion;
+
+/* ====================== Config ====================== */
+const HEADSHOT_SRC = 'headshot.jpg';
+const RESUME_URL = '';   /* set to a published file such as 'resume.pdf' to enable the Download Resume button */
+const PROFILE = {
+  email: 'amaharriet011@gmail.com',
+  github: 'Harriet2025',
+  tiktok: 'ms.harriet4u',
+  linkedinName: 'Harriet Ayim',
+};
+const URLS = {
+  email: `mailto:${PROFILE.email}`,
+  github: `https://github.com/${PROFILE.github}`,
+  tiktok: `https://www.tiktok.com/@${PROFILE.tiktok}`,
+  linkedin: 'https://www.linkedin.com/in/harriet-ayim-700997295',
+};
+
+/* ====================== Icons (Lucide-style line glyphs) ====================== */
+const P = {
+  code: 'M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16',
+  branch: ['M6 3v12', 'M18 9a3 3 0 1 0 0 .01', 'M6 18a3 3 0 1 0 0 .01', 'M18 12c0 4-6 2-12 6'],
+  octo: 'M12 3a9 9 0 0 0-2.8 17.5c.5.1.6-.2.6-.5v-1.7c-2.5.5-3-1.1-3-1.1-.4-1-1-1.3-1-1.3-.8-.6.1-.6.1-.6.9.1 1.4.9 1.4.9.8 1.4 2.1 1 2.6.8.1-.6.3-1 .6-1.2-2-.2-4-1-4-4.4 0-1 .3-1.8.9-2.4-.1-.2-.4-1.1.1-2.4 0 0 .8-.2 2.5.9a8.5 8.5 0 0 1 4.6 0c1.7-1.1 2.5-.9 2.5-.9.5 1.3.2 2.2.1 2.4.6.6.9 1.4.9 2.4 0 3.4-2 4.2-4 4.4.3.3.6.8.6 1.6v2.4c0 .3.2.6.6.5A9 9 0 0 0 12 3Z',
+  server: ['M4 4h16v6H4zM4 14h16v6H4z', 'M8 7h.01M8 17h.01'],
+  db: ['M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3Z', 'M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6'],
+  send: 'm21 3-9.5 18-2.5-8L2 10.5 21 3ZM9 13l12-10',
+  flow: ['M3 6h6v4H3zM15 14h6v4h-6zM15 4h6v4h-6z', 'M9 8h3v8h3M12 6h3'],
+  bolt: 'M13 2 4 14h7l-1 8 9-12h-7l1-8Z',
+  spark: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18',
+  chat: ['M4 5h16v11H9l-5 4V5Z', 'M8 9.5h8M8 12.5h5'],
+  sheet: ['M5 3h14v18H5z', 'M5 9h14M5 15h14M11 3v18'],
+  frame: 'M7 3h5v6H7a3 3 0 0 1 0-6ZM12 3h5a3 3 0 0 1 0 6h-5zM7 9h5v6H7a3 3 0 0 1 0-6ZM12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM7 15h5v3a3 3 0 1 1-5-2.2',
+  image: ['M3 5h18v14H3z', 'm3 16 5-5 4 4 3-3 6 6M16 9h.01'],
+  note: ['M5 3h11l3 3v15H5z', 'M9 9h6M9 13h6M9 17h3'],
+  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  panel: ['M3 4h18v16H3z', 'M3 9h18M8 9v11'],
+  rocket: ['M5 15c-1 1-1.5 4-1.5 4s3-.5 4-1.5', 'M12 15 9 12c.5-4 4-8 11-8 0 7-4 10.5-8 11Z', 'M15 9h.01'],
+  box: ['M3 8 12 3l9 5v8l-9 5-9-5V8Z', 'm3 8 9 5 9-5M12 13v8'],
+  cloud: 'M7 18a4.5 4.5 0 0 1-.5-9A6 6 0 0 1 18 10a4 4 0 0 1-.5 8H7Z',
+  hook: ['M10 9a3 3 0 1 1 3 3H8', 'M7 12a4 4 0 1 0 8 5'],
+  cap: ['m2 9 10-5 10 5-10 5L2 9Z', 'M6 11.5V16c0 1.2 2.7 3 6 3s6-1.8 6-3v-4.5M22 9v6'],
+  book: ['M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z', 'M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5'],
+  mail: ['M3 5h18v14H3z', 'm4 7.5 8 5.5 8-5.5'],
+  mic: ['M9 3h6v11H9z', 'M5 11a7 7 0 0 0 14 0M12 18v3'],
+  users: ['M9 5a3.2 3.2 0 1 0 0 6.4A3.2 3.2 0 0 0 9 5Z', 'M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 5a3 3 0 0 1 0 6M18 14.8c1.8.7 3 2.5 3 5.2'],
+  clock: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z', 'M12 7v5l3.5 2'],
+  check: ['M4 3h16v18H4z', 'm8.5 12 2.5 2.5 4.5-5'],
+  bulb: ['M9 18h6M10 21h4', 'M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z'],
+  loop: ['M20 12a8 8 0 0 1-14 5.3M4 12a8 8 0 0 1 14-5.3', 'M18 3v4h-4M6 21v-4h4'],
+  layers: ['m12 3 9 5-9 5-9-5 9-5Z', 'm3 11.5 9 5 9-5M3 16l9 5 9-5'],
+  pen: ['M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z', 'm13.5 6.5 4 4'],
+  archive: ['M3 4h18v5H3z', 'M5 9v10h14V9M10 13h4'],
+  desk: ['M3 4h18v12H3z', 'M8 20h8M12 16v4'],
+  brief: ['M3 7h18v13H3z', 'M9 7V5h6v2M3 13h18'],
+  medal: ['M12 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z', 'm8.5 13.5-2 7.5 5.5-3 5.5 3-2-7.5'],
+  globe: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z', 'M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18'],
+  target: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
+  flag: ['M5 21V4', 'M5 4h12l-2 4 2 4H5'],
+  x: 'M6 6l12 12M18 6 6 18',
+  arrow: 'M5 12h14m-6-6 6 6-6 6',
+  check2: 'm5 12.5 4.5 4.5L19 7.5',
+  up: 'M7 17 17 7M8 7h9v9',
+  copy: ['M9 9h11v11H9z', 'M5 15V4h11'],
+  play: 'M8 5v14l11-7L8 5Z',
+  download: ['M12 3v12m-5-5 5 5 5-5', 'M4 20h16'],
+  linkedin: ['M3 3h18v18H3z', 'M8 10.5V16M8 7.8v.01M12 16v-5.5M12 13c0-1.6 1-2.6 2.4-2.6S16.5 11.300 16.5 13V16'],
+  tiktok: ['M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5', 'M14 3c.4 2.6 2 4.2 5 4.4'],
+};
+function Icon({ n, size = 20, className = '', fill }) {
+  const d = Array.isArray(P[n]) ? P[n] : [P[n]];
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill={fill || 'none'} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      {d.map((x, i) => <path key={i} d={x} />)}
+    </svg>
+  );
+}
+
+/* ====================== Small shared pieces ====================== */
+const Eyebrow = ({ children, className = '' }) => (
+  <p className={`font-mono text-xs font-medium uppercase tracking-[.18em] text-terrad ${className}`}>{children}</p>
+);
+const H2 = ({ children, className = '' }) => (
+  <h2 className={`font-display text-[clamp(2rem,4.4vw,3.4rem)] font-extrabold leading-[1.02] tracking-tight text-char [text-wrap:balance] ${className}`}>{children}</h2>
+);
+const IconTile = ({ n, size = 20, className = '' }) => (
+  <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-terra/30 bg-terra/10 text-terra ${className}`}><Icon n={n} size={size} /></span>
+);
+const Chip = ({ children, tone = 'sand' }) => (
+  <li className={`rounded-md border px-2.5 py-1 font-mono text-xs leading-tight text-char ${tone === 'sand' ? 'border-line bg-cream' : 'border-line bg-white'}`}>{children}</li>
+);
+const Section = ({ id, tone = 'cream', children }) => (
+  <section id={id} className={`scroll-mt-24 border-b border-line ${tone === 'sand' ? 'bg-sand' : 'bg-cream'}`}>
+    <div className="mx-auto w-full max-w-[1180px] px-4 py-16 sm:px-8 sm:py-24">{children}</div>
+  </section>
+);
+const Dot = ({ className = '' }) => (
+  <span className={`relative flex h-2.5 w-2.5 shrink-0 ${className}`} aria-hidden="true">
+    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sage opacity-60" />
+    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-sage" />
+  </span>
+);
+function Btn({ href, onClick, variant = 'primary', icon, children, external }) {
+  const base = 'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition duration-200';
+  const v = {
+    primary: 'bg-terra text-white hover:bg-terrad',
+    outline: 'border border-line bg-sand text-char hover:border-terra hover:bg-white',
+    white: 'border border-line bg-white text-char hover:border-terra hover:text-terrad',
+  }[variant];
+  const inner = <>{icon && <Icon n={icon} size={18} />}{children}</>;
+  return href
+    ? <a href={href} target={external ? '_blank' : undefined} rel="noreferrer" className={`${base} ${v}`}>{inner}</a>
+    : <button type="button" onClick={onClick} className={`${base} ${v}`}>{inner}</button>;
+}
+function go(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const CV_FILE = 'Harriet_Ayim_CV.pdf';
+function CvLink({ className = '', compact = false }) {
+  /* On a normal host this is a plain download link. Inside the Claude viewer, downloads go through the downloads capability. */
+  const onClick = async (e) => {
+    if (!(window.claude && window.claude.use)) return;
+    e.preventDefault();
+    try {
+      const dl = await window.claude.use('downloads');
+      if (!dl) { window.open(CV_FILE, '_blank'); return; }
+      const blob = await (await fetch(CV_FILE)).blob();
+      await dl.save({ filename: 'Harriet_Ayim_CV.pdf', data: blob });
+    } catch (err) {
+      if (!(err && err.code === 'declined')) window.open(CV_FILE, '_blank');
+    }
+  };
+  return (
+    <a href={CV_FILE} onClick={onClick} download="Harriet_Ayim_CV.pdf" target="_blank" rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-2 rounded-full border border-line bg-sand font-semibold text-char transition duration-200 hover:border-terra hover:bg-terra hover:text-white hover:shadow-lg hover:shadow-terra/20 ${compact ? 'px-5 py-2.5 text-[15px]' : 'px-6 py-3 text-[15px]'} ${className}`}>
+      <Icon n="download" size={18} />Download CV
+    </a>
+  );
+}
+/* ====================== Header ====================== */
+const NAV = [['home', 'Home'], ['about', 'About'], ['skills', 'Skills'], ['projects', 'Projects'], ['testimonials', 'Testimonials'], ['contact', 'Contact']];
+
+function Header({ active }) {
+  return (
+    <header className="sticky top-0 z-40 border-b border-line bg-cream/90 backdrop-blur-md" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+      <div className="mx-auto flex w-full max-w-[1180px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 sm:px-8">
+        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex min-w-0 flex-col items-start text-left">
+          <span className="font-display text-lg font-extrabold leading-none tracking-tight">Harriet Ayim</span>
+          <span className="mt-1 flex items-center gap-2 font-mono text-[11px] leading-snug text-slate"><Dot /> Level 300 CS @ ATU</span>
+        </button>
+        <nav className="order-last -mx-1 flex w-full gap-1 overflow-x-auto no-scrollbar lg:order-none lg:mx-0 lg:w-auto" aria-label="Sections">
+          {NAV.map(([id, label]) => (
+            <button key={id} type="button" onClick={() => go(id)} aria-current={active === id ? 'true' : undefined}
+              className={`shrink-0 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${active === id ? 'bg-terra text-white' : 'text-slate hover:bg-sand hover:text-char'}`}>
+              {label}
+            </button>
+          ))}
+        </nav>
+        <div className="flex items-center gap-2.5"><CvLink compact className="hidden sm:inline-flex" /><Btn variant="primary" onClick={() => go('contact')}>Hire Me</Btn></div>
+      </div>
+    </header>
+  );
+}
+
+/* ====================== Motion helpers ====================== */
+const staggerParent = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } };
+const staggerChild = { hidden: { opacity: 0, y: 28, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.2, 0.7, 0.2, 1] } } };
+const VIEW = { once: true, amount: 0.1 };
+function Stagger({ as = 'div', children, ...p }) {
+  const C = motion[as];
+  return <C variants={staggerParent} initial="hidden" whileInView="show" viewport={VIEW} {...p}>{children}</C>;
+}
+function Item({ as = 'div', children, ...p }) {
+  const C = motion[as];
+  return <C variants={staggerChild} {...p}>{children}</C>;
+}
+const Glow = ({ className = '' }) => (
+  <div className={`pointer-events-none absolute rounded-full bg-terra/20 blur-3xl ${className}`} aria-hidden="true" />
+);
+const GLASS = 'bg-white/70 backdrop-blur-xl';
+const LIFT = 'transition duration-300 hover:-translate-y-2 hover:border-terra hover:shadow-xl hover:shadow-terra/10';
+
+/* ====================== Hero ====================== */
+const fadeUp = (i = 0) => ({ initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.08 * i, ease: [0.2, 0.7, 0.2, 1] } });
+const STACK = [['HTML', 'code'], ['CSS', 'frame'], ['JavaScript', 'bolt'], ['PHP', 'server'], ['MySQL', 'db'], ['n8n', 'flow'], ['Git', 'branch']];
+
+function Hero({ onCv }) {
+  const ref = useRef(null);
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    el.style.setProperty('--my', `${e.clientY - r.top}px`);
+  };
+  const socials = [['octo', 'GitHub', URLS.github], ['linkedin', 'LinkedIn', URLS.linkedin], ['tiktok', 'TikTok', URLS.tiktok], ['mail', 'Email', URLS.email]];
+  return (
+    <section id="home" ref={ref} onMouseMove={onMove} className="relative overflow-x-clip border-b border-line bg-cream" style={{ '--mx': '72%', '--my': '35%' }}>
+      <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(520px circle at var(--mx) var(--my), rgba(184,92,56,.12), transparent 65%)' }} aria-hidden="true" />
+      <div className="relative mx-auto grid w-full max-w-[1180px] items-center gap-14 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
+        {/* Left: text */}
+        <div className="min-w-0">
+          <motion.p {...fadeUp(0)} className="inline-flex max-w-full rounded-full border border-line bg-sand px-4 py-2 font-mono text-xs font-bold uppercase tracking-[.1em] text-char sm:text-[13px]">
+            Software Developer &amp; AI Automation Specialist
+          </motion.p>
+          <motion.h1 {...fadeUp(1)} className="mt-6 font-display text-[clamp(2.2rem,4.8vw,3.9rem)] font-medium leading-[1.08] tracking-tight text-char [text-wrap:balance]">
+            Hi, I'm Harriet Ayim. I build <span className="font-bold text-terra">reliable full-stack web applications</span> and <span className="font-bold text-terra">automated AI workflows</span>.
+          </motion.h1>
+          <motion.p {...fadeUp(2)} className="mt-6 max-w-[56ch] text-[18px] leading-relaxed text-slate">
+            I am a Computer Science student at Accra Technical University (ATU) specializing in web development, backend systems, and n8n AI automations that help businesses stay organized and grow.
+          </motion.p>
+          <motion.div {...fadeUp(3)} className="mt-8 flex flex-wrap gap-3">
+            <Btn variant="primary" icon="arrow" onClick={() => go('projects')}>View My Work</Btn>
+            <CvLink />
+          </motion.div>
+          <motion.div {...fadeUp(4)} className="mt-10 flex flex-wrap items-center gap-4">
+            <p className="font-mono text-xs font-medium uppercase tracking-[.16em] text-slate">Find me on</p>
+            <ul className="flex gap-2.5">
+              {socials.map(([ic, label, href]) => (
+                <li key={label}>
+                  <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" aria-label={label} title={label}
+                    className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-terra transition duration-200 hover:-translate-y-1 hover:border-terra hover:bg-terra hover:text-white hover:shadow-lg hover:shadow-terra/20">
+                    <Icon n={ic} size={19} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+
+        {/* Right: portrait */}
+        <motion.div {...fadeUp(2)} className="relative mx-auto w-full max-w-[400px] lg:max-w-none lg:pl-10">
+          <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative aspect-[4/5] overflow-hidden rounded-[3rem_1rem_3rem_1rem] border-2 border-terra/30 bg-sand shadow-xl shadow-terra/15">
+            <img src={HEADSHOT_SRC} alt="Portrait of Harriet Ayim" className="h-full w-full object-cover object-[50%_20%]" />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ====================== About + metrics ====================== */
+const STATS = [
+  ['Level 300', 'B.Tech Computer Science @ ATU'],
+  ['6+', 'Projects & Workflows Built'],
+  ['100%', 'Practical, Project-Oriented Focus'],
+  ['Active', 'Tech Content Creator & Innovator'],
+];
+
+function About() {
+  return (
+    <section id="about" className="relative scroll-mt-24 overflow-hidden border-b border-line bg-sand">
+      <Glow className="-left-24 top-10 h-80 w-80" />
+      <Glow className="-right-20 bottom-0 h-72 w-72 !bg-terra/15" />
+      <Stagger className="relative mx-auto grid w-full max-w-[1180px] items-center gap-12 px-4 py-16 sm:px-8 sm:py-24 lg:grid-cols-2 lg:gap-16">
+        <Item className="min-w-0">
+          <Eyebrow>About me</Eyebrow>
+          <H2 className="mt-3 max-w-[16ch]">I'm passionate about creating digital solutions.</H2>
+          <p className="mt-6 max-w-[56ch] text-[18px] leading-relaxed text-char">
+            Combining my technical foundation in Computer Science with a background in customer service, administration, and tech content creation, I engineer reliable solutions that simplify complex processes.
+          </p>
+        </Item>
+        <Stagger as="ul" className="grid gap-4 sm:grid-cols-2">
+          {STATS.map(([n, t]) => (
+            <Item as="li" key={t}>
+              <div className={`h-full rounded-3xl border border-line p-6 ${GLASS} ${LIFT}`}>
+                <p className="font-display text-4xl font-extrabold leading-none tracking-tight text-terra">{n}</p>
+                <p className="mt-3 text-[15px] font-medium leading-snug text-char">{t}</p>
+              </div>
+            </Item>
+          ))}
+        </Stagger>
+      </Stagger>
+    </section>
+  );
+}
+
+/* ====================== Services + tech stack ====================== */
+const SERVICES = [
+  { icon: 'code', title: 'Full-Stack Web Development', text: 'Building responsive, practical web applications using modern PHP, MySQL, JavaScript, HTML, and CSS.' },
+  { icon: 'flow', title: 'Workflow & AI Automation', text: 'Designing n8n pipelines, webhooks, and AI LLM integrations to automate business outreach, scraping, and notifications.' },
+  { icon: 'db', title: 'Relational Database Design', text: 'Structuring robust relational database schemas, triggers, views, and optimized queries with MySQL and phpMyAdmin.' },
+  { icon: 'cloud', title: 'Web Infrastructure & Deployment', text: 'Configuring web servers, cPanel, subdomain management, Cloudflare DNS, and Coolify/Docker environments.' },
+];
+
+function Services() {
+  return (
+    <section id="services" className="relative scroll-mt-24 overflow-hidden border-b border-line bg-cream">
+      <Glow className="left-1/4 -top-20 h-72 w-[26rem]" />
+      <Stagger className="relative mx-auto w-full max-w-[1180px] px-4 py-16 sm:px-8 sm:py-24">
+        <Item className="text-center">
+          <Eyebrow>What I do</Eyebrow>
+          <H2 className="mx-auto mt-3">Services I Offer</H2>
+        </Item>
+        <Stagger as="ul" className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {SERVICES.map((s) => (
+            <Item as="li" key={s.title} className="min-w-0">
+              <div className={`flex h-full flex-col gap-4 rounded-3xl border border-line p-6 ${GLASS} ${LIFT}`}>
+                <IconTile n={s.icon} className="h-12 w-12" size={24} />
+                <h3 className="font-display text-xl font-extrabold leading-tight">{s.title}</h3>
+                <p className="text-[15px] leading-relaxed text-slate">{s.text}</p>
+              </div>
+            </Item>
+          ))}
+        </Stagger>
+      </Stagger>
+    </section>
+  );
+}
+
+/* Monochrome marks drawn for this site (not official brand logos). */
+function TechMark({ k }) {
+  const svg = { viewBox: '0 0 24 24', width: 34, height: 34, fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinejoin: 'round', strokeLinecap: 'round', 'aria-hidden': true };
+  const txt = (t, size = 8.5, y = 15.5) => <text x="12" y={y} textAnchor="middle" fontSize={size} fontFamily="JetBrains Mono, monospace" fontWeight="600" fill="currentColor" stroke="none">{t}</text>;
+  if (k === 'html') return <svg {...svg}><path d="M4 3h16l-1.5 16L12 21l-6.5-2L4 3Z" />{txt('5')}</svg>;
+  if (k === 'css') return <svg {...svg}><path d="M4 3h16l-1.5 16L12 21l-6.5-2L4 3Z" />{txt('3')}</svg>;
+  if (k === 'js') return <svg {...svg}><rect x="3" y="3" width="18" height="18" rx="3" />{txt('JS', 8.5, 15)}</svg>;
+  if (k === 'php') return <svg {...svg}><ellipse cx="12" cy="12" rx="10" ry="6.5" />{txt('php', 7, 14.3)}</svg>;
+  if (k === 'tailwind') return <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true"><path d="M12 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.09 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.3-.74-1.91-1.35C15.61 7.15 14.5 6 12 6zm-5 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.3.74 1.91 1.35C8.39 16.85 9.5 18 12 18c2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.3-.74-1.91-1.35C10.61 13.15 9.5 12 7 12z" /></svg>;
+  const map = { mysql: 'db', n8n: 'flow', git: 'branch', github: 'octo', vscode: 'code' };
+  return <Icon n={map[k]} size={34} />;
+}
+const STACK_ROW = [['html', 'HTML5'], ['css', 'CSS3'], ['js', 'JavaScript'], ['php', 'PHP'], ['mysql', 'MySQL'], ['n8n', 'n8n'], ['git', 'Git'], ['github', 'GitHub'], ['tailwind', 'Tailwind CSS'], ['vscode', 'VS Code']];
+
+function TechStack() {
+  return (
+    <section id="stack" className="relative scroll-mt-24 overflow-hidden border-b border-line bg-sand">
+      <Glow className="-right-24 top-0 h-72 w-72" />
+      <Stagger className="relative mx-auto w-full max-w-[1180px] px-4 py-14 sm:px-8 sm:py-20">
+        <Item className="text-center"><Eyebrow>Tech stack</Eyebrow></Item>
+        <Stagger as="ul" className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-10">
+          {STACK_ROW.map(([k, label]) => (
+            <Item as="li" key={k} className="min-w-0">
+              <div className="group flex h-full flex-col items-center gap-3 rounded-2xl border border-line bg-white px-2 py-5 text-terra transition duration-300 hover:-translate-y-2 hover:border-terra hover:shadow-lg hover:shadow-terra/15">
+                <span className="transition duration-300 group-hover:scale-110"><TechMark k={k} /></span>
+                <span className="text-center text-[13px] font-semibold leading-tight text-char">{label}</span>
+              </div>
+            </Item>
+          ))}
+        </Stagger>
+      </Stagger>
+    </section>
+  );
+}
+
+/* ====================== Skills with proficiency bars ====================== */
+const BARS = [
+  { cat: 'frontend', name: 'HTML / CSS / Responsive UI', pct: 95 },
+  { cat: 'backend', name: 'PHP & MySQL Databases', pct: 90 },
+  { cat: 'frontend', name: 'JavaScript & Web Logic', pct: 85 },
+  { cat: 'automation', name: 'n8n Workflow Automation & APIs', pct: 90 },
+  { cat: 'automation', name: 'Git, GitHub & Infrastructure', pct: 85 },
+];
+const TABS = [['all', 'All'], ['frontend', 'Frontend'], ['backend', 'Backend'], ['automation', 'Automation & DevOps']];
+
+function Skills() {
+  const [tab, setTab] = useState('all');
+  const rows = BARS.filter((b) => tab === 'all' || b.cat === tab);
+  return (
+    <section id="skills" className="relative scroll-mt-24 overflow-hidden border-b border-line bg-cream">
+      <Glow className="-right-24 top-24 h-80 w-80" />
+      <Stagger className="relative mx-auto w-full max-w-[1180px] px-4 py-16 sm:px-8 sm:py-24">
+        <Item>
+          <Eyebrow>Skills &amp; technologies</Eyebrow>
+          <H2 className="mt-3">Technologies I Master</H2>
+        </Item>
+        <Item className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Skill category">
+          {TABS.map(([k, label]) => (
+            <motion.button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)} whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}
+              className={`rounded-full border px-4 py-2 text-[15px] font-semibold transition-colors hover:shadow-lg hover:shadow-terra/10 ${tab === k ? 'border-terra bg-terra text-white' : `border-line text-char hover:border-terra ${GLASS}`}`}>{label}</motion.button>
+          ))}
+        </Item>
+        <div className="mt-8 grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:gap-10">
+          <Item as="ul" className={`flex flex-col gap-4 rounded-3xl border border-line p-6 sm:p-8 ${GLASS}`}>
+            {rows.map((b) => (
+              <li key={tab + b.name}>
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="text-[16px] font-semibold">{b.name}</span>
+                  <span className="font-mono text-sm font-medium tabular-nums text-terrad">{b.pct}%</span>
+                </div>
+                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-sand" role="progressbar" aria-valuenow={b.pct} aria-valuemin="0" aria-valuemax="100" aria-label={b.name}>
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${b.pct}%` }} transition={{ duration: 0.9, ease: [0.2, 0.7, 0.2, 1] }} className="h-full rounded-full bg-terra" />
+                </div>
+              </li>
+            ))}
+          </Item>
+          <Item className="rounded-3xl border border-line bg-sand/70 p-6 backdrop-blur-xl sm:p-8">
+            <Eyebrow>Also in my toolkit</Eyebrow>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {['Laravel', 'XAMPP', 'phpMyAdmin', 'SQL Optimization', 'Webhooks', 'JSON Parsing', 'Groq/OpenAI APIs', 'Postman', 'cPanel', 'Coolify', 'Docker (Basics)', 'Cloudflare', 'Figma', 'Canva', 'Notion'].map((t) => (
+                <li key={t} className="rounded-md border border-line bg-white px-2.5 py-1 font-mono text-xs text-char transition duration-200 hover:-translate-y-1 hover:border-terra hover:shadow-md hover:shadow-terra/10">{t}</li>
+              ))}
+            </ul>
+          </Item>
+        </div>
+      </Stagger>
+    </section>
+  );
+}
+
+/* ====================== Projects + drawer ====================== */
+const KIND = { Trigger: 'border-sage text-saged bg-sagel', AI: 'border-terra/60 text-terrad bg-terra/10', Logic: 'border-line text-char bg-cream', Data: 'border-line text-char bg-cream', Output: 'border-terra/60 text-terrad bg-terra/10', Error: 'border-amber-700/50 text-amber-900 bg-amber-100' };
+const WORKFLOWS = {
+  job: { main: [
+    { kind: 'Trigger', name: 'Webhook', detail: 'Starts a run with the role, location and keywords to search.' },
+    { kind: 'Data', name: 'SerpAPI request', detail: 'Pulls matching job listings for the query.' },
+    { kind: 'Logic', name: 'Filter', detail: 'Drops listings that miss the role, location or keyword rules.' },
+    { kind: 'AI', name: 'Groq LLM', detail: 'Extracts requirements and summarizes benefits for each listing.' },
+    { kind: 'Data', name: 'JSON parse', detail: 'Structures the model response into clean fields.' },
+    { kind: 'Output', name: 'Telegram message', detail: 'Pushes a formatted alert for review.' },
+  ], lane: null },
+  email: { main: [
+    { kind: 'Trigger', name: 'Google Sheets read', detail: 'Loads the next batch of lead rows.' },
+    { kind: 'Logic', name: 'IF condition', detail: 'Skips rows with a missing address or a prior contact.' },
+    { kind: 'AI', name: 'Groq LLM', detail: 'Personalises a message for each lead.' },
+    { kind: 'Output', name: 'Gmail send', detail: 'Sends the email through the Gmail API.' },
+    { kind: 'Data', name: 'Sheets update', detail: 'Marks the row as sent so it is never emailed twice.' },
+  ], lane: { label: 'Error handling lane', nodes: [
+    { kind: 'Error', name: 'Error trigger', detail: 'Catches a failed send or a bad model response.' },
+    { kind: 'Data', name: 'Log + flag row', detail: 'Records the failure so the lead can be retried.' },
+  ] } },
+};
+const PROJECTS = [
+  { id: 'atu', title: 'ATU Connect', category: 'Web Application', icon: 'globe', tone: 'sand',
+    tech: ['PHP', 'MySQL', 'JavaScript', 'HTML/CSS', 'XAMPP'],
+    summary: 'Centralized academic communication and resource-sharing platform for university departments, lecturers, and student executives.',
+    problem: 'Announcements and learning resources reached students through scattered channels, so updates were easy to miss.',
+    arch: 'PHP backend over a relational MySQL schema, with a JavaScript front end, run locally on XAMPP.',
+    result: 'One centralized portal for announcements and learning resources across departments, lecturers and students.',
+    metricHint: 'departments onboarded or students reached' },
+  { id: 'job', title: 'AI-Powered Job Search & Support Engine', category: 'AI Automation', icon: 'bolt', tone: 'white', workflow: 'job', demo: true,
+    tech: ['n8n', 'SerpAPI', 'Groq LLM', 'Webhooks', 'Telegram'],
+    summary: 'Automated job research workflow that scrapes listings, extracts requirements, summarizes benefits using LLMs, and pushes formatted alerts to Telegram.',
+    problem: 'Searching listings and reading each posting for requirements and benefits was slow, repetitive work.',
+    arch: 'A webhook starts an n8n flow. SerpAPI collects listings, filters narrow them, Groq summarizes each one and Telegram delivers the alert.',
+    result: 'Job research, filtering and summarizing now run as one automated system.',
+    metricHint: 'hours saved per week or alerts delivered' },
+  { id: 'email', title: 'Automated Email Outreach System', category: 'Workflow Automation', icon: 'mail', tone: 'white', workflow: 'email', demo: true,
+    tech: ['n8n', 'Google Sheets API', 'Gmail API', 'Groq LLM'],
+    summary: 'Automated communication system using conditional filtering, LLM message personalization, and automated Gmail delivery.',
+    problem: 'Manual outreach meant copying leads, writing every email by hand and missing the ones that failed to send.',
+    arch: 'Google Sheets holds the leads, conditional logic routes each row, Groq writes the content and the Gmail API sends it, with an error lane for failures.',
+    result: 'A streamlined outreach workflow with conditional filtering, AI personalization and error handling.',
+    metricHint: 'emails sent or reply rate' },
+  { id: 'dls', title: 'Digital Library', category: 'Web Application', icon: 'book', tone: 'white',
+    tech: ['HTML/CSS', 'JavaScript', 'Vercel'],
+    summary: 'Digital library system where students search the catalogue and borrow or return e-books online, while admins manage uploads and track borrowing activity.',
+    problem: 'Students needed one place to find and borrow course materials, novels and e-books, and admins needed a way to manage uploads and track borrowing.',
+    arch: 'A web front end for browsing, searching and borrowing, with an admin side for uploads and borrowing records, deployed on Vercel.',
+    result: 'A live digital library with a searchable catalogue and online borrowing and returns for students, plus upload and tracking tools for admins.',
+    metricHint: 'titles, categories or active users' },
+  { id: 'aura', title: 'Sweet Aura', category: 'E-commerce Website', icon: 'box', tone: 'sand',
+    tech: ['HTML/CSS', 'JavaScript', 'Netlify'],
+    summary: 'Online storefront for luxury perfumes, lip oils, body mists and beauty essentials, with product search and a shopping cart.',
+    problem: 'Perfume and beauty products needed an online shop where customers could browse, search and order with delivery in Ghana.',
+    arch: 'A responsive storefront with product search, featured product listings and a shopping cart, built with HTML, CSS and JavaScript and hosted on Netlify.',
+    result: 'A live online store for luxury perfumes and beauty essentials.',
+    metricHint: 'products listed or orders received' },
+  { id: 'gpgd', title: 'GPGD Training Programs', category: 'Web Infrastructure', icon: 'cloud', tone: 'sand',
+    tech: ['HTML/CSS', 'cPanel', 'Cloudflare', 'Subdomain Management'],
+    summary: 'Training programmes website for the Graduates and Professionals of Ga-Dangme (GPGD) Network, with production deployment, DNS setup, and subdomain hosting.',
+    problem: 'The network needed a dedicated, professional website to present its artisan and IT training programmes, running on its own domain.',
+    arch: 'A static HTML/CSS site on cPanel, DNS and proxying through Cloudflare, and applications on their own subdomains.',
+    result: 'A live training programmes website with managed DNS and subdomain hosting.',
+    metricHint: 'uptime, load time or apps hosted' },
+];
+
+function FlowList({ nodes }) {
+  return (
+    <ol className="flex flex-col">
+      {nodes.map((n, i) => (
+        <React.Fragment key={n.name}>
+          <li className="rounded-xl border border-line bg-white p-3.5">
+            <div className="flex items-center justify-between gap-2">
+              <p className="font-display text-base font-semibold leading-tight">{n.name}</p>
+              <span className={`shrink-0 rounded-full border px-2 py-0.5 font-mono text-[11px] uppercase tracking-[.1em] ${KIND[n.kind]}`}>{n.kind}</span>
+            </div>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate">{n.detail}</p>
+          </li>
+          {i < nodes.length - 1 && <li className="flex justify-center py-0.5" aria-hidden="true"><span className="h-4 w-px bg-terra/60" /></li>}
+        </React.Fragment>
+      ))}
+    </ol>
+  );
+}
+
+/* Links & artifacts for the n8n projects. Replace each url (empty shows a disabled "coming soon" button). */
+const PROJECT_ARTIFACTS = {
+  job:   [{ label: 'GitHub Workflow JSON', icon: 'octo', url: '' }, { label: 'Live Telegram Bot Demo', icon: 'send', url: '' }],
+  email: [{ label: 'GitHub Workflow JSON', icon: 'octo', url: '' }, { label: 'Webhook Test', icon: 'hook', url: '' }],
+};
+
+/* Illustrative n8n canvas drawn as vector art from each project's tool list. Swap in a real editor screenshot via SHOTS when available. */
+const CANVAS = {
+  job: {
+    title: 'Job Search Engine',
+    nodes: [
+      { x: 16, y: 48, name: 'Webhook', icon: 'hook' }, { x: 138, y: 48, name: 'SerpAPI', icon: 'globe' }, { x: 260, y: 48, name: 'Filter', icon: 'layers' },
+      { x: 260, y: 124, name: 'Groq LLM', icon: 'spark' }, { x: 138, y: 124, name: 'JSON Parse', icon: 'code' }, { x: 16, y: 124, name: 'Telegram', icon: 'send' },
+    ],
+    links: [[120, 70, 138, 70], [242, 70, 260, 70], [312, 92, 312, 124], [260, 146, 242, 146], [138, 146, 120, 146]],
+    button: true,
+  },
+  email: {
+    title: 'Email Outreach',
+    nodes: [
+      { x: 16, y: 48, name: 'Sheets Read', icon: 'sheet' }, { x: 138, y: 48, name: 'IF', icon: 'branch' }, { x: 260, y: 48, name: 'Groq LLM', icon: 'spark' },
+      { x: 260, y: 124, name: 'Gmail', icon: 'mail' }, { x: 138, y: 124, name: 'Update Row', icon: 'db' },
+      { x: 16, y: 200, name: 'On Error', icon: 'bolt', dashed: true }, { x: 138, y: 200, name: 'Log + Flag', icon: 'archive', dashed: true },
+    ],
+    links: [[120, 70, 138, 70], [242, 70, 260, 70], [312, 92, 312, 124], [260, 146, 242, 146], [120, 222, 138, 222]],
+    button: false,
+  },
+};
+
+function WorkflowCanvas({ id }) {
+  const c = CANVAS[id];
+  const ICON = (n) => (Array.isArray(P[n]) ? P[n] : [P[n]]);
+  return (
+    <div className="absolute inset-0 bg-char">
+      <svg viewBox="0 0 380 261" className="h-full w-full" role="img" aria-label={`Illustrative n8n workflow canvas for ${c.title}`}>
+        <defs>
+          <pattern id={`dots-${id}`} width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#E8DCCB" opacity=".16" /></pattern>
+        </defs>
+        <rect width="380" height="261" fill="#292524" />
+        <rect width="380" height="261" fill={`url(#dots-${id})`} />
+        <rect width="380" height="30" fill="#1F1B1A" />
+        <circle cx="14" cy="15" r="3.5" fill="#B85C38" /><circle cx="26" cy="15" r="3.5" fill="#E8DCCB" opacity=".5" /><circle cx="38" cy="15" r="3.5" fill="#E8DCCB" opacity=".25" />
+        <text x="56" y="19" fontSize="10" fill="#E8DCCB" fontFamily="JetBrains Mono, monospace">{c.title}</text>
+        <rect x="318" y="8" width="48" height="15" rx="7.5" fill="none" stroke="#B85C38" />
+        <text x="342" y="19" fontSize="8.5" textAnchor="middle" fill="#B85C38" fontFamily="JetBrains Mono, monospace">Active</text>
+        {c.links.map(([x1, y1, x2, y2], i) => (
+          <g key={i}><line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#B85C38" strokeWidth="1.8" /><circle cx={x2} cy={y2} r="3" fill="#B85C38" /></g>
+        ))}
+        {c.nodes.map((n) => (
+          <g key={n.name} transform={`translate(${n.x} ${n.y})`}>
+            <rect width="104" height="44" rx="10" fill="#FAF6EF" stroke={n.dashed ? '#B85C38' : '#E8DCCB'} strokeDasharray={n.dashed ? '4 3' : undefined} />
+            <circle cx="22" cy="22" r="13" fill="#B85C38" />
+            <svg x="14" y="14" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{ICON(n.icon).map((d, i) => <path key={i} d={d} />)}</svg>
+            <text x="42" y="26" fontSize="11" fontWeight="700" fill="#292524" fontFamily="Bricolage Grotesque, sans-serif">{n.name}</text>
+          </g>
+        ))}
+        {c.button
+          ? <g><rect x="130" y="204" width="120" height="28" rx="14" fill="#B85C38" /><text x="190" y="222" textAnchor="middle" fontSize="11" fontWeight="600" fill="#FFFFFF" fontFamily="Bricolage Grotesque, sans-serif">Execute workflow</text></g>
+          : <text x="262" y="226" fontSize="10" fill="#E8DCCB" opacity=".7" fontFamily="JetBrains Mono, monospace">error lane</text>}
+      </svg>
+      <div className="pointer-events-none absolute inset-2 rounded-[1.25rem] border border-sand/25" aria-hidden="true" />
+    </div>
+  );
+}
+
+const SIMS = {
+  job: {
+    steps: [
+      { label: 'Receiving Payload', icon: 'hook', log: 'Webhook received: role "Junior Web Developer", location "Accra"' },
+      { label: 'Processing with Groq LLM', icon: 'spark', log: 'Extracted requirements and summarized benefits for 5 matched listings' },
+      { label: 'Delivering Alert', icon: 'send', log: 'Formatted alert delivered to Telegram' },
+    ],
+    json: `{
+  "status": "success",
+  "source": "simulated run",
+  "listings_found": 12,
+  "matched": 5,
+  "top_match": {
+    "title": "Junior Web Developer",
+    "company": "Example Company",
+    "location": "Accra, GH",
+    "requirements": ["HTML/CSS/JS", "PHP or Laravel", "MySQL"],
+    "benefits": ["Hybrid work", "Mentorship"]
+  },
+  "telegram": { "delivered": true }
+}`,
+  },
+  email: {
+    steps: [
+      { label: 'Receiving Payload', icon: 'sheet', log: 'Lead row loaded from Google Sheets' },
+      { label: 'Processing with Groq LLM', icon: 'spark', log: 'Personalized message drafted for the lead' },
+      { label: 'Delivering Email', icon: 'mail', log: 'Email sent through the Gmail API, row marked as sent' },
+    ],
+    json: `{
+  "status": "success",
+  "source": "simulated run",
+  "lead": { "name": "Sample Lead", "company": "Example Company" },
+  "llm": { "provider": "groq", "personalized": true },
+  "delivery": { "channel": "gmail", "status": "sent" },
+  "sheet": { "row_updated": true },
+  "errors": []
+}`,
+  },
+};
+
+function Simulator({ kind = 'job' }) {
+  const sim = SIMS[kind];
+  const [stage, setStage] = useState(0);   /* 0 idle, 1-3 step running, 4 finished */
+  const timers = useRef([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  const run = () => {
+    timers.current.forEach(clearTimeout); timers.current = [];
+    setStage(1);
+    [2, 3, 4].forEach((s, n) => timers.current.push(setTimeout(() => setStage(s), 900 * (n + 1))));
+  };
+  const running = stage > 0 && stage < 4;
+  return (
+    <div className="rounded-2xl border border-line bg-cream p-4 sm:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <Eyebrow>Micro-demo</Eyebrow>
+          <p className="mt-1 font-display text-lg font-semibold">Test Automation</p>
+        </div>
+        <button type="button" onClick={run} disabled={running}
+          className="inline-flex items-center gap-2 rounded-full bg-terra px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-terrad disabled:opacity-60">
+          <Icon n="play" size={14} fill="currentColor" />{running ? 'Running…' : stage === 4 ? 'Run Again' : 'Run Test'}
+        </button>
+      </div>
+
+      <ol className="mt-4 grid gap-2">
+        {sim.steps.map((st, i) => {
+          const done = stage === 4 || i + 1 < stage;
+          const active = i + 1 === stage && stage < 4;
+          return (
+            <li key={st.label} className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 transition-colors ${done ? 'border-terra/50 bg-white' : active ? 'border-terra bg-white' : 'border-line bg-white/60'}`}>
+              <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border transition-colors ${done ? 'border-terra bg-terra text-white' : active ? 'border-terra text-terra' : 'border-line text-slate'}`}>
+                {done ? <Icon n="check2" size={16} /> : active ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-terra border-t-transparent" /> : <Icon n={st.icon} size={16} />}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold leading-tight">{st.label}</p>
+                {(done || active) && <p className="mt-0.5 font-mono text-xs leading-snug text-slate">{done ? st.log : 'running…'}</p>}
+              </div>
+              <span className={`font-mono text-xs ${done ? 'text-terrad' : 'text-slate'}`}>{done ? 'done' : active ? 'running' : 'waiting'}</span>
+            </li>
+          );
+        })}
+      </ol>
+
+      {stage === 0 && <p className="mt-3 font-mono text-xs text-slate">Replays the workflow with sample data. Nothing real is searched or sent.</p>}
+      {stage === 4 && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
+          <div className="flex items-center gap-2"><span className="rounded border border-terra/60 bg-terra/10 px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-terrad">success</span><span className="font-mono text-xs text-slate">Output log (sample data)</span></div>
+          <pre className="mt-2 overflow-x-auto rounded-xl border border-line bg-sand p-3.5 font-mono text-[12.5px] leading-relaxed text-char">{sim.json}</pre>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+function Artifacts({ id }) {
+  const items = PROJECT_ARTIFACTS[id];
+  if (!items) return null;
+  return (
+    <div className="mt-7">
+      <Eyebrow>Links &amp; artifacts</Eyebrow>
+      <ul className="mt-3 flex flex-wrap gap-2.5">
+        {items.map((a) => (
+          <li key={a.label}>
+            {a.url ? (
+              <a href={a.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2.5 text-sm font-semibold transition hover:border-terra hover:text-terrad">
+                <Icon n={a.icon} size={16} className="text-terra" />{a.label}<Icon n="ext" size={14} />
+              </a>
+            ) : (
+              <span title="Link coming soon" className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-dashed border-line px-4 py-2.5 text-sm font-semibold text-slate">
+                <Icon n={a.icon} size={16} />{a.label} <span className="font-mono text-xs">(coming soon)</span>
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Drawer({ project, onClose }) {
+  const closeRef = useRef(null);
+  useEffect(() => {
+    if (closeRef.current) closeRef.current.focus();
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow; document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [onClose]);
+  const wf = project.workflow && WORKFLOWS[project.workflow];
+  const steps = [['flag', 'Problem statement', project.problem], ['layers', 'Architecture / tools used', project.arch], ['target', 'Measurable result / impact', project.result]];
+  return (
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label={`Case study: ${project.title}`}>
+      <motion.button type="button" aria-label="Close case study" onClick={onClose} tabIndex={-1}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 h-full w-full cursor-default bg-stone-900/45" />
+      <motion.aside initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', stiffness: 320, damping: 36 }}
+        className="absolute inset-y-0 right-0 flex w-full max-w-[520px] flex-col border-l border-line bg-cream shadow-[-24px_0_80px_rgba(41,37,36,.25)]">
+        <div className="flex items-start justify-between gap-4 border-b border-line bg-white p-5 sm:p-6">
+          <div className="min-w-0">
+            <Eyebrow>{project.category}</Eyebrow>
+            <h3 className="mt-1 font-display text-2xl font-extrabold leading-tight">{project.title}</h3>
+          </div>
+          <button ref={closeRef} type="button" onClick={onClose} aria-label="Close" className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line text-char transition hover:border-terra hover:text-terrad"><Icon n="x" /></button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6">
+          <p className="text-[16px] leading-relaxed text-char">{project.summary}</p>
+          <ul className="mt-4 flex flex-wrap gap-1.5">{project.tech.map(t => <Chip key={t} tone="white">{t}</Chip>)}</ul>
+
+          <div className="mt-7 flex flex-col">
+            {steps.map(([ic, label, text], n) => (
+              <div key={label} className="flex gap-3">
+                <div className="flex flex-col items-center">
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-terra/40 bg-terra/10 text-terra"><Icon n={ic} size={16} /></span>
+                  {n < 2 && <span className="mt-1 w-px flex-1 bg-line" aria-hidden="true" />}
+                </div>
+                <div className={`min-w-0 flex-1 ${n < 2 ? 'pb-5' : ''}`}>
+                  <Eyebrow>{label}</Eyebrow>
+                  <p className="mt-1 text-[15px] leading-relaxed text-char">{text}</p>
+                  {n === 2 && <p className="mt-2 inline-block rounded-md border border-dashed border-line px-2.5 py-1.5 font-mono text-xs text-slate">Add your number: {project.metricHint}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {project.demo && <div className="mt-7"><Simulator kind={project.workflow} /></div>}
+          <Artifacts id={project.id} />
+
+          {wf && (
+            <div className="mt-7">
+              <Eyebrow>Workflow architecture</Eyebrow>
+              <div className="mt-3"><FlowList nodes={wf.main} /></div>
+              {wf.lane && (
+                <div className="mt-5 rounded-2xl border border-dashed border-amber-700/50 p-3">
+                  <Eyebrow className="!text-amber-900">{wf.lane.label}</Eyebrow>
+                  <div className="mt-2"><FlowList nodes={wf.lane.nodes} /></div>
+                </div>
+              )}
+              <p className="mt-4 font-mono text-xs leading-relaxed text-slate">Illustrative layout built from the tools listed for this project.</p>
+            </div>
+          )}
+        </div>
+      </motion.aside>
+    </div>
+  );
+}
+
+P.ext = ['M15 3h6v6', 'M10 14 21 3', 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'];
+
+/* Outbound links per project. Replace each url with the real repository or live site. An empty url shows a disabled button. */
+const PROJECT_LINKS = {
+  atu:   { live: 'https://atu-connect.sasulabs.me/', repo: URLS.github },
+  job:   { live: '', repo: URLS.github },
+  email: { live: '', repo: URLS.github },
+  gpgd:  { live: 'https://programs.gpgdnetwork.org/', repo: URLS.github },
+  dls:   { live: 'https://dls-nine.vercel.app/', repo: URLS.github },
+  aura:  { live: 'https://harryscents.netlify.app/', repo: URLS.github },
+};
+/* Optional real screenshots: add e.g. { atu: 'atu-connect.png' } and publish the files. Otherwise a wireframe preview is drawn. */
+const SHOTS = { atu: 'shot-atu.jpg', gpgd: 'shot-gpgd.jpg', dls: 'shot-dls.jpg', aura: 'shot-aura.jpg' };
+const BLURBS = {
+  atu: 'A secure campus workspace that brings announcements, assignments, messaging and notices together for students, lecturers and university leadership. It includes six role-based dashboards, live notifications and a unified inbox.',
+  job: 'An n8n workflow that scrapes job listings, extracts requirements and summarizes benefits with an LLM. It then pushes formatted alerts straight to Telegram.',
+  email: 'An n8n system that filters leads with conditional logic and personalizes each message with an LLM. It sends through Gmail and logs failures so none are missed.',
+  dls: 'A digital library where students search the catalogue and borrow or return e-books online. Admins can upload new titles and track borrowing activity.',
+  aura: 'An online storefront for luxury perfumes, lip oils, body mists and beauty essentials. Shoppers can search products, browse featured items and order with delivery in Ghana.',
+  gpgd: 'The training programmes website for the Graduates and Professionals of Ga-Dangme Network, presenting its artisan and IT certification programmes. I handled the deployment, DNS and subdomain hosting.',
+};
+const URL_TEXT = { atu: 'atu-connect.sasulabs.me', job: 'n8n / job-search-engine', email: 'n8n / email-outreach', gpgd: 'programs.gpgdnetwork.org', dls: 'dls-nine.vercel.app', aura: 'harryscents.netlify.app' };
+
+const Bar = ({ w = 'w-full', tone = 'bg-line', h = 'h-2' }) => <span className={`block rounded-full ${tone} ${h} ${w}`} />;
+
+function Mock({ id }) {
+  if (id === 'atu') return (
+    <div className="grid h-full grid-cols-[28%_1fr] gap-3 p-3">
+      <div className="flex flex-col gap-2 rounded-lg bg-sand p-2.5"><Bar tone="bg-terra" w="w-3/4" /><Bar w="w-full" tone="bg-line" /><Bar w="w-2/3" tone="bg-line" /><Bar w="w-5/6" tone="bg-line" /></div>
+      <div className="flex flex-col gap-2">
+        <Bar w="w-1/2" tone="bg-char" h="h-3" />
+        {[0, 1, 2].map((n) => (
+          <div key={n} className="flex items-center gap-2 rounded-lg border border-line bg-cream p-2">
+            <span className="h-6 w-6 shrink-0 rounded-md bg-terra/80" /><div className="flex flex-1 flex-col gap-1.5"><Bar w="w-4/5" tone="bg-char/70" /><Bar w="w-full" /></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  if (id === 'job') return (
+    <div className="flex h-full flex-col gap-2.5 p-3">
+      <div className="flex items-center gap-2"><span className="h-5 w-5 rounded-full bg-sage" /><Bar w="w-1/3" tone="bg-char/70" /><span className="ml-auto rounded-full bg-sagel px-2 py-0.5 font-mono text-[10px] font-medium text-saged">12 listings</span></div>
+      <div className="flex flex-1 flex-col gap-2 rounded-lg border border-line bg-cream p-3">
+        <Bar w="w-3/5" tone="bg-char" h="h-3" /><Bar /><Bar w="w-5/6" />
+        <div className="mt-auto flex gap-1.5"><span className="h-5 w-14 rounded-md bg-terra/80" /><span className="h-5 w-12 rounded-md bg-sand" /><span className="h-5 w-16 rounded-md bg-sand" /></div>
+      </div>
+      <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-sage" /><Bar w="w-2/5" /></div>
+    </div>
+  );
+  if (id === 'email') return (
+    <div className="flex h-full flex-col gap-1.5 p-3">
+      <div className="grid grid-cols-[1fr_1fr_.7fr] gap-1.5">{[0, 1, 2].map((n) => <span key={n} className="h-5 rounded bg-sand" />)}</div>
+      {[0, 1, 2, 3].map((r) => (
+        <div key={r} className="grid grid-cols-[1fr_1fr_.7fr] items-center gap-1.5">
+          <Bar w="w-4/5" tone="bg-char/60" /><Bar w="w-full" />
+          <span className={`h-5 rounded-md ${r === 3 ? 'bg-terra/70' : 'bg-sagel border border-sage/50'}`} />
+        </div>
+      ))}
+    </div>
+  );
+  return (
+    <div className="flex h-full flex-col gap-2.5 p-3">
+      <div className="flex items-center gap-2"><span className="h-5 w-5 rounded bg-terra" /><Bar w="w-1/6" tone="bg-char/70" /><span className="ml-auto flex gap-1.5"><Bar w="w-8" /><Bar w="w-8" /><Bar w="w-8" /></span></div>
+      <div className="flex flex-1 flex-col justify-center gap-2 rounded-lg bg-sand p-4">
+        <Bar w="w-4/5" tone="bg-char" h="h-3.5" /><Bar w="w-3/5" tone="bg-char" h="h-3.5" /><span className="mt-1 h-6 w-20 rounded-full bg-terra" />
+      </div>
+      <div className="flex gap-1.5"><span className="rounded-full bg-sagel px-2 py-0.5 font-mono text-[10px] font-medium text-saged">DNS ok</span><span className="rounded-full bg-sagel px-2 py-0.5 font-mono text-[10px] font-medium text-saged">SSL ok</span></div>
+    </div>
+  );
+}
+
+function BrowserFrame({ id }) {
+  return (
+    <>
+      <div className="flex items-center gap-2 border-b border-line bg-cream px-2 py-1.5">
+        <span className="flex gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-terra/70" /><span className="h-2.5 w-2.5 rounded-full bg-sand" /><span className="h-2.5 w-2.5 rounded-full bg-line" /></span>
+        <span className="mx-auto flex min-w-0 max-w-[75%] flex-1 items-center justify-center truncate rounded border border-line bg-white px-2 py-0.5 font-mono text-[10px] text-slate">{URL_TEXT[id]}</span>
+        <span className="w-2" />
+      </div>
+      <div className="aspect-[16/10] bg-white">
+        {SHOTS[id] ? <img src={SHOTS[id]} alt={`${id} screenshot`} className="h-full w-full object-cover object-top" /> : <Mock id={id} />}
+      </div>
+    </>
+  );
+}
+
+function ProjectCard({ p, onOpen }) {
+  const [hover, setHover] = useState(false);
+  const [focus, setFocus] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const touch = useRef(false);
+  const link = PROJECT_LINKS[p.id];
+  const show = hover || focus || pinned;
+  const Tag = link.live ? 'a' : 'button';
+  const tagProps = link.live ? { href: link.live, target: '_blank', rel: 'noopener noreferrer' } : { type: 'button' };
+  const onTagClick = (e) => {
+    if (touch.current && !pinned) { e.preventDefault(); setPinned(true); return; }
+    if (!link.live) onOpen(p.id);
+  };
+  return (
+    <div className="relative aspect-[16/11] overflow-hidden rounded-[1.75rem] border border-line bg-white shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-terra/15"
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHover(true); }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(false); }}
+      onPointerDown={(e) => { touch.current = e.pointerType !== 'mouse'; }}
+      onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}>
+      {SHOTS[p.id]
+        ? <img src={SHOTS[p.id]} alt="" className="absolute inset-0 h-full w-full object-cover object-top" />
+        : p.workflow ? <WorkflowCanvas id={p.workflow} />
+        : <div className="absolute inset-0 bg-cream p-3"><div className="h-full overflow-hidden rounded-2xl border border-line bg-white"><Mock id={p.id} /></div></div>}
+
+      <Tag {...tagProps} onClick={onTagClick} aria-label={link.live ? `${p.title}: open live site in a new tab` : `${p.title}: open case study`} className="absolute inset-0 z-0 block h-full w-full cursor-pointer" />
+
+      <AnimatePresence>
+        {show && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}
+            className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-end gap-3 bg-char/80 p-5 text-white backdrop-blur-sm">
+            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.05, duration: 0.3 }} className="flex flex-col gap-3">
+              <h3 className="font-display text-xl font-extrabold leading-tight text-white">{p.title}</h3>
+              <p className="line-clamp-4 text-[13.5px] leading-snug text-white">{BLURBS[p.id]}</p>
+              <ul className="flex flex-wrap gap-1.5">
+                {p.tech.map((t) => <li key={t} className="rounded-full border border-white/40 bg-white/15 px-2.5 py-1 font-mono text-[11px] leading-none text-white backdrop-blur-md">{t}</li>)}
+              </ul>
+              <div className="pointer-events-auto flex flex-wrap items-center gap-2 pt-1">
+                {link.live ? (
+                  <a href={link.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-terra px-4 py-2 text-sm font-semibold text-white transition hover:bg-terrad">View <Icon n="ext" size={14} /></a>
+                ) : (
+                  <button type="button" onClick={() => onOpen(p.id)} className="inline-flex items-center gap-1.5 rounded-full bg-terra px-4 py-2 text-sm font-semibold text-white transition hover:bg-terrad">View <Icon n="arrow" size={14} /></button>
+                )}
+                {link.live && <button type="button" onClick={() => onOpen(p.id)} className="rounded-full border border-white/50 bg-white/10 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-white/25">Case study</button>}
+                <a href={link.repo} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} GitHub repository`} title="GitHub repository" className="grid h-9 w-9 place-items-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/25"><Icon n="octo" size={16} /></a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function Projects({ onOpen }) {
+  const ORDER = ['atu', 'dls', 'gpgd', 'aura', 'job', 'email'];
+  const list = ORDER.map((id) => PROJECTS.find((p) => p.id === id));
+  return (
+    <section id="projects" className="relative scroll-mt-24 overflow-hidden border-b border-line bg-cream">
+      <Glow className="left-1/3 -top-24 h-80 w-[28rem]" />
+      <Stagger className="relative mx-auto w-full max-w-[1180px] px-4 py-16 sm:px-8 sm:py-20">
+        <Item>
+          <Eyebrow>Portfolio</Eyebrow>
+          <H2 className="mt-3">Projects Built</H2>
+        </Item>
+        <Stagger as="ul" className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+          {list.map((p, n) => (
+            <Item as="li" key={p.id} className={`min-w-0 lg:col-span-2`}><ProjectCard p={p} onOpen={onOpen} /></Item>
+          ))}
+        </Stagger>
+        <p className="mt-4 font-mono text-xs text-slate">Hover (or tap) a project to see the details.</p>
+      </Stagger>
+    </section>
+  );
+}
+
+/* ====================== Strengths + testimonial ====================== */
+const STRENGTHS = [
+  { title: 'Problem-Solving', icon: 'branch',
+    context: 'Relational Database Architecture & n8n Workflows',
+    execution: 'Designed a hospital database schema with custom triggers/views, and built a multi-branch n8n pipeline that dynamically parses JSON payloads and handles HTTP API edge cases.',
+    impact: 'Eliminated manual data entry stalls and ensured error-free API payload execution across edge cases.' },
+  { title: 'Systems Organization', icon: 'layers',
+    context: 'ATU Connect Business Plan & Web Infrastructure',
+    execution: 'Applied the OODA decision loop for campus logistics, while managing cPanel and self-hosted Coolify/Docker environments.',
+    impact: 'Streamlined deployment workflows and established a clear strategic roadmap.' },
+  { title: 'Transparent Communication', icon: 'chat',
+    context: 'Tech Content Creation & Admin Support',
+    execution: 'Produce beginner-friendly guides on TikTok/Instagram, drawing on customer service experience to align team goals.',
+    impact: 'Demystifies complex CS topics and ensures seamless project alignment.' },
+  { title: 'Continuous Learning', icon: 'loop',
+    context: 'Full-Stack Apps & AI Pipelines',
+    execution: 'Master new tools rapidly by shipping functional software: a Java OOP student record system, PHP/MySQL apps, and n8n outreach pipelines.',
+    impact: 'Continually expands full-stack engineering proficiency.' },
+];
+
+function Testimonials() {
+  const [i, setI] = useState(0);
+  const s = STRENGTHS[i];
+  return (
+    <section id="testimonials" className="relative scroll-mt-24 overflow-hidden border-b border-line bg-cream">
+      <Glow className="-left-24 top-32 h-80 w-80" />
+      <Glow className="-right-24 bottom-10 h-72 w-72 !bg-terra/15" />
+      <Stagger className="relative mx-auto w-full max-w-[1180px] px-4 py-16 sm:px-8 sm:py-24">
+        <Item>
+          <Eyebrow>Collaboration &amp; strengths</Eyebrow>
+          <H2 className="mt-3 max-w-[20ch]">How I work, in practice.</H2>
+        </Item>
+        <div className="mt-12 grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8">
+          <Item className="flex min-w-0 flex-col gap-5 rounded-[2rem] border border-line bg-sand/70 p-6 backdrop-blur-xl sm:p-8">
+            <Eyebrow>Work ethics &amp; strengths</Eyebrow>
+            <ul className="flex flex-wrap gap-2.5" role="tablist" aria-label="Strengths">
+              {STRENGTHS.map((st, n) => {
+                const on = n === i;
+                return (
+                  <li key={st.title}>
+                    <motion.button type="button" role="tab" aria-selected={on} onClick={() => setI(n)} onMouseEnter={() => setI(n)} whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}
+                      className={`relative inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-[15px] font-semibold transition-colors hover:shadow-xl hover:shadow-terra/15 ${on ? 'border-terra text-white' : 'border-line bg-cream/80 text-char hover:border-terra'}`}>
+                      {on && <motion.span layoutId="strength-pill" className="absolute inset-0 rounded-full bg-terra" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
+                      <span className="relative z-10 inline-flex items-center gap-2"><Icon n={st.icon} size={17} />{st.title}</span>
+                    </motion.button>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="flex-1 rounded-2xl border border-line bg-white/80 p-5 backdrop-blur-xl sm:p-6" role="tabpanel" aria-live="polite">
+              <AnimatePresence mode="wait">
+                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }} className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3"><Eyebrow>In practice</Eyebrow><span className="h-px flex-1 bg-line" aria-hidden="true" /></div>
+                  {[['Context', s.context, 'text-terrad', 'font-semibold text-char'], ['Execution', s.execution, 'text-terrad', 'text-char'], ['Impact', s.impact, 'text-saged', 'text-slate']].map(([label, text, tone, body], n) => (
+                    <div key={label} className={n > 0 ? 'border-t border-line pt-4' : ''}>
+                      <p className={`font-mono text-xs font-medium uppercase tracking-[.16em] ${tone}`}>{label}</p>
+                      <p className={`mt-1.5 text-[15px] leading-relaxed ${body}`}>{text}</p>
+                    </div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </Item>
+
+          <Item as="figure" className={`relative flex min-w-0 flex-col justify-between gap-6 rounded-[2rem] border border-line p-6 sm:p-8 ${GLASS}`}>
+            <span className="absolute right-5 top-5 rounded-full border border-dashed border-line bg-cream px-3 py-1 font-mono text-[11px] text-slate">Placeholder · replace with a real quote</span>
+            <svg viewBox="0 0 48 36" width="44" height="33" className="text-terra" fill="currentColor" aria-hidden="true"><path d="M0 36V20C0 8 6 1.500 18 0v7c-6 1.200-8.500 4.500-8.500 9H18v20H0Zm27 0V20C27 8 33 1.500 45 0v7c-6 1.200-8.500 4.500-8.500 9H45v20H27Z" /></svg>
+            <blockquote className="font-display text-[clamp(1.25rem,2.2vw,1.6rem)] font-semibold leading-snug text-char">
+              Harriet delivers structured execution and creative problem-solving. Her attention to detail in web development and workflow automation is exceptional.
+            </blockquote>
+            <figcaption className="flex items-center gap-3 border-t border-line pt-5">
+              <IconTile n="users" />
+              <span className="text-[15px] font-semibold">Academic / Professional Reference</span>
+            </figcaption>
+          </Item>
+        </div>
+      </Stagger>
+    </section>
+  );
+}
+
+/* ====================== Contact footer ====================== */
+function Contact() {
+  const [copied, setCopied] = useState(false);
+  const copy = () => { try { navigator.clipboard.writeText(PROFILE.email).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1800); }, () => {}); } catch (e) {} };
+  const links = [
+    ['octo', 'GitHub', `github.com/${PROFILE.github}`, URLS.github],
+    ['linkedin', 'LinkedIn', PROFILE.linkedinName, URLS.linkedin],
+    ['tiktok', 'TikTok', `@${PROFILE.tiktok}`, URLS.tiktok],
+  ];
+  const card = `flex items-center gap-4 rounded-2xl border border-line px-4 py-3.5 ${GLASS}`;
+  return (
+    <section id="contact" className="relative scroll-mt-24 overflow-hidden bg-sand">
+      <Glow className="-left-20 top-10 h-80 w-80" />
+      <Glow className="-right-24 bottom-20 h-80 w-80 !bg-terra/15" />
+      <Stagger className="relative mx-auto grid w-full max-w-[1180px] gap-12 px-4 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+        <Item className="min-w-0">
+          <div className="flex items-center gap-2"><Dot /><Eyebrow className="!text-saged">Open to new projects</Eyebrow></div>
+          <h2 className="mt-4 font-display text-[clamp(2.4rem,6vw,4.6rem)] font-extrabold leading-[.98] tracking-tight [text-wrap:balance]">Have a <span className="text-terra">project</span> in mind?</h2>
+          <p className="mt-5 max-w-[50ch] text-lg leading-relaxed text-char">I'm always open to discussing new web projects, software development, and workflow automation opportunities.</p>
+          <div className="mt-8"><Btn href={URLS.email} variant="primary" icon="mail">Get In Touch</Btn></div>
+        </Item>
+        <Stagger as="ul" className="grid min-w-0 gap-3 self-start">
+          {links.map(([ic, label, text, href]) => (
+            <Item as="li" key={label}>
+              <a href={href} target="_blank" rel="noreferrer" className={`group ${card} ${LIFT}`}>
+                <IconTile n={ic} />
+                <span className="min-w-0 flex-1"><span className="block font-mono text-xs uppercase tracking-[.14em] text-slate">{label}</span><span className="block truncate text-[15px] font-semibold">{text}</span></span>
+                <Icon n="up" size={16} className="shrink-0 text-terra transition group-hover:translate-x-0.5" />
+              </a>
+            </Item>
+          ))}
+          <Item as="li" className={card}>
+            <IconTile n="mail" />
+            <span className="min-w-0 flex-1"><span className="block font-mono text-xs uppercase tracking-[.14em] text-slate">Email</span><span className="block select-all truncate text-[15px] font-semibold">{PROFILE.email}</span></span>
+            <button type="button" onClick={copy} className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-line bg-cream px-2.5 py-1 font-mono text-xs transition hover:border-terra"><Icon n="copy" size={13} />{copied ? 'Copied' : 'Copy'}</button>
+          </Item>
+          <Item as="li" className={card}>
+            <IconTile n="globe" />
+            <span className="min-w-0 flex-1"><span className="block font-mono text-xs uppercase tracking-[.14em] text-slate">Location</span><span className="block text-[15px] font-semibold">Accra, Ghana</span></span>
+          </Item>
+        </Stagger>
+      </Stagger>
+      <div className="relative mx-auto w-full max-w-[1180px] px-4 pb-10 sm:px-8"><p className="border-t border-line pt-6 font-mono text-xs text-slate">© 2026 Harriet Ama-Adubea Ayim · Built with practical solutions in mind.</p></div>
+    </section>
+  );
+}
+
+/* ====================== App ====================== */
+function App() {
+  const [active, setActive] = useState('home');
+  const [open, setOpen] = useState(null);
+  const [toast, setToast] = useState('');
+  const close = useCallback(() => setOpen(null), []);
+
+  useEffect(() => {
+    const ids = NAV.map(([id]) => id);
+    const onScroll = () => {
+      let cur = 'home';
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 140) cur = id;
+      }
+      setActive(cur);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const cv = () => {
+    if (RESUME_URL) { window.open(RESUME_URL, '_blank'); return; }
+    setToast('CV link is not connected yet.');
+    setTimeout(() => setToast(''), 2400);
+  };
+  const project = PROJECTS.find((p) => p.id === open);
+
+  return (
+    <MotionConfig reducedMotion="user">
+      <Header active={active} />
+      <main>
+        <Hero onCv={cv} />
+        <About />
+        <Services />
+        <TechStack />
+        <Skills />
+        <Projects onOpen={setOpen} />
+        <Testimonials />
+      </main>
+      <Contact />
+      <AnimatePresence>{project && <Drawer key={project.id} project={project} onClose={close} />}</AnimatePresence>
+      <AnimatePresence>
+        {toast && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} role="status"
+            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-char px-5 py-3 text-sm font-semibold text-cream shadow-lg">{toast}</motion.div>
+        )}
+      </AnimatePresence>
+    </MotionConfig>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>
