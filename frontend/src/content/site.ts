@@ -334,3 +334,32 @@ export const CREATOR_ROLES: CreatorRole[] = [
     tone: "gold",
   },
 ];
+
+/* ---------------------------------------------------------------- certificates (shown in the Journey chapter) */
+export type Certificate = {
+  title: string;
+  issuer: string;
+  date?: string;
+  level?: string;
+  image: string;
+  badge?: string;
+  verify?: string;
+};
+
+export const CERTIFICATES: Certificate[] = [
+  {
+    title: "Essentials: Your First Workflows",
+    issuer: "n8n Academy",
+    date: "1 November 2026",
+    level: "Foundations",
+    image: "/certificates/n8n-essentials.png",
+    badge: "/certificates/n8n-essentials-badge.png",
+    verify: "https://learn.n8n.io/certificates/05b3b12ff0b74a6b9fd1cca543b939b4",
+  },
+  {
+    title: "AI Automation and Agents",
+    issuer: "TechTribe Global",
+    level: "Beginners to Intermediate",
+    image: "/certificates/techtribe-ai-automation.png",
+  },
+];

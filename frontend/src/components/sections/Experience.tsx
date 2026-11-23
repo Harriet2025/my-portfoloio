@@ -6,6 +6,7 @@ import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import Certificates from "./Certificates";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
@@ -78,6 +79,8 @@ export default function Experience() {
             );
           })}
         </ol>
+
+        <Certificates />
       </div>
     </section>
   );
