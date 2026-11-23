@@ -29,28 +29,18 @@ export const NAV = [
 /* The rotating phrase in the hero: "I ___" */
 export const HERO_WORDS = ["build web applications", "design AI workflows", "create content", "teach new creators"];
 
-/* The film strip under the hero. Each frame has an icon from Icon.tsx. */
-export const MARQUEE: { text: string; icon: string }[] = [
-  { text: "Web applications", icon: "layout" },
-  { text: "Content creation", icon: "play" },
-  { text: "AI workflows", icon: "flow" },
-  { text: "Student life & tech", icon: "cap" },
-  { text: "Thoughtful databases", icon: "database" },
-  { text: "Brand storytelling", icon: "spark" },
-  { text: "n8n automations", icon: "bolt" },
-  { text: "Teaching creators", icon: "users" },
-];
+/* Words that flow along the gold thread under the hero. */
+export const MARQUEE = ["Web applications", "Content creation", "AI workflows", "Student life & tech", "Thoughtful databases", "Brand storytelling", "n8n automations", "Teaching creators"];
 
-/* The About chapter: a short hook plus a "library card" of what I do. `to` is the section each line links to. */
-export const ABOUT_INTRO = "A Computer Science student at Accra Technical University who builds the tools, automates the busywork and shares the journey on camera.";
+/* The About chapter. Wrap a phrase in [square brackets] to give it a highlighter stroke. */
+export const ABOUT_TEXT =
+  "I'm a Level 300 Computer Science student at Accra Technical University. I [build web apps], [automate the busywork] and [create content] about student life and tech. Teaching and customer service showed me how people really work, so I make things that feel human.";
 
-export const ABOUT_CARD: { stamp: string; tone: "wine" | "sage" | "gold"; title: string; text: string; to: string }[] = [
-  { stamp: "Studies", tone: "gold", title: "B.Tech Computer Science, Level 300", text: "Accra Technical University", to: "experience" },
-  { stamp: "Builds", tone: "wine", title: "Full-stack web applications", text: "Next.js, PHP and Python, from database to deploy", to: "work" },
-  { stamp: "Automates", tone: "sage", title: "AI workflows on n8n", text: "Job search and email outreach pipelines", to: "automation" },
-  { stamp: "Creates", tone: "wine", title: "Student life & tech content", text: "On TikTok, and for Tour 360 Travels and VitalJunction", to: "content" },
-  { stamp: "Teaches", tone: "gold", title: "How to create content", text: "Ideas, phone filming, editing and posting", to: "content" },
-  { stamp: "Brings", tone: "sage", title: "Years with real people", text: "Teaching, customer service and administration", to: "experience" },
+/* Three arches, one for each side of my work. `to` is the section each one opens. */
+export const ABOUT_ROLES: { numeral: string; title: string; text: string; tags: string[]; icon: string; tone: "wine" | "sage" | "night"; to: string }[] = [
+  { numeral: "i", title: "I build", text: "Full-stack web apps, from the database to the deploy.", tags: ["Next.js", "PHP", "Python", "MySQL"], icon: "layout", tone: "wine", to: "work" },
+  { numeral: "ii", title: "I automate", text: "AI workflows on n8n that take repetitive work off people's plates.", tags: ["n8n", "LLMs", "APIs", "Webhooks"], icon: "flow", tone: "sage", to: "automation" },
+  { numeral: "iii", title: "I create", text: "Student life and tech content for my channel, Tour 360 Travels and VitalJunction, and I teach others to create too.", tags: ["TikTok", "Brands", "Tutoring"], icon: "play", tone: "night", to: "content" },
 ];
 
 export const STATS = [

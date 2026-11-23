@@ -34,7 +34,6 @@ export default function Hero() {
         gsap.to("[data-arch-outline]", { y: -70, x: 24, ease: "none", scrollTrigger: st });
         gsap.to("[data-ring]", { rotate: 300, ease: "none", scrollTrigger: st });
         gsap.to("[data-note]", { y: -140, rotate: -8, ease: "none", scrollTrigger: st });
-        gsap.to("[data-copy]", { y: 90, opacity: 0.2, ease: "none", scrollTrigger: { ...st, end: "75% top" } });
       });
       return () => mm.revert();
     },
@@ -52,7 +51,7 @@ export default function Hero() {
       <div className="relative mx-auto grid w-full max-w-[1240px] items-center gap-12 px-5 pb-20 sm:px-8 md:grid-cols-[1.3fr_.7fr] md:gap-8 lg:min-h-[calc(100svh-7rem)] lg:grid-cols-[1.1fr_.9fr]">
         {/* Words */}
         <div data-copy className="order-2 md:order-1">
-          <motion.p {...show(0)} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] font-semibold uppercase tracking-[.18em] text-ink-soft sm:text-[13px]">
+          <motion.p {...show(0)} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] font-bold uppercase tracking-[.18em] text-ink/80 sm:text-[13px]">
             <span>{PROFILE.role}</span>
             <span className="h-px w-6 bg-gold/60" aria-hidden="true" />
             <span className="flex items-center gap-1.5">
@@ -73,13 +72,13 @@ export default function Hero() {
                     {w}
                   </span>
                 ))}
-                <AnimatePresence initial={false}>
+                <AnimatePresence mode="wait" initial={false}>
                   <motion.span
                     key={HERO_WORDS[word]}
-                    initial={{ y: "105%", opacity: 0 }}
-                    animate={ready ? { y: "0%", opacity: 1 } : {}}
-                    exit={{ y: "-105%", opacity: 0 }}
-                    transition={{ duration: 0.7, ease: EASE, delay: word === 0 ? 0.45 : 0 }}
+                    initial={{ y: "100%" }}
+                    animate={ready ? { y: "0%" } : {}}
+                    exit={{ y: "-100%", transition: { duration: 0.35, ease: [0.64, 0, 0.78, 0] } }}
+                    transition={{ duration: 0.55, ease: EASE, delay: word === 0 ? 0.45 : 0 }}
                     className="soft-italic col-start-1 row-start-1 text-wine"
                   >
                     {HERO_WORDS[word]}
@@ -90,7 +89,7 @@ export default function Hero() {
             <SplitText text="and make it feel human." play={ready} delay={0.5} stagger={0.05} className="block" />
           </h1>
 
-          <motion.p {...show(0.85)} className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-ink-soft sm:text-[17px]">
+          <motion.p {...show(0.85)} className="mt-6 max-w-[46ch] text-[16px] font-medium leading-relaxed text-ink/85 sm:text-[17px]">
             Computer Science student at Accra Technical University. I build full-stack web apps and n8n AI workflows, and I create student-life and tech content for my own channel and for brands.
           </motion.p>
 
@@ -99,14 +98,14 @@ export default function Hero() {
               Browse my work
               <Icon name="arrow" size={17} className="transition-transform duration-300 group-hover:translate-x-1" />
             </motion.button>
-            <motion.a whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} href={PROFILE.cv} download className="inline-flex items-center gap-2 rounded-full border-[1.5px] border-ink/70 bg-[#fffdf8] px-6 py-3.5 font-semibold text-ink transition-colors hover:border-wine hover:text-wine">
+            <motion.a whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} href={PROFILE.cv} download className="inline-flex items-center gap-2 rounded-full border-2 border-ink bg-[#fffdf8] px-6 py-3.5 font-semibold text-ink transition-colors hover:border-wine hover:text-wine">
               <Icon name="download" size={17} /> Download CV
             </motion.a>
           </motion.div>
 
           {/* Social links: solid, labelled chips so they read clearly at any size */}
           <motion.div {...show(1.15)} className="mt-6 flex flex-wrap items-center gap-2.5">
-            <span className="mr-1 text-[12px] font-semibold uppercase tracking-[.18em] text-ink-soft">Find me on</span>
+            <span className="mr-1 text-[12px] font-bold uppercase tracking-[.18em] text-ink/80">Find me on</span>
             {PROFILE.socials.map((s) => (
               <motion.a
                 key={s.label}
@@ -116,9 +115,9 @@ export default function Hero() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${s.label}: ${s.handle}`}
-                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-[#fffdf8] py-2 pl-2 pr-4 text-sm font-semibold text-ink shadow-[0_6px_16px_-10px_rgba(42,32,36,.5)] transition-colors hover:border-wine hover:bg-wine hover:text-paper"
+                className="inline-flex items-center gap-2 rounded-full border-[1.5px] border-ink/40 bg-[#fffdf8] py-2 pl-2 pr-4 text-[15px] font-semibold text-ink shadow-[0_8px_18px_-10px_rgba(42,32,36,.55)] transition-colors hover:border-wine hover:bg-wine hover:text-paper"
               >
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-blush text-wine">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-wine text-paper">
                   <Icon name={s.icon} size={15} />
                 </span>
                 {s.label}
