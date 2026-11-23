@@ -6,6 +6,8 @@ import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
+  // Phones resize the viewport when the address bar hides; don't re-measure pinned sections for that.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 /** Media query used with gsap.matchMedia so heavy scroll effects only run when motion is welcome. */

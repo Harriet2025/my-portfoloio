@@ -103,24 +103,21 @@ export default function Hero() {
             </motion.a>
           </motion.div>
 
-          {/* Social links: solid, labelled chips so they read clearly at any size */}
-          <motion.div {...show(1.15)} className="mt-6 flex flex-wrap items-center gap-2.5">
-            <span className="mr-1 text-[12px] font-bold uppercase tracking-[.18em] text-ink/80">Find me on</span>
+          {/* Social links: just the icons */}
+          <motion.div {...show(1.15)} className="mt-6 flex items-center gap-3">
             {PROFILE.socials.map((s) => (
               <motion.a
                 key={s.label}
-                whileHover={{ y: -3, rotate: -2 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ y: -4, rotate: -8, scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${s.label}: ${s.handle}`}
-                className="inline-flex items-center gap-2 rounded-full border-[1.5px] border-ink/40 bg-[#fffdf8] py-2 pl-2 pr-4 text-[15px] font-semibold text-ink shadow-[0_8px_18px_-10px_rgba(42,32,36,.55)] transition-colors hover:border-wine hover:bg-wine hover:text-paper"
+                title={s.label}
+                className="grid h-12 w-12 place-items-center rounded-full bg-wine text-paper shadow-[0_10px_22px_-10px_rgba(123,45,67,.7)] transition-colors hover:bg-ink"
               >
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-wine text-paper">
-                  <Icon name={s.icon} size={15} />
-                </span>
-                {s.label}
+                <Icon name={s.icon} size={20} />
               </motion.a>
             ))}
           </motion.div>

@@ -32,29 +32,56 @@ export const HERO_WORDS = ["build web applications", "design AI workflows", "cre
 /* Words that flow along the gold thread under the hero. */
 export const MARQUEE = ["Web applications", "Content creation", "AI workflows", "Student life & tech", "Thoughtful databases", "Brand storytelling", "n8n automations", "Teaching creators"];
 
-/* The About chapter. Wrap a phrase in [square brackets] to give it a highlighter stroke. */
-export const ABOUT_TEXT =
-  "I'm a Level 300 Computer Science student at Accra Technical University. I [build web apps], [automate the busywork] and [create content] about student life and tech. Teaching and customer service showed me how people really work, so I make things that feel human.";
-
-/* Three arches, one for each side of my work. `to` is the section each one opens. */
-export const ABOUT_ROLES: { numeral: string; title: string; text: string; tags: string[]; icon: string; tone: "wine" | "sage" | "night"; to: string }[] = [
-  { numeral: "i", title: "I build", text: "Full-stack web apps, from the database to the deploy.", tags: ["Next.js", "PHP", "Python", "MySQL"], icon: "layout", tone: "wine", to: "work" },
-  { numeral: "ii", title: "I automate", text: "AI workflows on n8n that take repetitive work off people's plates.", tags: ["n8n", "LLMs", "APIs", "Webhooks"], icon: "flow", tone: "sage", to: "automation" },
-  { numeral: "iii", title: "I create", text: "Student life and tech content for my channel, Tour 360 Travels and VitalJunction, and I teach others to create too.", tags: ["TikTok", "Brands", "Tutoring"], icon: "play", tone: "night", to: "content" },
+/* The About chapter: cards that stack up as you scroll. */
+export const ABOUT_STORY: { kicker: string; title: string; italic: string; text: string; tone: "paper" | "blush" | "night" | "sage"; visual: "portrait" | "roots" | "now" | "cta"; tags?: string[] }[] = [
+  {
+    kicker: "Hello",
+    title: "I'm Harriet,",
+    italic: "nice to meet you.",
+    text: "A Level 300 Computer Science student at Accra Technical University, building software, automating work and creating content from Accra, Ghana.",
+    tone: "paper",
+    visual: "portrait",
+  },
+  {
+    kicker: "Where I started",
+    title: "People first,",
+    italic: "then code.",
+    text: "Before tech I taught Math, Science and Creative Arts, supported a school library and worked in customer service and administration. It showed me how people really work.",
+    tone: "blush",
+    visual: "roots",
+    tags: ["Teaching", "School library", "Customer service", "Administration"],
+  },
+  {
+    kicker: "What I do now",
+    title: "Apps, automations",
+    italic: "and stories.",
+    text: "I build full-stack web apps, design AI workflows on n8n, and create student-life and tech content for my own channel, Tour 360 Travels and VitalJunction.",
+    tone: "night",
+    visual: "now",
+  },
+  {
+    kicker: "What I care about",
+    title: "Calm tools,",
+    italic: "shared knowledge.",
+    text: "I make software that takes the repetitive parts away, and I love helping others learn, from explaining tech to beginners to tutoring new content creators.",
+    tone: "sage",
+    visual: "cta",
+  },
 ];
 
-export const STATS = [
-  { value: 300, suffix: "", label: "Level, B.Tech Computer Science at ATU" },
+export const STATS: { value: number; suffix: string; label: string; steps?: number[] }[] = [
+  { value: 300, suffix: "", label: "Level, B.Tech Computer Science at ATU", steps: [100, 200, 300] },
   { value: 9, suffix: "+", label: "Projects and workflows built" },
   { value: 6, suffix: "", label: "Live sites in production" },
   { value: 2, suffix: "", label: "Brands I create content for" },
 ];
 
 export const STRENGTHS = [
-  { title: "Problem-solving", text: "Designed a hospital database with custom triggers and views, and multi-branch n8n flows that handle API edge cases." },
-  { title: "Systems thinking", text: "Runs cPanel, Cloudflare and self-hosted Coolify/Docker setups, and plans work with clear roadmaps." },
-  { title: "Clear communication", text: "Explains CS topics to beginners on TikTok and Instagram, drawing on years of customer-facing work." },
-  { title: "Learning by shipping", text: "Picks up new tools by building real things: PHP/MySQL apps, a Java OOP record system and AI pipelines." },
+  { title: "Problem-solving", icon: "bolt", text: "Designed a hospital database with custom triggers and views, and multi-branch n8n flows that handle API edge cases." },
+  { title: "Systems thinking", icon: "flow", text: "Runs cPanel, Cloudflare and self-hosted Coolify/Docker setups, and plans work with clear roadmaps." },
+  { title: "Clear communication", icon: "users", text: "Explains CS topics to beginners on TikTok and Instagram, drawing on years of customer-facing work." },
+  { title: "Storytelling", icon: "play", text: "Turns student life and tech into short videos people watch, for my own channel and for brands." },
+  { title: "Learning by shipping", icon: "send", text: "Picks up new tools by building real things: PHP/MySQL apps, a Java OOP record system and AI pipelines." },
 ];
 
 export type SkillCategory = "frontend" | "backend" | "automation" | "devops";

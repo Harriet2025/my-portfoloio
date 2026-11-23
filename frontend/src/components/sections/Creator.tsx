@@ -36,6 +36,12 @@ export default function Creator() {
           scrollTrigger: { trigger: "[data-rack]", start: "top 90%", end: "top 35%", scrub: 0.8 },
         });
       });
+      // On phones each magazine swings up on its own as it scrolls into view.
+      mm.add(`${MOTION_OK} and (max-width: 767px)`, () => {
+        gsap.utils.toArray<HTMLElement>("[data-mag]").forEach((mag, i) => {
+          gsap.from(mag, { y: 120, rotate: i % 2 ? 9 : -9, scale: 0.9, opacity: 0, ease: "power2.out", scrollTrigger: { trigger: mag, start: "top 95%", end: "top 55%", scrub: 0.8 } });
+        });
+      });
       return () => mm.revert();
     },
     { scope: root },
