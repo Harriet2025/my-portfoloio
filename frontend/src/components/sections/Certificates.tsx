@@ -67,7 +67,7 @@ export default function Certificates() {
                   </span>
                 </span>
                 {c.badge && (
-                  <span data-badge className="absolute -bottom-10 -right-6 block h-28 w-28 drop-shadow-[0_10px_14px_rgba(42,32,36,.35)] sm:-right-10 sm:h-32 sm:w-32">
+                  <span data-badge className="absolute -bottom-10 -left-6 block h-28 w-28 drop-shadow-[0_10px_14px_rgba(42,32,36,.35)] sm:-left-10 sm:h-32 sm:w-32">
                     <Image src={c.badge} alt={`${c.issuer} badge: ${c.title}`} fill sizes="128px" className="object-contain" />
                   </span>
                 )}
