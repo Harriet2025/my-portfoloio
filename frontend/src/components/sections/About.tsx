@@ -51,7 +51,8 @@ export default function About() {
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              const idx = Math.min(cards.length - 1, Math.floor((self.progress * tl.duration() + HOLD * 0.4) / STEP));
+              // a card counts as current once it is about halfway in
+              const idx = Math.max(0, Math.min(cards.length - 1, Math.floor((self.progress * tl.duration() + STEP - HOLD * 0.4 - SLIDE * 0.5) / STEP)));
               if (idx !== activeRef.current) {
                 activeRef.current = idx;
                 setActive(idx);
@@ -157,7 +158,7 @@ function StoryCard({ story: s, index, total }: { story: Story; index: number; to
   const t = TONES[s.tone];
   const lenis = useLenis();
   return (
-    <article data-acard className={`relative flex flex-col overflow-hidden rounded-[28px] motion-safe:h-full border ${t.line} ${t.card} shadow-[0_-20px_50px_-30px_rgba(42,32,36,.45),0_40px_80px_-40px_rgba(42,32,36,.55)]`}>
+    <article data-acard className={`relative isolate flex flex-col overflow-hidden rounded-[28px] motion-safe:h-full border ${t.line} ${t.card} shadow-[0_-20px_50px_-30px_rgba(42,32,36,.45),0_40px_80px_-40px_rgba(42,32,36,.55)]`}>
       <span data-shade aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 bg-night opacity-0" />
       <div className="grid min-h-0 flex-1 content-center gap-4 p-5 sm:gap-6 sm:p-8 md:grid-cols-[1.15fr_.85fr] md:items-center md:gap-10 lg:px-14 lg:py-10">
         <div className="order-2 md:order-1">
