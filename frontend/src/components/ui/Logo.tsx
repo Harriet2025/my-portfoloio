@@ -1,6 +1,6 @@
 import Icon from "./Icon";
 
-/* Logo files in /public/logos (Devicon, MIT; Simple Icons, CC0; ATU from atu.edu.gh). */
+/* Logo files in /public/logos (Devicon, MIT; Simple Icons, CC0; ATU from atu.edu.gh; CapCut from capcut.com). */
 const FILES: Record<string, string> = {
   HTML5: "html5.svg",
   CSS3: "css3.svg",
@@ -31,6 +31,13 @@ const FILES: Record<string, string> = {
   Gmail: "gmail.svg",
   "Google Sheets": "googlesheets.svg",
   ATU: "atu.png",
+  CapCut: "capcut.png",
+  Claude: "claude.svg",
+  ChatGPT: "openai.svg",
+  Gemini: "gemini.svg",
+  "Instagram Edits": "instagram.svg",
+  Instagram: "instagram.svg",
+  Notion: "notion.svg",
 };
 
 /* Things without an official logo get a matching line icon instead. */

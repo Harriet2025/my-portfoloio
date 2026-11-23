@@ -9,6 +9,7 @@ import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 
 const TONES: Record<CreatorRole["tone"], { bg: string; ink: string; accent: string; soft: string }> = {
   blush: { bg: "#f2dfd8", ink: "#2a2024", accent: "#7b2d43", soft: "#5e5054" },
@@ -81,6 +82,17 @@ export default function Creator() {
           <div>
             <p className="soft-italic font-serif text-2xl text-wine sm:text-3xl">Want to start creating content?</p>
             <p className="mt-2 max-w-[52ch] text-ink-soft">I tutor students and beginners on planning ideas, filming with just a phone, editing and posting with confidence. Brands can reach out for collaborations too.</p>
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs font-bold uppercase tracking-[.16em] text-ink/70">My creator tools</span>
+              {["CapCut", "Instagram Edits", "Claude"].map((t, i) => (
+                <motion.span key={t} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 + i * 0.1 }} whileHover={{ y: -3, rotate: -2 }} className="inline-flex items-center gap-2 rounded-full border border-line bg-[#fffdf8] py-1.5 pl-1.5 pr-3.5 text-sm font-semibold text-ink shadow-[0_8px_18px_-12px_rgba(42,32,36,.5)]">
+                  <span className="grid h-7 w-7 place-items-center rounded-full bg-paper-2">
+                    <Logo name={t} size={18} />
+                  </span>
+                  {t}
+                </motion.span>
+              ))}
+            </div>
           </div>
           <div className="flex flex-wrap gap-3">
             <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} type="button" onClick={() => scrollToId(lenis, "contact")} className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-wine px-6 py-3.5 font-semibold text-paper transition-colors hover:bg-ink">

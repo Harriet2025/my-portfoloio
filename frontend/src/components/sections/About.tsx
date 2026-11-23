@@ -19,46 +19,77 @@ const TONES: Record<Story["tone"], { card: string; ink: string; soft: string; ac
   night: { card: "bg-night-2", ink: "text-paper", soft: "text-paper/80", accent: "text-rose", line: "border-paper/15" },
   sage: { card: "bg-[#56654a]", ink: "text-paper", soft: "text-paper/85", accent: "text-[#e9dcc0]", line: "border-paper/20" },
 };
-const REST_TILT = [0, -1.2, 1, -0.6];
+/* Scroll "time" for each card: it slides in over 1 unit, then holds still for reading. */
+const SLIDE = 1;
+const HOLD = 0.9;
+const STEP = SLIDE + HOLD;
 
 export default function About() {
   const root = useRef<HTMLElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const activeRef = useRef(0);
+  const [active, setActive] = useState(0);
+  const lenis = useLenis();
+  const n = ABOUT_STORY.length;
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      // Story cards pile up on each other as you scroll, on every screen size.
+      // Story cards stack on each other as you scroll, on every screen size.
+      // Each card slides fully into place, then everything holds still so it can be read.
       mm.add(MOTION_OK, () => {
         const cards = gsap.utils.toArray<HTMLElement>("[data-acard]");
         gsap.set(cards, { gridArea: "1 / 1" });
-        gsap.set(cards.slice(1), { yPercent: 120, rotate: 5 });
+        gsap.set(cards.slice(1), { yPercent: 108 });
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: "[data-astack]",
             start: "top top",
-            end: () => `+=${(cards.length - 1) * window.innerHeight * 0.85}`,
+            end: () => `+=${(cards.length - 1) * window.innerHeight * 1.1}`,
             pin: true,
-            scrub: 1,
+            scrub: 0.4,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onUpdate: (self) => gsap.set("[data-aprogress]", { scaleX: self.progress }),
+            onUpdate: (self) => {
+              const idx = Math.min(cards.length - 1, Math.floor((self.progress * tl.duration() + HOLD * 0.4) / STEP));
+              if (idx !== activeRef.current) {
+                activeRef.current = idx;
+                setActive(idx);
+              }
+            },
           },
         });
         cards.forEach((card, i) => {
           if (!i) return;
-          const prev = cards[i - 1];
-          tl.to(card, { yPercent: 0, rotate: REST_TILT[i % REST_TILT.length], ease: "power1.out" }, i - 1)
-            .to(prev, { scale: 0.93, yPercent: -5, ease: "none" }, i - 1)
-            .to(prev.querySelector("[data-shade]"), { opacity: 0.35, ease: "none" }, i - 1)
-            .from(card.querySelectorAll("[data-rise]"), { y: 40, opacity: 0, stagger: 0.06, ease: "power2.out", duration: 0.5 }, i - 0.55);
+          const at = (i - 1) * STEP + HOLD * 0.4;
+          tl.to(card, { yPercent: 0, ease: "power2.out", duration: SLIDE }, at).to(cards[i - 1].querySelector("[data-shade]"), { opacity: 0.25, ease: "none", duration: SLIDE }, at);
         });
+        tl.to({}, { duration: HOLD });
+        tlRef.current = tl;
         // The portrait drifts gently inside its frame as the chapter arrives.
         gsap.to("[data-aphoto]", { yPercent: -8, scale: 1.06, ease: "none", scrollTrigger: { trigger: "[data-astack]", start: "top bottom", end: "top top", scrub: true } });
+        return () => {
+          tlRef.current = null;
+        };
       });
       return () => mm.revert();
     },
     { scope: root },
   );
+
+  /** Jump to the point where card k has fully arrived. */
+  const goTo = (k: number) => {
+    const tl = tlRef.current;
+    const st = tl?.scrollTrigger;
+    if (!tl || !st) {
+      document.querySelectorAll("[data-acard]")[k]?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    const t = k === 0 ? 0 : (k - 1) * STEP + HOLD * 0.4 + SLIDE + 0.05;
+    const y = st.start + (t / tl.duration()) * (st.end - st.start);
+    if (lenis) lenis.scrollTo(y, { duration: 1.1 });
+    else window.scrollTo({ top: y, behavior: "smooth" });
+  };
 
   return (
     <section ref={root} id="about" className="relative overflow-x-clip">
@@ -71,11 +102,24 @@ export default function About() {
               <SplitText text="A little" /> <SplitText text="about me" className="soft-italic text-wine" delay={0.08} />
             </h2>
           </div>
-          <div className="hidden w-40 sm:block">
-            <p className="text-right font-mono text-[11px] uppercase tracking-[.2em] text-ink-soft">Keep scrolling</p>
-            <span className="mt-2 block h-[2px] overflow-hidden rounded-full bg-paper-3">
-              <span data-aprogress className="block h-full origin-left scale-x-0 bg-wine" />
-            </span>
+          {/* Which card you're on, and which one comes next. Tap a dot to jump. */}
+          <div className="flex shrink-0 flex-col items-end gap-1.5">
+            <p className="text-right font-mono text-[10px] uppercase tracking-[.18em] text-ink-soft sm:text-[11px]" aria-live="polite">
+              {active < n - 1 ? (
+                <>
+                  Next <span className="text-wine">· {ABOUT_STORY[active + 1].kicker}</span>
+                </>
+              ) : (
+                "Keep scrolling"
+              )}
+            </p>
+            <div className="flex items-center">
+              {ABOUT_STORY.map((st, k) => (
+                <button key={st.kicker} type="button" onClick={() => goTo(k)} aria-label={`Card ${k + 1}: ${st.kicker}`} aria-current={k === active} className="group p-1.5">
+                  <span className={`block h-2.5 rounded-full transition-all duration-500 ${k === active ? "w-8 bg-wine" : "w-2.5 bg-ink/20 group-hover:bg-ink/45"}`} />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -113,7 +157,7 @@ function StoryCard({ story: s, index, total }: { story: Story; index: number; to
   const t = TONES[s.tone];
   const lenis = useLenis();
   return (
-    <article data-acard className={`relative flex origin-top flex-col overflow-hidden rounded-[28px] motion-safe:h-full border ${t.line} ${t.card} shadow-[0_40px_80px_-40px_rgba(42,32,36,.55)] will-change-transform`}>
+    <article data-acard className={`relative flex flex-col overflow-hidden rounded-[28px] motion-safe:h-full border ${t.line} ${t.card} shadow-[0_-20px_50px_-30px_rgba(42,32,36,.45),0_40px_80px_-40px_rgba(42,32,36,.55)]`}>
       <span data-shade aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 bg-night opacity-0" />
       <div className="grid min-h-0 flex-1 content-center gap-4 p-5 sm:gap-6 sm:p-8 md:grid-cols-[1.15fr_.85fr] md:items-center md:gap-10 lg:px-14 lg:py-10">
         <div className="order-2 md:order-1">

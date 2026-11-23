@@ -84,7 +84,7 @@ export const STRENGTHS = [
   { title: "Learning by shipping", icon: "send", text: "Picks up new tools by building real things: PHP/MySQL apps, a Java OOP record system and AI pipelines." },
 ];
 
-export type SkillCategory = "frontend" | "backend" | "automation" | "devops";
+export type SkillCategory = "frontend" | "backend" | "automation" | "content" | "devops";
 
 export const SKILLS: { name: string; level: number; category: SkillCategory; icon: string; text: string; tools: string[] }[] = [
   { name: "Responsive UI", level: 95, category: "frontend", icon: "layout", text: "Semantic HTML, modern CSS and Tailwind layouts that hold up from phone to desktop.", tools: ["HTML5", "CSS3", "Tailwind CSS", "Figma"] },
@@ -96,6 +96,8 @@ export const SKILLS: { name: string; level: number; category: SkillCategory; ico
   { name: "AI integrations", level: 85, category: "automation", icon: "spark", text: "LLM steps that extract, summarise and personalise content inside workflows.", tools: ["Groq", "OpenAI API", "Prompting"] },
   { name: "Deployment & infra", level: 85, category: "devops", icon: "cloud", text: "cPanel hosting, Cloudflare DNS, subdomains, Coolify and Docker.", tools: ["cPanel", "Cloudflare", "Coolify", "Docker"] },
   { name: "Git & GitHub", level: 85, category: "devops", icon: "branch", text: "Branching, pull requests and clean commit history for every project.", tools: ["Git", "GitHub", "VS Code"] },
+  { name: "AI assistants", level: 90, category: "automation", icon: "spark", text: "Research, writing, planning and building faster with AI, with notes and projects kept organised.", tools: ["Claude", "ChatGPT", "Gemini", "Notion"] },
+  { name: "Content creation", level: 90, category: "content", icon: "play", text: "Planning ideas, filming on a phone, editing and posting short videos about student life and tech.", tools: ["CapCut", "Instagram Edits", "Claude"] },
 ];
 
 export const SKILL_TABS: { id: "all" | SkillCategory; label: string }[] = [
@@ -103,6 +105,7 @@ export const SKILL_TABS: { id: "all" | SkillCategory; label: string }[] = [
   { id: "frontend", label: "Frontend" },
   { id: "backend", label: "Backend" },
   { id: "automation", label: "Automation" },
+  { id: "content", label: "Content" },
   { id: "devops", label: "DevOps" },
 ];
 

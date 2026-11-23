@@ -65,7 +65,6 @@ export default function Hero() {
                 </motion.span>
               </span>
               {PROFILE.location}
-              <span className="rounded-full bg-sage/15 px-2 py-0.5 text-[10px] tracking-[.16em] text-sage">Now</span>
             </span>
           </motion.p>
 
