@@ -96,7 +96,7 @@ export default function About() {
     <section ref={root} id="about" className="relative overflow-x-clip">
       {/* Pinned stage: the story cards stack here */}
       <div data-astack className="relative flex min-h-[100svh] flex-col pb-5 pt-[4.5rem] motion-safe:h-[100svh] sm:pt-[5.5rem]">
-        <div className="mx-auto flex w-full max-w-[1240px] items-end justify-between gap-6 px-5 sm:px-8">
+        <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-2 px-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:px-8">
           <div>
             <SectionLabel index="I">About me</SectionLabel>
             <h2 className="mt-2 font-serif text-[clamp(1.6rem,min(3.4vw,5svh),2.8rem)] font-light leading-[1.05]">
@@ -104,8 +104,8 @@ export default function About() {
             </h2>
           </div>
           {/* Which card you're on, and which one comes next. Tap a dot to jump. */}
-          <div className="flex shrink-0 flex-col items-end gap-1.5">
-            <p className="text-right font-mono text-[10px] uppercase tracking-[.18em] text-ink-soft sm:text-[11px]" aria-live="polite">
+          <div className="flex shrink-0 flex-row-reverse items-center justify-end gap-2 sm:flex-col sm:items-end sm:gap-1.5">
+            <p className="font-mono text-[10px] uppercase tracking-[.18em] text-ink-soft sm:text-right sm:text-[11px]" aria-live="polite">
               {active < n - 1 ? (
                 <>
                   Next <span className="text-wine">· {ABOUT_STORY[active + 1].kicker}</span>
@@ -114,7 +114,7 @@ export default function About() {
                 "Keep scrolling"
               )}
             </p>
-            <div className="flex items-center">
+            <div className="-ml-1.5 flex items-center sm:ml-0">
               {ABOUT_STORY.map((st, k) => (
                 <button key={st.kicker} type="button" onClick={() => goTo(k)} aria-label={`Card ${k + 1}: ${st.kicker}`} aria-current={k === active} className="group p-1.5">
                   <span className={`block h-2.5 rounded-full transition-all duration-500 ${k === active ? "w-8 bg-wine" : "w-2.5 bg-ink/20 group-hover:bg-ink/45"}`} />
@@ -124,7 +124,7 @@ export default function About() {
           </div>
         </div>
 
-        <div className="mx-auto mt-4 grid w-full max-w-[1240px] flex-1 gap-6 px-5 motion-safe:min-h-0 sm:px-8">
+        <div className="mx-auto mt-3 grid w-full max-w-[1240px] flex-1 items-center gap-6 px-5 motion-safe:min-h-0 sm:mt-4 sm:px-8">
           {ABOUT_STORY.map((s, i) => (
             <StoryCard key={s.kicker} story={s} index={i} total={ABOUT_STORY.length} />
           ))}
@@ -158,7 +158,7 @@ function StoryCard({ story: s, index, total }: { story: Story; index: number; to
   const t = TONES[s.tone];
   const lenis = useLenis();
   return (
-    <article data-acard className={`relative isolate flex flex-col overflow-hidden rounded-[28px] motion-safe:h-full border ${t.line} ${t.card} shadow-[0_-20px_50px_-30px_rgba(42,32,36,.45),0_40px_80px_-40px_rgba(42,32,36,.55)]`}>
+    <article data-acard className={`relative isolate flex flex-col overflow-hidden rounded-[28px] motion-safe:h-full motion-safe:max-h-[700px] border ${t.line} ${t.card} shadow-[0_-20px_50px_-30px_rgba(42,32,36,.45),0_40px_80px_-40px_rgba(42,32,36,.55)]`}>
       <span data-shade aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 bg-night opacity-0" />
       <div className="grid min-h-0 flex-1 content-center gap-4 p-5 sm:gap-6 sm:p-8 md:grid-cols-[1.15fr_.85fr] md:items-center md:gap-10 lg:px-14 lg:py-10">
         <div className="order-2 md:order-1">
