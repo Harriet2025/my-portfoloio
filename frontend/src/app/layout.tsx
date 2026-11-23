@@ -13,15 +13,15 @@ const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
-const DESCRIPTION = `${PROFILE.fullName}: Computer Science student, software developer and AI automation specialist based in ${PROFILE.location}.`;
+const DESCRIPTION = `${PROFILE.fullName}: Computer Science student, software developer, AI automation builder and content creator based in ${PROFILE.location}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${PROFILE.name} · Developer & AI Automation`, template: `%s · ${PROFILE.name}` },
+  title: { default: `${PROFILE.name} · Developer, AI Automation & Content Creator`, template: `%s · ${PROFILE.name}` },
   description: DESCRIPTION,
   openGraph: {
     type: "website",
-    title: `${PROFILE.name} · Developer & AI Automation`,
+    title: `${PROFILE.name} · Developer, AI Automation & Content Creator`,
     description: DESCRIPTION,
     images: [{ url: PROFILE.headshot, width: 800, height: 1000, alt: `Portrait of ${PROFILE.name}` }],
   },

@@ -49,10 +49,10 @@ export default function Hero() {
       <div aria-hidden="true" className="pointer-events-none absolute -right-40 -top-40 h-[42rem] w-[42rem] rounded-full bg-blush/70 blur-3xl" />
       <div aria-hidden="true" className="pointer-events-none absolute -left-60 bottom-0 h-[30rem] w-[30rem] rounded-full bg-sage-soft/60 blur-3xl" />
 
-      <div className="relative mx-auto grid w-full max-w-[1240px] items-center gap-14 px-5 pb-20 sm:px-8 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-[1.08fr_.92fr] lg:gap-10">
+      <div className="relative mx-auto grid w-full max-w-[1240px] items-center gap-12 px-5 pb-20 sm:px-8 md:grid-cols-[1.3fr_.7fr] md:gap-8 lg:min-h-[calc(100svh-7rem)] lg:grid-cols-[1.1fr_.9fr]">
         {/* Words */}
-        <div data-copy className="order-2 lg:order-1">
-          <motion.p {...show(0)} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] font-semibold uppercase tracking-[.18em] text-ink-soft">
+        <div data-copy className="order-2 md:order-1">
+          <motion.p {...show(0)} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] font-semibold uppercase tracking-[.18em] text-ink-soft sm:text-[13px]">
             <span>{PROFILE.role}</span>
             <span className="h-px w-6 bg-gold/60" aria-hidden="true" />
             <span className="flex items-center gap-1.5">
@@ -60,57 +60,75 @@ export default function Hero() {
             </span>
           </motion.p>
 
-          <h1 className="mt-7 font-serif text-[clamp(2.5rem,4.6vw,4.5rem)] font-light leading-[1.06] tracking-[-.02em] text-ink">
-            <SplitText text="Hi, I'm" play={ready} stagger={0.07} />{" "}
-            <SplitText text="Harriet." play={ready} delay={0.15} className="soft-italic text-wine" />
-            <br />
-            <SplitText text="I build" play={ready} delay={0.3} />{" "}
-            <span className="relative inline-flex overflow-hidden pb-[0.08em] align-bottom">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
-                  key={HERO_WORDS[word]}
-                  initial={{ y: "105%", opacity: 0 }}
-                  animate={ready ? { y: "0%", opacity: 1 } : {}}
-                  exit={{ y: "-105%", opacity: 0 }}
-                  transition={{ duration: 0.7, ease: EASE, delay: word === 0 ? 0.55 : 0 }}
-                  className="soft-italic inline-block whitespace-nowrap text-wine"
-                >
-                  {HERO_WORDS[word]}
-                </motion.span>
-              </AnimatePresence>
+          <h1 className="mt-6 font-serif text-[clamp(2.3rem,4.3vw,4.1rem)] font-light leading-[1.08] tracking-[-.02em] text-ink">
+            <span className="block">
+              <SplitText text="Hi, I'm" play={ready} stagger={0.07} /> <SplitText text="Harriet." play={ready} delay={0.15} className="soft-italic text-wine" />
             </span>
-            <br />
-            <SplitText text="that keep work beautifully organised." play={ready} delay={0.5} stagger={0.05} />
+            {/* "I ___": every phrase is laid in the same grid cell so the line keeps the height of the longest one. */}
+            <span className="flex items-baseline gap-[.25em]">
+              <SplitText text="I" play={ready} delay={0.3} />
+              <span className="relative grid min-w-0 flex-1 overflow-hidden pb-[0.1em]">
+                {HERO_WORDS.map((w) => (
+                  <span key={w} aria-hidden="true" className="soft-italic invisible col-start-1 row-start-1">
+                    {w}
+                  </span>
+                ))}
+                <AnimatePresence initial={false}>
+                  <motion.span
+                    key={HERO_WORDS[word]}
+                    initial={{ y: "105%", opacity: 0 }}
+                    animate={ready ? { y: "0%", opacity: 1 } : {}}
+                    exit={{ y: "-105%", opacity: 0 }}
+                    transition={{ duration: 0.7, ease: EASE, delay: word === 0 ? 0.45 : 0 }}
+                    className="soft-italic col-start-1 row-start-1 text-wine"
+                  >
+                    {HERO_WORDS[word]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </span>
+            <SplitText text="and make it feel human." play={ready} delay={0.5} stagger={0.05} className="block" />
           </h1>
 
-          <motion.p {...show(0.9)} className="mt-8 max-w-[48ch] text-[17px] leading-relaxed text-ink-soft">
-            I&apos;m a Computer Science student at Accra Technical University. I design full-stack web applications and n8n AI workflows, and I care about the small details that make software feel calm to use.
+          <motion.p {...show(0.85)} className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-ink-soft sm:text-[17px]">
+            Computer Science student at Accra Technical University. I build full-stack web apps and n8n AI workflows, and I create student-life and tech content for my own channel and for brands.
           </motion.p>
 
-          <motion.div {...show(1.05)} className="mt-9 flex flex-wrap items-center gap-3">
+          <motion.div {...show(1)} className="mt-8 flex flex-wrap items-center gap-3">
             <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} type="button" onClick={() => scrollToId(lenis, "work")} className="group inline-flex items-center gap-3 rounded-full bg-wine px-7 py-3.5 font-semibold text-paper shadow-[0_10px_30px_-12px_rgba(123,45,67,.6)] transition-colors hover:bg-ink">
               Browse my work
               <Icon name="arrow" size={17} className="transition-transform duration-300 group-hover:translate-x-1" />
             </motion.button>
-            <motion.a whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} href={PROFILE.cv} download className="inline-flex items-center gap-2 rounded-full border border-ink/20 px-6 py-3.5 font-semibold transition-colors hover:border-wine hover:text-wine">
+            <motion.a whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} href={PROFILE.cv} download className="inline-flex items-center gap-2 rounded-full border-[1.5px] border-ink/70 bg-[#fffdf8] px-6 py-3.5 font-semibold text-ink transition-colors hover:border-wine hover:text-wine">
               <Icon name="download" size={17} /> Download CV
             </motion.a>
           </motion.div>
 
-          <motion.ul {...show(1.2)} className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-ink-soft">
+          {/* Social links: solid, labelled chips so they read clearly at any size */}
+          <motion.div {...show(1.15)} className="mt-6 flex flex-wrap items-center gap-2.5">
+            <span className="mr-1 text-[12px] font-semibold uppercase tracking-[.18em] text-ink-soft">Find me on</span>
             {PROFILE.socials.map((s) => (
-              <li key={s.label}>
-                <a href={s.href} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-1.5 transition-colors hover:text-wine">
-                  <Icon name={s.icon} size={16} /> {s.label}
-                  <Icon name="up" size={13} className="opacity-0 transition-opacity group-hover:opacity-100" />
-                </a>
-              </li>
+              <motion.a
+                key={s.label}
+                whileHover={{ y: -3, rotate: -2 }}
+                whileTap={{ scale: 0.95 }}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${s.label}: ${s.handle}`}
+                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-[#fffdf8] py-2 pl-2 pr-4 text-sm font-semibold text-ink shadow-[0_6px_16px_-10px_rgba(42,32,36,.5)] transition-colors hover:border-wine hover:bg-wine hover:text-paper"
+              >
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-blush text-wine">
+                  <Icon name={s.icon} size={15} />
+                </span>
+                {s.label}
+              </motion.a>
             ))}
-          </motion.ul>
+          </motion.div>
         </div>
 
         {/* Portrait in an arch */}
-        <div className="relative order-1 mx-auto w-full max-w-[400px] sm:max-w-[460px] lg:order-2 lg:max-w-none">
+        <div className="relative order-1 mx-auto w-full max-w-[380px] sm:max-w-[440px] md:order-2 md:max-w-none">
           <div data-arch-outline aria-hidden="true" className="absolute inset-0 translate-x-5 translate-y-5 rounded-t-full border border-gold/70" />
           <motion.div
             initial={{ clipPath: "inset(100% 0% 0% 0% round 999px 999px 0 0)" }}
@@ -119,12 +137,12 @@ export default function Hero() {
             className="relative aspect-[4/5] overflow-hidden rounded-t-full bg-paper-3 shadow-[0_40px_80px_-40px_rgba(42,32,36,.45)]"
           >
             <div data-photo className="absolute inset-0">
-              <Image src={PROFILE.headshot} alt={`Portrait of ${PROFILE.name}`} fill priority sizes="(min-width:1024px) 520px, 90vw" className="object-cover object-[50%_22%]" />
+              <Image src={PROFILE.headshot} alt={`Portrait of ${PROFILE.name}`} fill priority sizes="(min-width:768px) 45vw, 90vw" className="object-cover object-[50%_22%]" />
             </div>
           </motion.div>
 
           {/* Rotating ring of words */}
-          <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={ready ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 1, delay: 1, ease: EASE }} className="absolute -bottom-10 -left-4 h-32 w-32 sm:-left-12 sm:h-40 sm:w-40">
+          <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={ready ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 1, delay: 1, ease: EASE }} className="absolute -bottom-10 -left-4 h-32 w-32 sm:-left-10 sm:h-36 sm:w-36 lg:-left-12 lg:h-40 lg:w-40">
             <div className="absolute inset-0 rounded-full bg-paper shadow-[0_12px_30px_-14px_rgba(42,32,36,.4)]" />
             <svg data-ring viewBox="0 0 200 200" className="absolute inset-0 h-full w-full" aria-hidden="true">
               <defs>
@@ -140,7 +158,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Little note card */}
-          <motion.div data-note initial={{ opacity: 0, y: 30, rotate: 0 }} animate={ready ? { opacity: 1, y: 0, rotate: -4 } : {}} transition={{ duration: 1, delay: 1.2, ease: EASE }} className="absolute -right-2 top-[12%] w-44 rounded-xl border border-line bg-paper/95 p-4 shadow-[0_18px_40px_-20px_rgba(42,32,36,.45)] backdrop-blur sm:-right-8 sm:w-56">
+          <motion.div data-note initial={{ opacity: 0, y: 30, rotate: 0 }} animate={ready ? { opacity: 1, y: 0, rotate: -4 } : {}} transition={{ duration: 1, delay: 1.2, ease: EASE }} className="absolute -right-2 top-[3%] w-40 rounded-xl border border-line bg-paper/95 p-3.5 sm:p-4 shadow-[0_18px_40px_-20px_rgba(42,32,36,.45)] backdrop-blur sm:-right-6 sm:w-48 md:hidden lg:block lg:-right-4 lg:top-[12%] lg:w-56 xl:-right-8">
             <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.16em] text-sage">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inset-0 animate-ping rounded-full bg-sage/60" />
@@ -148,7 +166,7 @@ export default function Hero() {
               </span>
               Currently
             </p>
-            <p className="mt-2 font-serif text-[16px] leading-snug sm:text-[17px]">Open to internships, freelance builds &amp; automation projects.</p>
+            <p className="mt-2 font-serif text-[16px] leading-snug sm:text-[17px]">Open to internships, freelance builds, automations &amp; brand collabs.</p>
           </motion.div>
         </div>
       </div>

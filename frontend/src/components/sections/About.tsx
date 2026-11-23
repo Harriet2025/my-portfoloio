@@ -2,29 +2,34 @@
 
 import { animate, motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { ABOUT_TEXT, STATS, STRENGTHS } from "@/content/site";
+import { ABOUT_CARD, ABOUT_INTRO, PROFILE, STATS, STRENGTHS } from "@/content/site";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
+import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import SectionLabel from "@/components/ui/SectionLabel";
+import SplitText from "@/components/ui/SplitText";
+import Icon from "@/components/ui/Icon";
 
-/* Words that turn wine-coloured italic as they are revealed. */
-const HIGHLIGHT = new Set(["full-stack", "AI-powered", "automations.", "people", "human"]);
+const INK = { wine: "#7b2d43", sage: "#5f6f4d", gold: "#97743f" } as const;
+const STAMP_TILT = [-7, 4, -3, 6, -5, 3];
 
 export default function About() {
   const root = useRef<HTMLElement>(null);
-  const words = ABOUT_TEXT.split(" ");
-  const [first, ...rest] = words;
+  const lenis = useLenis();
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(`${MOTION_OK} and (min-width: 768px)`, () => {
-        gsap.fromTo("[data-word]", { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: "none", scrollTrigger: { trigger: "[data-reveal]", start: "top 22%", end: "+=110%", scrub: 0.6, pin: true } });
-      });
-      mm.add(`${MOTION_OK} and (max-width: 767px)`, () => {
-        gsap.fromTo("[data-word]", { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: "none", scrollTrigger: { trigger: "[data-reveal]", start: "top 80%", end: "bottom 45%", scrub: 0.6 } });
-      });
       mm.add(MOTION_OK, () => {
-        gsap.from("[data-dropcap]", { scale: 0.6, opacity: 0, rotate: -8, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: "[data-reveal]", start: "top 75%" } });
+        gsap.from("[data-libcard]", { y: 80, rotate: 6, opacity: 0, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: "[data-libcard]", start: "top 85%" } });
+        // Each stamp slams down onto its line as the line scrolls into view.
+        gsap.utils.toArray<HTMLElement>("[data-libline]").forEach((line) => {
+          const stamp = line.querySelector("[data-stamp]");
+          const text = line.querySelector("[data-entry]");
+          const tl = gsap.timeline({ scrollTrigger: { trigger: line, start: "top 82%", toggleActions: "play none none reverse" } });
+          tl.from(stamp, { scale: 2.4, opacity: 0, rotate: "+=25", duration: 0.32, ease: "power4.in" })
+            .to(line, { y: 3, duration: 0.06, yoyo: true, repeat: 1, ease: "power1.inOut" })
+            .from(text, { x: -16, opacity: 0, duration: 0.5, ease: "power2.out" }, "<");
+        });
       });
       return () => mm.revert();
     },
@@ -32,23 +37,74 @@ export default function About() {
   );
 
   return (
-    <section ref={root} id="about" className="relative pt-28 sm:pt-36">
-      <div data-reveal className="mx-auto w-full max-w-[1100px] px-5 sm:px-8">
-        <SectionLabel index="I">About me</SectionLabel>
-        <p className="mt-10 font-serif text-[clamp(1.6rem,3.4vw,3rem)] font-light leading-[1.3] tracking-[-.01em]">
-          <span data-dropcap className="soft-italic float-left mr-4 mt-1 font-serif text-[clamp(4.5rem,9vw,8rem)] leading-[.8] text-wine" aria-hidden="true">
-            {first[0]}
-          </span>
-          <span data-word className="inline-block pr-[0.25em]">
-            <span className="sr-only">{first[0]}</span>
-            {first.slice(1)}
-          </span>
-          {rest.map((w, i) => (
-            <span key={i} data-word className={`inline-block pr-[0.25em] ${HIGHLIGHT.has(w) ? "soft-italic text-wine" : ""}`}>
-              {w}
+    <section ref={root} id="about" className="relative overflow-x-clip pt-28 sm:pt-36">
+      <div className="mx-auto grid w-full max-w-[1240px] items-start gap-14 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:gap-16">
+        <div className="lg:sticky lg:top-32">
+          <SectionLabel index="I">About me</SectionLabel>
+          <h2 className="mt-8 font-serif text-[clamp(2.2rem,4.4vw,3.8rem)] font-light leading-[1.08] tracking-[-.01em]">
+            <SplitText text="Part developer," className="block" />
+            <SplitText text="part automator," className="block" delay={0.1} />
+            <span className="block">
+              <SplitText text="part" delay={0.2} /> <SplitText text="storyteller." className="soft-italic text-wine" delay={0.25} />
             </span>
-          ))}
-        </p>
+          </h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.6 }} transition={{ duration: 0.8, delay: 0.2 }} className="mt-7 max-w-[42ch] text-[17px] leading-relaxed text-ink-soft">
+            {ABOUT_INTRO}
+          </motion.p>
+          <p className="soft-italic mt-8 hidden max-w-[34ch] border-l-2 border-rose pl-4 font-serif text-lg leading-snug text-ink/80 lg:block">
+            Teaching and customer service taught me how people really work, so I build tools that take the repetitive parts away.
+          </p>
+        </div>
+
+        {/* A library borrower's card: one stamped line for each thing I do */}
+        <div data-libcard className="relative mx-auto w-full max-w-[640px] lg:mt-6">
+          <div aria-hidden="true" className="absolute inset-0 translate-x-3 translate-y-3 rotate-[2deg] rounded-[6px] bg-paper-3" />
+          <div className="relative rotate-[-1deg] overflow-hidden rounded-[6px] border border-[#e3d3bb] bg-[#fbf4e6] shadow-[0_40px_70px_-40px_rgba(42,32,36,.55)]">
+            <div className="flex items-center justify-between gap-3 border-b-2 border-wine/70 bg-[#f4e7d2] px-5 py-3 font-mono text-[10px] uppercase tracking-[.2em] text-ink-soft sm:px-7 sm:text-[11px]">
+              <span>ATU Library · Borrower&apos;s card</span>
+              <span>No. 0300</span>
+            </div>
+            <div className="flex items-end justify-between gap-4 px-5 pb-4 pt-5 sm:px-7">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[.2em] text-ink-soft">Name of borrower</p>
+                <p className="soft-italic mt-1 font-serif text-[clamp(1.6rem,3.2vw,2.2rem)] leading-none text-ink">{PROFILE.name}</p>
+              </div>
+              <p className="hidden text-right text-[10px] font-semibold uppercase tracking-[.2em] text-ink-soft sm:block">
+                {PROFILE.location}
+                <br />
+                Valid: always learning
+              </p>
+            </div>
+
+            <ol>
+              {ABOUT_CARD.map((row, i) => (
+                <li key={row.stamp} data-libline className="border-t border-dashed border-[#d9c6a8]">
+                  <button
+                    type="button"
+                    onClick={() => scrollToId(lenis, row.to)}
+                    className="group grid w-full grid-cols-[92px_1fr_auto] items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-blush/60 sm:grid-cols-[124px_1fr_auto] sm:gap-5 sm:px-7 sm:py-4"
+                  >
+                    <span className="flex justify-center">
+                      <span
+                        data-stamp
+                        className="inline-block rounded-[4px] border-2 px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[.14em] mix-blend-multiply [box-shadow:inset_0_0_0_2px_#fbf4e6,inset_0_0_0_3px_currentColor] sm:px-2.5 sm:text-[12px]"
+                        style={{ color: INK[row.tone], borderColor: INK[row.tone], rotate: `${STAMP_TILT[i % STAMP_TILT.length]}deg`, opacity: 0.88 }}
+                      >
+                        {row.stamp}
+                      </span>
+                    </span>
+                    <span data-entry className="block border-l border-rose/70 pl-3 sm:pl-5">
+                      <span className="block font-serif text-[17px] leading-snug text-ink sm:text-[19px]">{row.title}</span>
+                      <span className="mt-0.5 block text-[13px] leading-snug text-ink-soft sm:text-sm">{row.text}</span>
+                    </span>
+                    <Icon name="arrow" size={16} className="text-wine opacity-40 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <p className="border-t border-dashed border-[#d9c6a8] px-5 py-3 text-center font-mono text-[10px] uppercase tracking-[.2em] text-ink-soft/80 sm:px-7">Tap a line to open that chapter</p>
+          </div>
+        </div>
       </div>
 
       <div className="mx-auto mt-24 w-full max-w-[1240px] px-5 sm:mt-28 sm:px-8">

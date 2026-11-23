@@ -3,7 +3,7 @@
 export const PROFILE = {
   name: "Harriet Ayim",
   fullName: "Harriet Ama-Adubea Ayim",
-  role: "Software Developer & AI Automation Specialist",
+  role: "Developer, AI automation & content creator",
   location: "Accra, Ghana",
   email: "amaharriet011@gmail.com",
   cv: "/Harriet_Ayim_CV.pdf",
@@ -26,18 +26,38 @@ export const NAV = [
   { id: "contact", label: "Contact" },
 ] as const;
 
-export const HERO_WORDS = ["web applications", "AI workflows", "databases", "automations"];
+/* The rotating phrase in the hero: "I ___" */
+export const HERO_WORDS = ["build web applications", "design AI workflows", "create content", "teach new creators"];
 
-export const MARQUEE = ["Web applications", "AI workflows", "Thoughtful databases", "Calm automations", "Clean deployments", "Clear documentation"];
+/* The film strip under the hero. Each frame has an icon from Icon.tsx. */
+export const MARQUEE: { text: string; icon: string }[] = [
+  { text: "Web applications", icon: "layout" },
+  { text: "Content creation", icon: "play" },
+  { text: "AI workflows", icon: "flow" },
+  { text: "Student life & tech", icon: "cap" },
+  { text: "Thoughtful databases", icon: "database" },
+  { text: "Brand storytelling", icon: "spark" },
+  { text: "n8n automations", icon: "bolt" },
+  { text: "Teaching creators", icon: "users" },
+];
 
-export const ABOUT_TEXT =
-  "I'm a Computer Science student at Accra Technical University who builds full-stack web applications and AI-powered automations. Years in teaching, customer service and administration taught me how people actually work, so I build tools that remove the repetitive parts and leave the clear, human ones.";
+/* The About chapter: a short hook plus a "library card" of what I do. `to` is the section each line links to. */
+export const ABOUT_INTRO = "A Computer Science student at Accra Technical University who builds the tools, automates the busywork and shares the journey on camera.";
+
+export const ABOUT_CARD: { stamp: string; tone: "wine" | "sage" | "gold"; title: string; text: string; to: string }[] = [
+  { stamp: "Studies", tone: "gold", title: "B.Tech Computer Science, Level 300", text: "Accra Technical University", to: "experience" },
+  { stamp: "Builds", tone: "wine", title: "Full-stack web applications", text: "Next.js, PHP and Python, from database to deploy", to: "work" },
+  { stamp: "Automates", tone: "sage", title: "AI workflows on n8n", text: "Job search and email outreach pipelines", to: "automation" },
+  { stamp: "Creates", tone: "wine", title: "Student life & tech content", text: "On TikTok, and for Tour 360 Travels and VitalJunction", to: "content" },
+  { stamp: "Teaches", tone: "gold", title: "How to create content", text: "Ideas, phone filming, editing and posting", to: "content" },
+  { stamp: "Brings", tone: "sage", title: "Years with real people", text: "Teaching, customer service and administration", to: "experience" },
+];
 
 export const STATS = [
   { value: 300, suffix: "", label: "Level, B.Tech Computer Science at ATU" },
   { value: 9, suffix: "+", label: "Projects and workflows built" },
   { value: 6, suffix: "", label: "Live sites in production" },
-  { value: 2, suffix: "", label: "AI pipelines running on n8n" },
+  { value: 2, suffix: "", label: "Brands I create content for" },
 ];
 
 export const STRENGTHS = [

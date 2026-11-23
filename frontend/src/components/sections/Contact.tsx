@@ -28,7 +28,7 @@ export default function Contact() {
               <span className="absolute inset-0 animate-ping rounded-full bg-sage/60" />
               <span className="relative h-2.5 w-2.5 rounded-full bg-sage" />
             </span>
-            Open to new projects and roles
+            Open to new projects, roles &amp; brand collabs
           </p>
         </div>
 
