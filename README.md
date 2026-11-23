@@ -1,41 +1,65 @@
 # Harriet Ama-Adubea Ayim: Portfolio
 
-A single-page developer portfolio (React, Tailwind CSS and Framer Motion loaded from CDNs, no build step).
+A motion-heavy developer portfolio with a **Next.js + React** frontend and a **Python (FastAPI)** backend.
 
-## Files
+| Part | Stack | What it does |
+| --- | --- | --- |
+| `frontend/` | Next.js 16, React 19, Tailwind CSS 4, GSAP + ScrollTrigger, Motion, Lenis | The site, its animations and the case-study pages |
+| `backend/` | Python 3.13, FastAPI, SQLite | Contact form API and the live automation demos |
 
-| File | Purpose |
-| --- | --- |
-| `index.html` | The whole site |
-| `headshot.jpg`, `shot-*.jpg` | Portrait and project screenshots |
-| `Harriet_Ayim_CV.pdf` | File behind the Download CV buttons |
-| `Dockerfile`, `nginx.conf` | Container setup (nginx) for Coolify or any Docker host |
+## How the animation libraries are used
+
+- **Lenis**: smooth scrolling for the whole site ([SmoothScroll.tsx](frontend/src/components/providers/SmoothScroll.tsx)), driven by GSAP's ticker so ScrollTrigger stays in sync.
+- **GSAP + ScrollTrigger**: anything tied to scroll position: the hero name splitting apart, floating objects, the velocity marquee, the word-by-word About reveal, the pinned horizontal project gallery, and the timeline spine that draws itself.
+- **Motion** (formerly Framer Motion): text reveals, the intro and page-transition curtain, hover/tilt/magnetic effects, tab pills, the custom cursor, the form button states and the workflow-demo animations.
+- Everything respects the visitor's "reduce motion" setting.
+
+## Sections
+
+Hero (moving typography) → About (scroll text reveal + counters) → Skills (tilt cards with animated rings) → Work (horizontal gallery → `/projects/[slug]` case studies) → Automation lab (run the n8n workflows live) → Journey (animated timeline) → Contact (form + social links).
 
 ## Run locally
 
-Open `index.html` in a browser, or serve the folder:
+You need Node 20+ and Python 3.11+.
 
 ```bash
-npx serve .
-# or
-docker build -t my-portfolio . && docker run -p 8080:80 my-portfolio
+# 1. Backend (http://127.0.0.1:8000)
+cd backend
+python -m venv .venv
+.venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
+pip install -r requirements-dev.txt
+uvicorn app.main:app --reload --port 8000
+
+# 2. Frontend (http://localhost:3000), in a second terminal
+cd frontend
+npm install
+npm run dev
 ```
 
-## Deploy on Coolify
+The frontend forwards `/api/*` to the backend through [route.ts](frontend/src/app/api/[...path]/route.ts), so the browser never calls Python directly. If the backend is offline, the automation demo still plays with placeholder data and the contact form tells visitors to email instead.
 
-1. **New Resource** > **Public/Private Repository** and pick `Harriet2025/my-portfoloio` (branch `main`).
-2. **Build Pack**: `Dockerfile`.
-3. **Ports Exposes**: `80`.
-4. Add your domain under **Domains** (for example `https://portfolio.example.com`), then **Deploy**.
-5. Turn on **Auto Deploy** (or add the webhook shown in Coolify to the GitHub repo) so every push redeploys.
-
-Alternative without Docker: choose the **Static** build pack, set **Publish Directory** to `/`, and leave the build command empty.
-
-The container exposes a `/healthz` endpoint that Coolify's health check can use.
+Backend tests: `cd backend && python -m pytest`
 
 ## Updating content
 
-- Links, handles and email: edit the `PROFILE` block near the top of the script in `index.html`.
-- Project tiles, screenshots and live links: edit `PROJECTS`, `SHOTS` and `PROJECT_LINKS`.
-- n8n workflow links: edit `PROJECT_ARTIFACTS`.
-- New CV: replace `Harriet_Ayim_CV.pdf` (keep the same filename).
+Everything you would normally edit is in [frontend/src/content/site.ts](frontend/src/content/site.ts): profile and social links, about text, stats, skills, projects (with live links and case-study text), the workflow diagrams and the timeline. Images and the CV go in [frontend/public/](frontend/public/) (keep the CV filename `Harriet_Ayim_CV.pdf`).
+
+## API
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/api/health` | Health check |
+| POST | `/api/contact` | Save a contact message (validated, rate limited, honeypot spam check), then notify by Telegram and/or email if configured |
+| GET | `/api/messages` | Read saved messages. Needs `Authorization: Bearer $ADMIN_TOKEN`; off when no token is set |
+| POST | `/api/workflows/{job-search\|email-outreach}/run` | Simulated run of an n8n workflow with sample data |
+
+Messages are stored in SQLite at `$DATA_DIR/portfolio.db` (a Docker volume in production).
+
+## Deploy on Coolify
+
+1. **New Resource** → your GitHub repo → **Build Pack: Docker Compose** (uses [docker-compose.yml](docker-compose.yml)).
+2. Give the **frontend** service your domain (port `3000`). Leave the backend without a domain: it is only reachable by the frontend.
+3. Add environment variables from [.env.example](.env.example): at least `SITE_URL`, and optionally `ADMIN_TOKEN` plus Telegram or SMTP settings to get notified of new messages.
+4. Deploy. Turn on Auto Deploy so every push redeploys.
+
+Or run the same thing anywhere with Docker: `docker compose up --build`.
