@@ -34,8 +34,8 @@ export const ABOUT_TEXT =
 
 export const STATS = [
   { value: 300, suffix: "", label: "Level, B.Tech Computer Science at ATU" },
-  { value: 6, suffix: "+", label: "Projects and workflows shipped" },
-  { value: 4, suffix: "", label: "Live sites in production" },
+  { value: 9, suffix: "+", label: "Projects and workflows built" },
+  { value: 6, suffix: "", label: "Live sites in production" },
   { value: 2, suffix: "", label: "AI pipelines running on n8n" },
 ];
 
@@ -84,9 +84,45 @@ export type Project = {
   liveLabel?: string;
   repo?: string;
   workflow?: "job-search" | "email-outreach";
+  /** Set for projects that are built but not deployed yet. */
+  status?: "in-progress";
+  /** Typographic book cover, used when there is no screenshot. */
+  cover?: { tagline: string; tone: "wine" | "sage" | "night" | "gold" };
 };
 
 export const PROJECTS: Project[] = [
+  {
+    slug: "study-mate",
+    title: "Study Mate",
+    category: "AI learning app",
+    year: "2026",
+    image: "/shot-studymate.png",
+    tech: ["Next.js", "FastAPI", "MySQL", "Groq", "ElevenLabs"],
+    summary: "An AI study companion for university students. Upload lecture slides and get step-by-step lessons, diagrams, flashcards, quizzes, an AI tutor that cites your own pages, and a podcast mode where two AI hosts talk through your notes.",
+    problem: "Lecture slides are dense, and students often revise alone with no easy way to check what they really understand before an exam or a project defence.",
+    architecture: "A Next.js front end talks to a Python FastAPI service that reads PDFs and PowerPoints and stores lessons in MySQL. Groq writes the teaching text and transcribes spoken answers with Whisper, and ElevenLabs gives the two podcast hosts their voices. Every answer cites the page it came from.",
+    result: "A live beta where a student turns a slide deck into a first lesson in about a minute, then practises with flashcards, rated quizzes and graded defence questions.",
+    highlights: ["Answers cite your slides", "Podcast mode with two AI hosts", "Graded defence practice"],
+    live: "https://digi-study-mate.vercel.app/",
+    liveLabel: "digi-study-mate.vercel.app",
+    repo: "https://github.com/Harriet2025/Digi-Study-Mate",
+  },
+  {
+    slug: "auragoal",
+    title: "AuraGoal",
+    category: "Productivity app",
+    year: "2026",
+    image: "/shot-auragoal.png",
+    tech: ["React", "Vite", "Supabase", "Tailwind CSS", "Framer Motion"],
+    summary: "A goal tracker for weekly, monthly and yearly goals. Each goal breaks into plans you tick off, with reminders, streaks and badges, accountability partners and a journal. It installs like an app on any phone or laptop.",
+    problem: "Big goals feel vague without small, visible steps, and most planners leave out the people who help keep you accountable.",
+    architecture: "React and Vite with Tailwind and Framer Motion on the front end. Supabase provides Postgres, sign-in, storage and an Edge Function that sends partner invites, reminders and a morning email. A service worker makes it an installable PWA without ever caching anyone's personal data.",
+    result: "A live app with private accounts, progress analytics, streaks and badges, partner sharing and push reminders.",
+    highlights: ["Installable app (PWA)", "Accountability partners", "Streaks, badges and reminders"],
+    live: "https://planpulse-zeta.vercel.app/",
+    liveLabel: "planpulse-zeta.vercel.app",
+    repo: "https://github.com/Harriet2025/plan_pulse",
+  },
   {
     slug: "atu-connect",
     title: "ATU Connect",
@@ -101,6 +137,21 @@ export const PROJECTS: Project[] = [
     highlights: ["Six role-based dashboards", "Live notifications", "Unified inbox"],
     live: "https://atu-connect.sasulabs.me/",
     liveLabel: "atu-connect.sasulabs.me",
+  },
+  {
+    slug: "phentibuild",
+    title: "PhentiBuild",
+    category: "Construction platform",
+    year: "2026",
+    status: "in-progress",
+    cover: { tagline: "Build smarter. Measure better.", tone: "sage" },
+    tech: ["PHP", "MySQL", "JavaScript", "PhpSpreadsheet"],
+    summary: "A digital construction platform that brings site measurements, calculations, material estimates, bills of quantities and roof design into one place, so builders can estimate and document projects faster.",
+    problem: "Construction estimates are often worked out by hand across notebooks and spreadsheets, which makes material quantities and costs easy to get wrong.",
+    architecture: "A PHP backend with a model for each part of the job (projects, measurements, calculations, materials, BOQ items, reports and roof designs) over a MySQL database, a JavaScript front end, and Excel export through PhpSpreadsheet. Camera-based measuring and AI roof generation are planned next.",
+    result: "The measuring, estimating, BOQ and reporting modules are built. It is not live yet while I finish the remaining features.",
+    highlights: ["Material estimates", "BOQ and Excel export", "Roof design module"],
+    repo: "https://github.com/Harriet2025/PhentiBuild",
   },
   {
     slug: "digital-library",

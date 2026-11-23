@@ -11,6 +11,8 @@ import TransitionLink from "@/components/ui/TransitionLink";
 import Magnetic from "@/components/ui/Magnetic";
 import Icon from "@/components/ui/Icon";
 import ProjectArt from "@/components/sections/ProjectArt";
+import TypeCover from "@/components/sections/TypeCover";
+import { InProgress } from "@/components/sections/Projects";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -52,7 +54,8 @@ export default function CaseStudy({ project: p, index, next }: { project: Projec
             </motion.p>
             <SplitText as="h1" text={p.title} by="char" stagger={0.03} play={ready} className="mt-4 block max-w-[14ch] font-serif text-[clamp(2.8rem,6.5vw,6rem)] font-light leading-[.86] tracking-tight" />
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={ready ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }} className="flex flex-wrap gap-3">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={ready ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }} className="flex flex-wrap items-center gap-3">
+            {p.status === "in-progress" && <span className="soft-italic font-serif text-lg text-ink-soft">Not live yet, coming soon.</span>}
             {p.live && (
               <Magnetic>
                 <a href={p.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-wine px-6 py-3.5 font-semibold text-paper transition-colors hover:bg-ink">
@@ -85,9 +88,16 @@ export default function CaseStudy({ project: p, index, next }: { project: Projec
           className="relative mt-12 aspect-[16/9] overflow-hidden rounded-[2rem] border border-line bg-paper-2"
         >
           <div data-cover-img className="absolute inset-0">
-            {p.image ? <Image src={p.image} alt={`${p.title} screenshot`} fill priority sizes="(min-width:1280px) 1216px, 100vw" className="object-cover object-top" /> : <ProjectArt workflow={p.workflow!} />}
+            {p.image ? (
+              <Image src={p.image} alt={`${p.title} screenshot`} fill priority sizes="(min-width:1280px) 1216px, 100vw" className="object-cover object-top" />
+            ) : p.workflow ? (
+              <ProjectArt workflow={p.workflow} />
+            ) : (
+              <TypeCover project={p} />
+            )}
           </div>
           {p.liveLabel && <span className="absolute bottom-5 left-5 rounded-full bg-paper/90 px-4 py-2 font-mono text-xs backdrop-blur">{p.liveLabel}</span>}
+          {p.status === "in-progress" && <InProgress className="right-5 top-5" />}
         </motion.div>
 
         <div className="mt-20 grid gap-14 lg:grid-cols-[1fr_1.6fr]">

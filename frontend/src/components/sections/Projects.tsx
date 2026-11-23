@@ -9,6 +9,16 @@ import SplitText from "@/components/ui/SplitText";
 import TransitionLink from "@/components/ui/TransitionLink";
 import Icon from "@/components/ui/Icon";
 import ProjectArt from "./ProjectArt";
+import TypeCover from "./TypeCover";
+
+/** A small ribbon for projects that are built but not deployed yet. */
+export function InProgress({ className = "right-3 top-3" }: { className?: string }) {
+  return (
+    <span className={`absolute z-10 flex items-center gap-1.5 rounded-full bg-paper/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-[.14em] text-wine shadow-sm ${className}`}>
+      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" /> In progress
+    </span>
+  );
+}
 
 /* Spine colours, one per book. */
 const SPINES = ["#7b2d43", "#33242a", "#6f7f5c", "#8a6a3f", "#9b4560", "#4a3a40"];
@@ -121,14 +131,25 @@ function Book({ project: p, index }: { project: Project; index: number }) {
 
             {/* Cover */}
             <div className="absolute inset-0 origin-left overflow-hidden rounded-r-sm shadow-[0_24px_50px_-26px_rgba(42,32,36,.6)] transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] [transform-style:preserve-3d] lg:group-hover:[transform:rotateY(-80deg)] group-focus-visible:[transform:rotateY(-80deg)]">
-              {p.image ? <Image src={p.image} alt={`${p.title} screenshot`} fill sizes="(min-width:1024px) 30vw, 78vw" className="object-cover object-top" /> : <ProjectArt workflow={p.workflow!} />}
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
-              <div className="absolute inset-x-3 bottom-3 rounded-sm bg-paper/95 px-3.5 py-2.5 shadow-sm">
-                <p className="font-serif text-lg leading-tight">{p.title}</p>
-                <p className="mt-0.5 text-xs text-ink-soft">
-                  {p.category} · {p.year}
-                </p>
-              </div>
+              {p.image ? (
+                <Image src={p.image} alt={`${p.title} screenshot`} fill sizes="(min-width:1024px) 30vw, 78vw" className="object-cover object-top" />
+              ) : p.workflow ? (
+                <ProjectArt workflow={p.workflow} />
+              ) : (
+                <TypeCover project={p} />
+              )}
+              {(p.image || p.workflow) && (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+                  <div className="absolute inset-x-3 bottom-3 rounded-sm bg-paper/95 px-3.5 py-2.5 shadow-sm">
+                    <p className="font-serif text-lg leading-tight">{p.title}</p>
+                    <p className="mt-0.5 text-xs text-ink-soft">
+                      {p.category} · {p.year}
+                    </p>
+                  </div>
+                </>
+              )}
+              {p.status === "in-progress" && <InProgress />}
             </div>
           </div>
         </div>
