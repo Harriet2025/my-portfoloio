@@ -1,13 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Syne } from "next/font/google";
+import { Fraunces, JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers/Providers";
 import Nav from "@/components/layout/Nav";
-import Cursor from "@/components/ui/Cursor";
 import { PROFILE } from "@/content/site";
 
-const syne = Syne({ variable: "--font-syne", subsets: ["latin"], weight: ["500", "700", "800"] });
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], style: ["normal", "italic"], axes: ["SOFT", "WONK", "opsz"] });
+const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400", "500"] });
 
 // Used for link previews. On Vercel the production domain is provided automatically.
@@ -29,16 +28,15 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: PROFILE.name, description: DESCRIPTION, images: [PROFILE.headshot] },
 };
 
-export const viewport: Viewport = { themeColor: "#0d0b0a", colorScheme: "dark" };
+export const viewport: Viewport = { themeColor: "#f7f2ea", colorScheme: "light" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${syne.variable} ${inter.variable} ${mono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${manrope.variable} ${mono.variable}`}>
       <body className="grain min-h-screen">
         <Providers>
           <Nav />
           {children}
-          <Cursor />
         </Providers>
       </body>
     </html>

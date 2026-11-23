@@ -7,75 +7,76 @@ import { sendContact } from "@/lib/api";
 import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
-import Magnetic from "@/components/ui/Magnetic";
 import Icon from "@/components/ui/Icon";
-import Marquee from "./Marquee";
 
 const TOPICS = ["Web project", "Automation", "Job opportunity", "Something else"] as const;
+const STAMP_TONES = ["bg-blush", "bg-sage-soft", "bg-paper-3"];
+const EASE = [0.22, 1, 0.36, 1] as const;
 type Status = "idle" | "sending" | "sent" | "error";
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative overflow-hidden bg-ink-2 pt-28 sm:pt-40">
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-1/2 h-[46rem] w-[90rem] -translate-x-1/2 translate-y-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(242,100,58,.25),transparent_60%)]" />
-      <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8">
-        <SectionLabel index="06">Contact</SectionLabel>
-        <div className="mt-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[.18em] text-sage">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inset-0 animate-ping rounded-full bg-sage/70" />
-            <span className="relative h-2.5 w-2.5 rounded-full bg-sage" />
-          </span>
-          Open to new projects and roles
+    <section id="contact" className="relative overflow-x-clip bg-paper-2 pt-28 sm:pt-36">
+      <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8">
+        <SectionLabel index="VI">Contact</SectionLabel>
+        <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+          <h2 className="max-w-[16ch] font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05]">
+            <SplitText text="Write me" /> <SplitText text="a letter" className="soft-italic text-wine" delay={0.08} />
+          </h2>
+          <p className="flex items-center gap-2 text-sm font-semibold text-sage">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inset-0 animate-ping rounded-full bg-sage/60" />
+              <span className="relative h-2.5 w-2.5 rounded-full bg-sage" />
+            </span>
+            Open to new projects and roles
+          </p>
         </div>
-        <SplitText as="h2" text="Have a project in mind?" by="char" stagger={0.025} className="mt-6 block max-w-[12ch] font-display text-[clamp(3rem,9vw,8.5rem)] font-extrabold uppercase leading-[.86] tracking-tight" />
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
-          <ContactForm />
-          <div className="flex flex-col gap-3">
-            <EmailCard />
-            {PROFILE.socials.map((s, i) => (
-              <motion.a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor="Open"
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 * i, duration: 0.6 }}
-                className="group relative flex items-center gap-4 overflow-hidden rounded-3xl border border-line px-5 py-5"
-              >
-                <span aria-hidden="true" className="absolute inset-0 origin-left scale-x-0 bg-cream transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:scale-x-100" />
-                <span className="relative grid h-12 w-12 place-items-center rounded-2xl bg-cream/5 transition-colors duration-500 group-hover:bg-ink group-hover:text-ember">
-                  <Icon name={s.icon} size={22} />
-                </span>
-                <span className="relative min-w-0 flex-1">
-                  <span className="block font-mono text-[11px] uppercase tracking-[.16em] text-mute transition-colors group-hover:text-ink/60">{s.label}</span>
-                  <span className="block truncate font-display text-xl font-bold transition-colors group-hover:text-ink">{s.handle}</span>
-                </span>
-                <span className="relative grid h-10 w-10 place-items-center rounded-full border border-line transition-all duration-500 group-hover:rotate-45 group-hover:border-ink group-hover:text-ink">
-                  <Icon name="up" size={16} />
-                </span>
-              </motion.a>
-            ))}
-            <LocalTime />
+        <div className="mt-14 grid gap-12 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
+          <Letter />
+          <div className="flex flex-col gap-6">
+            <p className="soft-italic font-serif text-xl text-ink-soft">Or find me here</p>
+            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-2">
+              {PROFILE.socials.map((s, i) => (
+                <motion.li key={s.label} initial={{ opacity: 0, y: 30, rotate: 0 }} whileInView={{ opacity: 1, y: 0, rotate: [-3, 2, -1.5][i] }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7, ease: EASE }} whileHover={{ rotate: 0, y: -6, scale: 1.03 }}>
+                  <a href={s.href} target="_blank" rel="noreferrer" className={`stamp block ${STAMP_TONES[i % STAMP_TONES.length]} shadow-[0_14px_30px_-18px_rgba(42,32,36,.5)]`}>
+                    <span className="flex aspect-[4/5] flex-col justify-between border border-ink/15 p-4">
+                      <span className="flex items-start justify-between">
+                        <Icon name={s.icon} size={24} className="text-wine" />
+                        <span className="soft-italic font-serif text-sm text-ink-soft">GH</span>
+                      </span>
+                      <span>
+                        <span className="block text-[11px] font-semibold uppercase tracking-[.16em] text-ink-soft">{s.label}</span>
+                        <span className="mt-1 block truncate font-serif text-lg">{s.handle}</span>
+                      </span>
+                    </span>
+                  </a>
+                </motion.li>
+              ))}
+              <li className="col-span-2 sm:col-span-3 lg:col-span-2">
+                <Postmark />
+              </li>
+            </ul>
+            <EmailLine />
           </div>
         </div>
       </div>
 
-      <div className="mt-28">
-        <Marquee items={["Let's build", "Web apps", "Automations", "Let's talk"]} tilt={0} />
-      </div>
-      <Footer />
+      <Colophon />
     </section>
   );
 }
 
-function ContactForm() {
+function Letter() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [topic, setTopic] = useState<(typeof TOPICS)[number]>("Web project");
+  const [today, setToday] = useState("");
+
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setToday(new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date())));
+    return () => cancelAnimationFrame(t);
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -99,84 +100,114 @@ function ContactForm() {
     }
   }
 
+  const field = "w-full bg-transparent font-serif text-xl placeholder:text-ink/30 focus:outline-none";
+
   return (
-    <form onSubmit={onSubmit} className="relative rounded-[2rem] border border-line bg-ink p-6 sm:p-8" noValidate={false}>
-      <fieldset>
-        <legend className="font-mono text-[11px] uppercase tracking-[.18em] text-mute">I&apos;m reaching out about</legend>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {TOPICS.map((t) => (
-            <button key={t} type="button" onClick={() => setTopic(t)} aria-pressed={topic === t} className={`relative rounded-full border px-4 py-2 text-sm font-medium transition-colors ${topic === t ? "border-transparent text-ink" : "border-line hover:border-cream"}`}>
-              {topic === t && <motion.span layoutId="topic" className="absolute inset-0 rounded-full bg-ember" transition={{ type: "spring", stiffness: 400, damping: 30 }} />}
-              <span className="relative">{t}</span>
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        <Field name="name" label="Your name" autoComplete="name" minLength={2} maxLength={80} />
-        <Field name="email" label="Email address" type="email" autoComplete="email" />
-      </div>
-      <div className="mt-6">
-        <Field name="message" label="Tell me about it" textarea minLength={10} maxLength={4000} />
-      </div>
-      {/* Honeypot for bots: hidden from people and screen readers */}
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
-
-      <div className="mt-8 flex flex-wrap items-center gap-4">
-        <Magnetic>
-          <motion.button
-            type="submit"
-            disabled={status === "sending"}
-            whileTap={{ scale: 0.96 }}
-            className={`relative inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded-full px-8 font-semibold text-ink transition-colors ${status === "sent" ? "bg-sage" : "bg-ember hover:bg-cream"}`}
-            data-cursor="Send"
+    <div className="relative min-h-[560px]">
+      <AnimatePresence mode="wait">
+        {status !== "sent" ? (
+          <motion.form
+            key="letter"
+            onSubmit={onSubmit}
+            initial={{ opacity: 0, y: 30, rotate: 0 }}
+            animate={{ opacity: 1, y: 0, rotate: -0.6 }}
+            exit={{ scaleY: 0.35, scaleX: 0.7, y: 120, opacity: 0, transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="relative origin-bottom rounded-sm border border-paper-3 bg-[#fffdf8] p-7 shadow-[0_30px_60px_-30px_rgba(42,32,36,.45)] sm:p-10"
           >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span key={status} initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -24, opacity: 0 }} transition={{ duration: 0.25 }} className="flex items-center gap-2">
+            <p className="text-right text-sm text-ink-soft">
+              Accra, <span className="soft-italic font-serif">{today}</span>
+            </p>
+            <p className="soft-italic mt-4 font-serif text-3xl text-wine">Dear Harriet,</p>
+
+            <fieldset className="mt-6">
+              <legend className="text-[13px] font-semibold uppercase tracking-[.16em] text-ink-soft">I&apos;m writing about</legend>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {TOPICS.map((t) => (
+                  <button key={t} type="button" onClick={() => setTopic(t)} aria-pressed={topic === t} className={`relative rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${topic === t ? "border-transparent text-paper" : "border-line text-ink-soft hover:border-wine hover:text-wine"}`}>
+                    {topic === t && <motion.span layoutId="topic" className="absolute inset-0 rounded-full bg-wine" transition={{ type: "spring", stiffness: 400, damping: 30 }} />}
+                    <span className="relative">{t}</span>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <label className="mt-6 block">
+              <span className="sr-only">Your message</span>
+              <textarea name="message" required minLength={10} maxLength={4000} rows={6} placeholder="Tell me about your project, idea or role…" className={`${field} ruled resize-none leading-8`} data-lenis-prevent />
+            </label>
+
+            <div className="mt-6 grid gap-6 sm:grid-cols-2">
+              <label className="block">
+                <span className="soft-italic font-serif text-lg text-ink-soft">Warmly,</span>
+                <input name="name" required minLength={2} maxLength={80} autoComplete="name" placeholder="Your name" className={`${field} soft-italic mt-1 border-b border-line pb-2 text-2xl focus:border-wine`} />
+              </label>
+              <label className="block">
+                <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-ink-soft">Where can I reply?</span>
+                <input name="email" type="email" required autoComplete="email" placeholder="you@example.com" className={`${field} mt-2 border-b border-line pb-2 text-lg focus:border-wine`} />
+              </label>
+            </div>
+            <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
+
+            <div className="mt-9 flex flex-wrap items-center gap-4">
+              <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.96 }} type="submit" disabled={status === "sending"} className="inline-flex h-13 items-center gap-3 rounded-full bg-wine px-7 py-3.5 font-semibold text-paper shadow-[0_10px_30px_-12px_rgba(123,45,67,.6)] transition-colors hover:bg-ink disabled:opacity-70">
                 {status === "sending" ? (
                   <>
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-ink border-t-transparent" /> Sending…
-                  </>
-                ) : status === "sent" ? (
-                  <>
-                    <Icon name="check" size={18} /> Message sent
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-paper border-t-transparent" /> Sealing…
                   </>
                 ) : (
                   <>
-                    Send message <Icon name="send" size={17} />
+                    Seal &amp; send <Icon name="send" size={17} />
                   </>
                 )}
-              </motion.span>
-            </AnimatePresence>
-          </motion.button>
-        </Magnetic>
-        <p role="status" aria-live="polite" className={`text-sm ${status === "error" ? "text-[#ff9b8a]" : "text-mute"}`}>
-          {status === "sent" ? "Thank you! I'll reply within two working days." : status === "error" ? error : ""}
-        </p>
-      </div>
-    </form>
+              </motion.button>
+              <p role="status" aria-live="polite" className="text-sm text-wine">
+                {status === "error" ? error : ""}
+              </p>
+            </div>
+          </motion.form>
+        ) : (
+          <Envelope key="envelope" onAgain={() => setStatus("idle")} />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
-function Field({ name, label, type = "text", textarea, ...rest }: { name: string; label: string; type?: string; textarea?: boolean } & React.InputHTMLAttributes<HTMLInputElement>) {
-  const base = "peer w-full border-b border-line bg-transparent pb-3 pt-6 text-lg placeholder-transparent transition-colors focus:border-ember focus:outline-none";
+/** The sent state: an envelope closes, a wax seal is pressed, and a thank-you note appears. */
+function Envelope({ onAgain }: { onAgain: () => void }) {
   return (
-    <label className="group relative block">
-      {textarea ? (
-        <textarea name={name} required rows={4} placeholder={label} className={`${base} resize-none`} minLength={rest.minLength} maxLength={rest.maxLength} data-lenis-prevent />
-      ) : (
-        <input name={name} type={type} required placeholder={label} className={base} {...rest} />
-      )}
-      <span className="pointer-events-none absolute left-0 top-0 font-mono text-[11px] uppercase tracking-[.18em] text-mute transition-all duration-300 peer-placeholder-shown:top-6 peer-placeholder-shown:font-sans peer-placeholder-shown:text-lg peer-placeholder-shown:normal-case peer-placeholder-shown:tracking-normal peer-focus:top-0 peer-focus:font-mono peer-focus:text-[11px] peer-focus:uppercase peer-focus:tracking-[.18em] peer-focus:text-ember">
-        {label}
-      </span>
-      <span aria-hidden="true" className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-ember transition-transform duration-500 peer-focus:scale-x-100" />
-    </label>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex min-h-[560px] flex-col items-center justify-center text-center" role="status">
+      <motion.div initial={{ y: 60, scale: 0.9 }} animate={{ y: 0, scale: 1 }} transition={{ duration: 0.7, ease: EASE }} className="relative h-[200px] w-[min(340px,85vw)] [perspective:900px]">
+        {/* body */}
+        <div className="absolute inset-0 rounded-md bg-paper-3 shadow-[0_30px_60px_-30px_rgba(42,32,36,.55)]" />
+        <div className="absolute inset-0 overflow-hidden rounded-md">
+          <div className="absolute -left-1/4 bottom-0 h-[140%] w-[75%] origin-bottom-left rotate-[-32deg] bg-[#dccdb8]" />
+          <div className="absolute -right-1/4 bottom-0 h-[140%] w-[75%] origin-bottom-right rotate-[32deg] bg-[#d6c6af]" />
+        </div>
+        {/* flap closes */}
+        <motion.div initial={{ rotateX: 180 }} animate={{ rotateX: 0 }} transition={{ duration: 0.8, delay: 0.35, ease: [0.76, 0, 0.24, 1] }} className="absolute inset-x-0 top-0 h-[62%] origin-top [transform-style:preserve-3d]">
+          <div className="h-full w-full bg-[#e5d9c8] [clip-path:polygon(0_0,100%_0,50%_100%)] [backface-visibility:hidden]" />
+        </motion.div>
+        {/* wax seal */}
+        <motion.span initial={{ scale: 0, rotate: -30 }} animate={{ scale: 1, rotate: -8 }} transition={{ delay: 1.05, type: "spring", stiffness: 260, damping: 12 }} className="soft-italic absolute left-1/2 top-[52%] grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-wine font-serif text-xl text-paper shadow-[0_6px_14px_rgba(123,45,67,.5),inset_0_-4px_8px_rgba(0,0,0,.25)]">
+          HA
+        </motion.span>
+      </motion.div>
+      <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.4 }} className="soft-italic mt-10 font-serif text-3xl text-wine">
+        Thank you, your letter is on its way.
+      </motion.p>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} className="mt-3 text-ink-soft">
+        I&apos;ll reply within two working days.
+      </motion.p>
+      <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }} type="button" onClick={onAgain} className="mt-8 rounded-full border border-line px-5 py-2.5 text-sm font-semibold transition-colors hover:border-wine hover:text-wine">
+        Write another letter
+      </motion.button>
+    </motion.div>
   );
 }
 
-function EmailCard() {
+function EmailLine() {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -186,53 +217,59 @@ function EmailCard() {
     } catch {}
   };
   return (
-    <div className="flex items-center gap-4 rounded-3xl border border-line bg-ink px-5 py-5">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-ember text-ink">
-        <Icon name="mail" size={22} />
-      </span>
-      <a href={`mailto:${PROFILE.email}`} className="min-w-0 flex-1" data-cursor="Write">
-        <span className="block font-mono text-[11px] uppercase tracking-[.16em] text-mute">Email</span>
-        <span className="block truncate font-display text-lg font-bold hover:text-ember">{PROFILE.email}</span>
+    <div className="flex items-center gap-4 border-t border-line pt-6">
+      <a href={`mailto:${PROFILE.email}`} className="min-w-0 flex-1">
+        <span className="block text-[11px] font-semibold uppercase tracking-[.16em] text-ink-soft">Prefer email?</span>
+        <span className="block truncate font-serif text-xl transition-colors hover:text-wine">{PROFILE.email}</span>
       </a>
-      <button type="button" onClick={copy} className="relative h-10 shrink-0 overflow-hidden rounded-full border border-line px-4 font-mono text-xs transition-colors hover:border-cream" aria-label="Copy email address">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span key={String(copied)} initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -16, opacity: 0 }} className="flex items-center gap-1.5">
-            <Icon name={copied ? "check" : "copy"} size={13} /> {copied ? "Copied" : "Copy"}
-          </motion.span>
-        </AnimatePresence>
+      <button type="button" onClick={copy} className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border border-line px-4 text-sm font-medium transition-colors hover:border-wine hover:text-wine" aria-label="Copy email address">
+        <Icon name={copied ? "check" : "copy"} size={14} /> {copied ? "Copied" : "Copy"}
       </button>
     </div>
   );
 }
 
-function LocalTime() {
+/** A postmark with the live time in Accra. */
+function Postmark() {
   const [time, setTime] = useState("");
   useEffect(() => {
-    const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Africa/Accra" });
+    const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Africa/Accra" });
     const tick = () => setTime(fmt.format(new Date()));
-    tick();
-    const t = setInterval(tick, 1000);
-    return () => clearInterval(t);
+    const first = requestAnimationFrame(tick);
+    const t = setInterval(tick, 15000);
+    return () => {
+      cancelAnimationFrame(first);
+      clearInterval(t);
+    };
   }, []);
   return (
-    <div className="flex items-center justify-between rounded-3xl border border-line px-5 py-4 font-mono text-xs uppercase tracking-[.16em] text-mute">
-      <span className="flex items-center gap-2">
-        <Icon name="pin" size={14} /> {PROFILE.location}
-      </span>
-      <span className="tabular-nums text-cream">{time || "--:--:--"} GMT</span>
+    <div className="flex items-center gap-5 py-2">
+      <div className="grid h-24 w-24 shrink-0 rotate-[-10deg] place-items-center rounded-full border-2 border-dashed border-wine/60 text-center text-wine">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-[.2em]">Accra</p>
+          <p className="font-serif text-2xl tabular-nums leading-tight">{time || "--:--"}</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[.2em]">GMT</p>
+        </div>
+      </div>
+      <p className="text-sm leading-relaxed text-ink-soft">Local time where I am. I usually reply within two working days.</p>
     </div>
   );
 }
 
-function Footer() {
+function Colophon() {
   const lenis = useLenis();
   return (
-    <footer className="relative mx-auto flex w-full max-w-[1280px] flex-wrap items-center justify-between gap-4 px-5 py-10 font-mono text-xs text-mute sm:px-8">
-      <p>© {new Date().getFullYear()} {PROFILE.fullName}</p>
-      <p>Built with Next.js, GSAP, Motion, Lenis and a Python API.</p>
-      <button type="button" onClick={() => scrollToId(lenis, "top")} className="inline-flex items-center gap-2 uppercase tracking-[.16em] hover:text-cream">
-        Back to top <Icon name="up" size={14} className="-rotate-45" />
-      </button>
+    <footer className="mx-auto mt-28 w-full max-w-[1240px] px-5 pb-12 sm:px-8">
+      <div className="flex flex-col items-center border-t border-line pt-12 text-center">
+        <span className="text-gold" aria-hidden="true">❦</span>
+        <p className="soft-italic mt-4 font-serif text-2xl">Colophon</p>
+        <p className="mt-3 max-w-[60ch] text-sm leading-relaxed text-ink-soft">
+          Set in Fraunces and Manrope. Built with Next.js, React, GSAP, Motion and Lenis, with a Python (FastAPI) backend. Designed and written by {PROFILE.fullName}, © {new Date().getFullYear()}.
+        </p>
+        <button type="button" onClick={() => scrollToId(lenis, "top")} className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-wine hover:text-ink">
+          Back to the first page <Icon name="up" size={14} className="-rotate-45" />
+        </button>
+      </div>
     </footer>
   );
 }

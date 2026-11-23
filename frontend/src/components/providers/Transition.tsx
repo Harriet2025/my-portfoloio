@@ -61,7 +61,7 @@ export default function TransitionProvider({ children }: { children: React.React
         {(phase === "cover" || phase === "reveal") && (
           <motion.div
             key="curtain"
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-ember text-ink"
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-wine text-paper"
             initial={{ clipPath: "inset(100% 0 0 0)" }}
             animate={phase === "cover" ? { clipPath: "inset(0% 0 0 0)" } : { clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.75, ease: EASE }}
@@ -76,7 +76,7 @@ export default function TransitionProvider({ children }: { children: React.React
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: phase === "cover" ? 1 : 0, y: phase === "cover" ? 0 : -30 }}
               transition={{ duration: 0.5, delay: phase === "cover" ? 0.25 : 0 }}
-              className="px-6 text-center font-display text-[clamp(2.5rem,9vw,8rem)] font-extrabold uppercase leading-none tracking-tight"
+              className="soft-italic px-6 text-center font-serif text-[clamp(2.5rem,7vw,6rem)] leading-none"
             >
               {label || "Harriet Ayim"}
             </motion.span>
@@ -125,12 +125,12 @@ function Intro({ active, onDone }: { active: boolean; onDone: () => void }) {
       {active && show && (
         <motion.div
           key="intro"
-          className="fixed inset-0 z-[90] flex flex-col justify-between bg-ink p-6 sm:p-10"
+          className="fixed inset-0 z-[90] flex flex-col justify-between bg-paper p-6 text-ink sm:p-10"
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: reduce ? 0 : 0.9, ease: EASE }}
         >
-          <div className="flex justify-between font-mono text-xs uppercase tracking-[.2em] text-mute">
-            <span>Portfolio</span>
+          <div className="flex justify-between text-xs font-semibold uppercase tracking-[.2em] text-ink-soft">
+            <span>A personal library of work</span>
             <span>Accra, GH</span>
           </div>
           <div className="overflow-hidden">
@@ -138,16 +138,16 @@ function Intro({ active, onDone }: { active: boolean; onDone: () => void }) {
               initial={{ y: "110%" }}
               animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: EASE }}
-              className="font-display text-[clamp(3rem,12vw,11rem)] font-extrabold uppercase leading-[.85] tracking-tight"
+              className="font-serif text-[clamp(3rem,10vw,9rem)] leading-[.9]"
             >
-              Harriet<span className="text-ember">.</span>
+              <span className="soft-italic">Harriet</span> <span className="text-wine">Ayim</span>
             </motion.p>
           </div>
           <div className="flex items-end justify-between">
             <div className="h-px flex-1 bg-line">
-              <div className="h-px bg-ember" style={{ width: `${count}%` }} />
+              <div className="h-px bg-wine" style={{ width: `${count}%` }} />
             </div>
-            <span className="ml-6 font-display text-6xl font-extrabold tabular-nums sm:text-8xl">{count}</span>
+            <span className="soft-italic ml-6 font-serif text-5xl tabular-nums text-wine sm:text-7xl">{count}</span>
           </div>
         </motion.div>
       )}

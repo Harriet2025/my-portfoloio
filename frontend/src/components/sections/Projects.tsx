@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { PROJECTS, type Project } from "@/content/site";
+import { PROJECTS, PROFILE, type Project } from "@/content/site";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import TransitionLink from "@/components/ui/TransitionLink";
 import Icon from "@/components/ui/Icon";
 import ProjectArt from "./ProjectArt";
+
+/* Spine colours, one per book. */
+const SPINES = ["#7b2d43", "#33242a", "#6f7f5c", "#8a6a3f", "#9b4560", "#4a3a40"];
 
 export default function Projects() {
   const root = useRef<HTMLElement>(null);
@@ -18,7 +21,6 @@ export default function Projects() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      // Desktop: pin the gallery and turn vertical scroll into horizontal movement.
       mm.add(`${MOTION_OK} and (min-width: 1024px)`, () => {
         const distance = () => (track.current ? track.current.scrollWidth - window.innerWidth : 0);
         const tween = gsap.to(track.current, {
@@ -34,13 +36,9 @@ export default function Projects() {
             onUpdate: (self) => gsap.set("[data-progress]", { scaleX: self.progress }),
           },
         });
-        // Parallax inside each image while the track moves.
-        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((img) => {
-          gsap.fromTo(img, { xPercent: -10 }, { xPercent: 10, ease: "none", scrollTrigger: { trigger: img, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
-        });
-        // Cards tilt up into place as they enter from the right.
-        gsap.utils.toArray<HTMLElement>("[data-card]").forEach((card) => {
-          gsap.from(card, { rotate: 4, y: 80, opacity: 0.3, ease: "none", scrollTrigger: { trigger: card, containerAnimation: tween, start: "left 105%", end: "left 60%", scrub: true } });
+        // Books lean in, then stand upright as they slide into view.
+        gsap.utils.toArray<HTMLElement>("[data-book]").forEach((book) => {
+          gsap.from(book, { rotate: 6, y: 40, transformOrigin: "bottom left", ease: "none", scrollTrigger: { trigger: book, containerAnimation: tween, start: "left 105%", end: "left 65%", scrub: true } });
         });
       });
       return () => mm.revert();
@@ -49,38 +47,42 @@ export default function Projects() {
   );
 
   return (
-    <section ref={root} id="work" className="relative bg-ink">
+    <section ref={root} id="work" className="relative">
       <div ref={pin} className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-24 lg:h-[100svh] lg:py-0">
-        <div className="mx-auto mb-10 flex w-full max-w-[1280px] flex-wrap items-end justify-between gap-6 px-5 sm:px-8 lg:mb-12">
+        <div className="mx-auto mb-8 flex w-full max-w-[1240px] flex-wrap items-end justify-between gap-6 px-5 sm:px-8">
           <div>
-            <SectionLabel index="03">Selected work</SectionLabel>
-            <SplitText as="h2" text="Projects built" className="mt-6 block font-display text-[clamp(2.6rem,7vw,6rem)] font-extrabold uppercase leading-[.9] tracking-tight" />
+            <SectionLabel index="III">Selected work</SectionLabel>
+            <h2 className="mt-5 font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05]">
+              <SplitText text="The" /> <SplitText text="bookshelf" className="soft-italic text-wine" delay={0.08} />
+            </h2>
           </div>
-          <p className="max-w-[34ch] text-mute">
-            <span className="hidden lg:inline">Keep scrolling to move through the gallery. </span>
-            <span className="lg:hidden">Swipe through the gallery. </span>Open any project for the full case study.
+          <p className="max-w-[36ch] text-ink-soft">
+            <span className="hidden lg:inline">Keep scrolling to walk along the shelf. Hover a book to open its cover.</span>
+            <span className="lg:hidden">Swipe along the shelf.</span> Each one opens into a full case study.
           </p>
         </div>
 
-        <div
-          ref={track}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:px-8 lg:w-max lg:snap-none lg:overflow-visible lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-[10vw]"
-        >
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.slug} project={p} index={i} />
-          ))}
-          <div data-card className="flex w-[80vw] shrink-0 snap-start flex-col justify-center rounded-[2rem] border border-dashed border-line p-8 sm:w-[46vw] lg:w-[34vw]">
-            <p className="font-display text-[clamp(2rem,3.5vw,3rem)] font-extrabold uppercase leading-none">More on GitHub</p>
-            <p className="mt-4 max-w-[30ch] text-mute">Coursework, experiments and the code behind these projects.</p>
-            <a href="https://github.com/Harriet2025" target="_blank" rel="noreferrer" className="mt-8 inline-flex w-max items-center gap-2 rounded-full bg-cream px-6 py-3 font-semibold text-ink transition-colors hover:bg-ember" data-cursor="Open">
-              <Icon name="github" size={18} /> Harriet2025
+        <div className="relative">
+          <div ref={track} className="flex snap-x snap-mandatory items-end gap-8 overflow-x-auto px-5 pb-6 pt-6 [scrollbar-width:none] sm:px-8 lg:w-max lg:snap-none lg:gap-12 lg:overflow-visible lg:pl-[max(2rem,calc((100vw-1240px)/2+2rem))] lg:pr-[12vw]">
+            {PROJECTS.map((p, i) => (
+              <Book key={p.slug} project={p} index={i} />
+            ))}
+            <a href={PROFILE.socials[0].href} target="_blank" rel="noreferrer" data-book className="group flex h-[clamp(300px,calc(100svh-360px),520px)] w-[64vw] shrink-0 snap-start flex-col justify-end rounded-sm border border-dashed border-gold/60 p-7 transition-colors hover:bg-paper-2 sm:w-[300px]">
+              <span className="soft-italic font-serif text-3xl leading-tight">More on the shelf</span>
+              <span className="mt-3 text-ink-soft">Coursework, experiments and source code on GitHub.</span>
+              <span className="mt-6 inline-flex items-center gap-2 font-semibold text-wine">
+                <Icon name="github" size={18} /> {PROFILE.socials[0].handle} <Icon name="up" size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
             </a>
           </div>
+          {/* The shelf itself */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-b from-[#c9b190] to-[#a88e6c] shadow-[0_18px_30px_-12px_rgba(42,32,36,.45)]" />
         </div>
 
-        <div className="mx-auto mt-8 hidden w-full max-w-[1280px] px-8 lg:block" aria-hidden="true">
-          <div className="h-px w-full bg-line">
-            <div data-progress className="h-px origin-left scale-x-0 bg-ember" />
+        <div className="mx-auto mt-8 hidden w-full max-w-[1240px] items-center gap-4 px-8 lg:flex" aria-hidden="true">
+          <span className="soft-italic font-serif text-sm text-ink-soft">Shelf</span>
+          <div className="h-px flex-1 bg-line">
+            <div data-progress className="h-px origin-left scale-x-0 bg-wine" />
           </div>
         </div>
       </div>
@@ -88,43 +90,54 @@ export default function Projects() {
   );
 }
 
-function ProjectCard({ project: p, index }: { project: Project; index: number }) {
+function Book({ project: p, index }: { project: Project; index: number }) {
+  const spine = SPINES[index % SPINES.length];
   return (
-    <article data-card className="group relative w-[84vw] shrink-0 snap-start sm:w-[60vw] lg:w-[min(46vw,calc((100svh-330px)*1.45))] xl:w-[min(42vw,calc((100svh-330px)*1.45))]">
-      <TransitionLink href={`/projects/${p.slug}`} label={p.title} data-cursor="View" className="block">
-        <div className="relative aspect-[16/11] overflow-hidden rounded-[2rem] border border-line bg-ink-2">
-          <div className="absolute inset-0 transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06]">
-            <div data-parallax className="absolute inset-y-0 -left-[12%] w-[124%]">
-              {p.image ? <Image src={p.image} alt={`${p.title} screenshot`} fill sizes="(min-width:1024px) 46vw, 84vw" className="object-cover object-top" /> : <ProjectArt workflow={p.workflow!} />}
+    <article data-book className="group w-[78vw] shrink-0 snap-start sm:w-[380px] lg:w-[min(30vw,calc((100svh-360px)*0.78))]">
+      <TransitionLink href={`/projects/${p.slug}`} label={p.title} className="block" aria-label={`${p.title}: read the case study`}>
+        <div className="relative flex h-[clamp(300px,calc(100svh-360px),520px)] [perspective:1600px]">
+          {/* Spine */}
+          <div className="relative z-10 flex w-11 shrink-0 flex-col items-center justify-between rounded-l-sm py-5 text-paper shadow-[inset_-6px_0_10px_rgba(0,0,0,.2)]" style={{ background: spine }}>
+            <span className="h-px w-6 bg-gold/80" />
+            <span className="font-serif text-sm tracking-wide [writing-mode:vertical-rl] rotate-180">{p.title}</span>
+            <span className="soft-italic font-serif text-xs">{String(index + 1).padStart(2, "0")}</span>
+          </div>
+
+          <div className="relative flex-1">
+            {/* Inside page, revealed when the cover swings open */}
+            <div className="absolute inset-0 flex flex-col justify-between rounded-r-sm border border-paper-3 bg-[#fffdf8] p-6">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[.18em] text-ink-soft">{p.category}</p>
+                <p className="soft-italic mt-3 font-serif text-2xl leading-tight text-wine">{p.title}</p>
+                <p className="mt-4 text-[14.5px] leading-relaxed text-ink-soft">{p.summary}</p>
+              </div>
+              <span className="inline-flex items-center gap-2 font-semibold text-wine">
+                Read the case study <Icon name="arrow" size={16} />
+              </span>
+            </div>
+
+            {/* Page edges */}
+            <div aria-hidden="true" className="absolute inset-y-1 -right-1.5 w-2 rounded-r-sm bg-[repeating-linear-gradient(90deg,#efe7db_0_1px,#fffdf8_1px_3px)]" />
+
+            {/* Cover */}
+            <div className="absolute inset-0 origin-left overflow-hidden rounded-r-sm shadow-[0_24px_50px_-26px_rgba(42,32,36,.6)] transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] [transform-style:preserve-3d] lg:group-hover:[transform:rotateY(-80deg)] group-focus-visible:[transform:rotateY(-80deg)]">
+              {p.image ? <Image src={p.image} alt={`${p.title} screenshot`} fill sizes="(min-width:1024px) 30vw, 78vw" className="object-cover object-top" /> : <ProjectArt workflow={p.workflow!} />}
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+              <div className="absolute inset-x-4 bottom-4 rounded-sm bg-paper/95 px-4 py-3 shadow-sm">
+                <p className="font-serif text-xl leading-tight">{p.title}</p>
+                <p className="mt-0.5 text-xs text-ink-soft">
+                  {p.category} · {p.year}
+                </p>
+              </div>
             </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-95" />
-
-          {/* Hover reveal: summary slides up */}
-          <div className="absolute inset-x-0 bottom-0 translate-y-6 p-6 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 max-lg:hidden">
-            <p className="max-w-[48ch] text-[15px] leading-relaxed text-cream/90">{p.summary}</p>
-          </div>
-
-          <span className="absolute left-5 top-5 rounded-full bg-ink/70 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[.16em] backdrop-blur">{p.category}</span>
-          <span className="absolute right-5 top-5 grid h-12 w-12 -rotate-45 place-items-center rounded-full bg-ember text-ink opacity-0 transition-all duration-500 group-hover:rotate-0 group-hover:opacity-100">
-            <Icon name="arrow" size={20} />
-          </span>
-        </div>
-
-        <div className="mt-5 flex items-start justify-between gap-4">
-          <div>
-            <h3 className="font-display text-[clamp(1.6rem,2.6vw,2.4rem)] font-extrabold uppercase leading-none tracking-tight">
-              <span className="bg-[linear-gradient(var(--color-ember),var(--color-ember))] bg-[length:0%_3px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size] duration-500 group-hover:bg-[length:100%_3px]">{p.title}</span>
-            </h3>
-            <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-mute">
-              {p.tech.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-          </div>
-          <span className="font-display text-5xl font-extrabold leading-none text-cream/10 transition-colors duration-500 group-hover:text-ember">{String(index + 1).padStart(2, "0")}</span>
         </div>
       </TransitionLink>
+      <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1 pl-11 text-xs font-medium text-ink-soft">
+        {p.tech.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
     </article>
   );
 }

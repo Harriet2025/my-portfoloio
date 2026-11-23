@@ -27,7 +27,7 @@ export const NAV = [
 
 export const HERO_WORDS = ["web applications", "AI workflows", "databases", "automations"];
 
-export const MARQUEE = ["Full-stack web apps", "n8n automation", "PHP & MySQL", "AI integrations", "Webhooks & APIs", "Deployment & DNS"];
+export const MARQUEE = ["Web applications", "AI workflows", "Thoughtful databases", "Calm automations", "Clean deployments", "Clear documentation"];
 
 export const ABOUT_TEXT =
   "I'm a Computer Science student at Accra Technical University who builds full-stack web applications and AI-powered automations. Years in teaching, customer service and administration taught me how people actually work, so I build tools that remove the repetitive parts and leave the clear, human ones.";

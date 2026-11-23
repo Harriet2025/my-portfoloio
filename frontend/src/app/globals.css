@@ -1,51 +1,56 @@
 @import "tailwindcss";
 
-/* Palette: warm near-black stage, cream type, ember accent, sage for "live" states. */
+/* "Personal library" palette: warm paper, espresso ink, wine-rose accent, blush, sage and old gold. */
 @theme {
-  --color-ink: #0d0b0a;
-  --color-ink-2: #161210;
-  --color-ink-3: #211b18;
-  --color-cream: #f3ece2;
-  --color-mute: #a89c8d;
-  --color-line: rgb(243 236 226 / 0.12);
-  --color-ember: #f2643a;
-  --color-ember-2: #ff8a5c;
-  --color-sage: #a8c69f;
-  --color-gold: #e9b872;
+  --color-paper: #f7f2ea;
+  --color-paper-2: #efe7db;
+  --color-paper-3: #e5d9c8;
+  --color-ink: #2a2024;
+  --color-ink-soft: #5e5054;
+  --color-line: rgb(42 32 36 / 0.14);
+  --color-wine: #7b2d43;
+  --color-wine-2: #9b4560;
+  --color-rose: #d4a19c;
+  --color-blush: #f2dfd8;
+  --color-sage: #6f7f5c;
+  --color-sage-soft: #dfe5d3;
+  --color-gold: #a8834e;
+  --color-night: #261a1f;
+  --color-night-2: #33242a;
 }
 
 @theme inline {
-  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
-  background: var(--color-ink);
+  background: var(--color-paper);
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-cream);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
 
 ::selection {
-  background: var(--color-ember);
-  color: var(--color-ink);
+  background: var(--color-blush);
+  color: var(--color-wine);
 }
 
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--color-ember);
+  outline: 2px solid var(--color-wine);
   outline-offset: 3px;
 }
 
@@ -61,29 +66,46 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
-/* Film grain over everything, very subtle */
+/* Paper texture: very soft grain over everything */
 .grain::after {
   content: "";
   position: fixed;
   inset: -50%;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.text-outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--color-cream);
+/* Fraunces' soft, slightly quirky italic */
+.soft-italic {
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
 }
 
-/* Hide the system cursor only where the custom cursor is active (fine pointers) */
-@media (hover: hover) and (pointer: fine) {
-  html.has-cursor,
-  html.has-cursor a,
-  html.has-cursor button {
-    cursor: none;
-  }
+/* Lined index-card paper */
+.ruled {
+  background-image: linear-gradient(transparent 31px, rgb(123 45 67 / 0.12) 32px);
+  background-size: 100% 32px;
+}
+
+/* Stamp perforations */
+/* Postage stamp: half-circle "bites" along each edge, painted in the section's background colour. */
+.stamp {
+  position: relative;
+  padding: 8px;
+}
+.stamp::after {
+  --hole: radial-gradient(circle, var(--color-paper-2) 3.5px, transparent 4px);
+  content: "";
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background:
+    var(--hole) 0 0 / 12px 8px repeat-x,
+    var(--hole) 0 100% / 12px 8px repeat-x,
+    var(--hole) 0 0 / 8px 12px repeat-y,
+    var(--hole) 100% 0 / 8px 12px repeat-y;
 }
 
 @media (prefers-reduced-motion: reduce) {
