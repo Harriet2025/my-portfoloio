@@ -9,6 +9,7 @@ import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 
 type Story = (typeof ABOUT_STORY)[number];
 
@@ -62,11 +63,11 @@ export default function About() {
   return (
     <section ref={root} id="about" className="relative overflow-x-clip">
       {/* Pinned stage: the story cards stack here */}
-      <div data-astack className="relative flex min-h-[100svh] flex-col pb-8 pt-24 sm:pt-28">
+      <div data-astack className="relative flex min-h-[100svh] flex-col pb-5 pt-[4.5rem] motion-safe:h-[100svh] sm:pt-[5.5rem]">
         <div className="mx-auto flex w-full max-w-[1240px] items-end justify-between gap-6 px-5 sm:px-8">
           <div>
             <SectionLabel index="I">About me</SectionLabel>
-            <h2 className="mt-4 font-serif text-[clamp(1.9rem,3.6vw,3rem)] font-light leading-[1.05]">
+            <h2 className="mt-2 font-serif text-[clamp(1.6rem,min(3.4vw,5svh),2.8rem)] font-light leading-[1.05]">
               <SplitText text="A little" /> <SplitText text="about me" className="soft-italic text-wine" delay={0.08} />
             </h2>
           </div>
@@ -78,7 +79,7 @@ export default function About() {
           </div>
         </div>
 
-        <div className="mx-auto mt-6 grid w-full max-w-[1240px] flex-1 gap-6 px-5 sm:mt-8 sm:px-8">
+        <div className="mx-auto mt-4 grid w-full max-w-[1240px] flex-1 gap-6 px-5 motion-safe:min-h-0 sm:px-8">
           {ABOUT_STORY.map((s, i) => (
             <StoryCard key={s.kicker} story={s} index={i} total={ABOUT_STORY.length} />
           ))}
@@ -94,7 +95,10 @@ export default function About() {
                 {s.steps ? <StepCounter steps={s.steps} /> : <Counter to={s.value} />}
                 <span className="soft-italic">{s.suffix}</span>
               </p>
-              <p className="mt-3 max-w-[22ch] text-sm font-medium leading-snug text-ink/70">{s.label}</p>
+              <p className="mt-3 flex max-w-[26ch] items-center gap-2 text-sm font-medium leading-snug text-ink/70">
+                {s.logo && <Logo name={s.logo} size={26} />}
+                {s.label}
+              </p>
             </motion.li>
           ))}
         </ul>
@@ -109,9 +113,9 @@ function StoryCard({ story: s, index, total }: { story: Story; index: number; to
   const t = TONES[s.tone];
   const lenis = useLenis();
   return (
-    <article data-acard className={`relative flex min-h-[min(66svh,560px)] origin-top flex-col overflow-hidden rounded-[28px] border ${t.line} ${t.card} shadow-[0_40px_80px_-40px_rgba(42,32,36,.55)] will-change-transform`}>
+    <article data-acard className={`relative flex origin-top flex-col overflow-hidden rounded-[28px] motion-safe:h-full border ${t.line} ${t.card} shadow-[0_40px_80px_-40px_rgba(42,32,36,.55)] will-change-transform`}>
       <span data-shade aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 bg-night opacity-0" />
-      <div className="grid flex-1 content-center gap-6 p-6 sm:p-10 md:grid-cols-[1.15fr_.85fr] md:items-center md:gap-10 lg:p-14">
+      <div className="grid min-h-0 flex-1 content-center gap-4 p-5 sm:gap-6 sm:p-8 md:grid-cols-[1.15fr_.85fr] md:items-center md:gap-10 lg:px-14 lg:py-10">
         <div className="order-2 md:order-1">
           <p data-rise className={`flex items-center gap-3 font-mono text-[11px] uppercase tracking-[.22em] ${t.soft}`}>
             <span className={t.accent}>
@@ -120,12 +124,20 @@ function StoryCard({ story: s, index, total }: { story: Story; index: number; to
             <span className="h-px w-8 bg-current opacity-40" />
             {s.kicker}
           </p>
-          <h3 data-rise className={`mt-4 font-serif text-[clamp(2rem,4.4vw,3.8rem)] font-light leading-[1.02] tracking-[-.01em] ${t.ink}`}>
+          <h3 data-rise className={`mt-3 font-serif text-[clamp(1.7rem,min(4.2vw,6.2svh),3.6rem)] font-light leading-[1.04] tracking-[-.01em] ${t.ink}`}>
             {s.title} <span className={`soft-italic ${t.accent}`}>{s.italic}</span>
           </h3>
-          <p data-rise className={`mt-4 max-w-[46ch] text-[16px] font-medium leading-relaxed sm:mt-6 sm:text-[18px] ${t.soft}`}>
+          <p data-rise className={`mt-3 max-w-[46ch] text-[15px] font-medium leading-relaxed sm:mt-4 sm:text-[17px] [@media(max-height:700px)]:text-[15px] ${t.soft}`}>
             {s.text}
           </p>
+          {s.visual === "portrait" && (
+            <p data-rise className="mt-4 inline-flex items-center gap-3 rounded-full border border-line bg-paper py-1.5 pl-1.5 pr-4 text-sm font-semibold text-ink">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#fffdf8]">
+                <Logo name="ATU" size={30} />
+              </span>
+              Accra Technical University · Level 300
+            </p>
+          )}
           {s.visual === "cta" && (
             <div data-rise className="mt-6 flex flex-wrap gap-3">
               <button type="button" onClick={() => scrollToId(lenis, "work")} className="inline-flex items-center gap-2 rounded-full bg-paper px-5 py-3 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5">
@@ -148,9 +160,9 @@ function StoryCard({ story: s, index, total }: { story: Story; index: number; to
 function StoryVisual({ story: s }: { story: Story }) {
   if (s.visual === "portrait") {
     return (
-      <div className="relative mx-auto w-[42%] max-w-[300px] md:w-full">
+      <div className="relative mx-auto aspect-[4/5] h-[clamp(110px,21svh,200px)] md:h-[min(50svh,400px)]">
         <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-t-full border border-gold/70" aria-hidden="true" />
-        <div className="relative aspect-[4/5] overflow-hidden rounded-t-full bg-paper-3">
+        <div className="relative h-full overflow-hidden rounded-t-full bg-paper-3">
           <div data-aphoto className="absolute inset-0">
             <Image src={PROFILE.headshot} alt={`Portrait of ${PROFILE.name}`} fill sizes="(min-width:768px) 300px, 45vw" className="object-cover object-[50%_22%]" />
           </div>
@@ -165,7 +177,7 @@ function StoryVisual({ story: s }: { story: Story }) {
           &ldquo;
         </span>
         {s.tags?.map((tag, i) => (
-          <span key={tag} data-rise className="relative rounded-full border border-wine/25 bg-[#fffdf8] px-5 py-2.5 font-serif text-[15px] text-ink shadow-[0_10px_24px_-14px_rgba(42,32,36,.5)] md:text-lg" style={{ rotate: `${[-3, 2, -1.5, 3][i % 4]}deg` }}>
+          <span key={tag} data-rise className="relative rounded-full border border-wine/25 bg-[#fffdf8] px-4 py-2 font-serif text-[14px] sm:px-5 sm:py-2.5 sm:text-[15px] text-ink shadow-[0_10px_24px_-14px_rgba(42,32,36,.5)] md:text-lg" style={{ rotate: `${[-3, 2, -1.5, 3][i % 4]}deg` }}>
             {tag}
           </span>
         ))}
@@ -181,7 +193,7 @@ function StoryVisual({ story: s }: { story: Story }) {
     return (
       <div className="flex items-end justify-center gap-3 md:gap-4">
         {tiles.map((tile, i) => (
-          <div key={tile.label} data-rise className={`flex w-[30%] max-w-[150px] flex-col items-center gap-3 rounded-2xl px-3 py-5 shadow-[0_20px_40px_-20px_rgba(0,0,0,.6)] md:py-7 ${tile.cls}`} style={{ rotate: `${tile.rot}deg`, marginBottom: i === 1 ? 24 : 0 }}>
+          <div key={tile.label} data-rise className={`flex w-[30%] max-w-[150px] flex-col items-center gap-2 rounded-2xl px-3 py-4 shadow-[0_20px_40px_-20px_rgba(0,0,0,.6)] md:gap-3 md:py-7 [@media(max-height:700px)]:py-3 ${tile.cls}`} style={{ rotate: `${tile.rot}deg`, marginBottom: i === 1 ? 24 : 0 }}>
             <Icon name={tile.icon} size={26} />
             <span className="text-center text-xs font-semibold sm:text-sm">{tile.label}</span>
           </div>

@@ -7,6 +7,7 @@ import { CERTIFICATES, type Certificate } from "@/content/site";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { useLenis } from "@/components/providers/SmoothScroll";
 import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 
 const TILT = [-2.5, 2];
 
@@ -77,7 +78,10 @@ export default function Certificates() {
             {/* museum label */}
             <div className="mt-12 w-full max-w-[420px] rounded-sm border border-line bg-[#fffdf8] px-5 py-4 text-center shadow-[0_10px_24px_-18px_rgba(42,32,36,.5)]">
               <p className="font-serif text-xl leading-tight">{c.title}</p>
-              <p className="soft-italic mt-1 font-serif text-wine">{c.issuer}</p>
+              <p className="soft-italic mt-1 inline-flex items-center gap-2 font-serif text-wine">
+                {/n8n/i.test(c.issuer) && <Logo name="n8n" size={20} />}
+                {c.issuer}
+              </p>
               <p className="mt-2 text-xs font-semibold uppercase tracking-[.16em] text-ink-soft">{[c.level, c.date].filter(Boolean).join(" · ")}</p>
               {c.verify && (
                 <a href={c.verify} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-sage hover:text-wine">

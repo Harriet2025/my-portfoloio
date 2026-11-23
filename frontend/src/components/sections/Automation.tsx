@@ -1,12 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { WORKFLOWS, type FlowNode } from "@/content/site";
 import { runWorkflow, type RunResult, type RunStep } from "@/lib/api";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import Logo, { logoSrc } from "@/components/ui/Logo";
 
 type WfId = keyof typeof WORKFLOWS;
 type NodeState = "idle" | "active" | "done";
@@ -43,8 +44,24 @@ export default function Automation() {
       <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8">
         <SectionLabel index="IV" tone="dark">AI automation lab</SectionLabel>
         <div className="mt-6 flex flex-wrap items-end justify-between gap-8">
-          <h2 className="max-w-[16ch] font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05] text-paper"><SplitText text="The reading room:" /> <SplitText text="run my workflows live" className="soft-italic text-rose" delay={0.1} /></h2>
-          <p className="max-w-[40ch] text-paper/65">These are the n8n systems I built, replayed by my Python API with sample data. Change the inputs, press run and watch each node fire. Nothing real is searched or sent.</p>
+          <div>
+            <h2 className="max-w-[16ch] font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05] text-paper">
+              <SplitText text="The reading room:" /> <SplitText text="run my workflows live" className="soft-italic text-rose" delay={0.1} />
+            </h2>
+            <LiveBadge />
+          </div>
+          <div className="max-w-[40ch]">
+            <p className="text-paper/75">These are the n8n systems I built, replayed by my Python API with sample data. Change the inputs, press run and watch each node fire. Nothing real is searched or sent.</p>
+            <p className="mt-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-paper/85">
+              Built with
+              <span className="inline-flex items-center gap-2 rounded-full bg-paper px-3 py-1.5 text-ink">
+                <Logo name="n8n" size={18} /> n8n
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full bg-paper px-3 py-1.5 text-ink">
+                <Logo name="Python" size={18} /> Python API
+              </span>
+            </p>
+          </div>
         </div>
 
         <div role="tablist" aria-label="Workflow" className="mt-12 inline-flex rounded-full border border-paper/15 p-1">
@@ -221,13 +238,19 @@ function Lab({ id }: { id: WfId }) {
                     <text x={n.x + 10} y={n.y + 4.5} textAnchor="middle" fontSize="13.5" fill={st === "done" ? "#2a2024" : "#f7f2ea"} fontFamily="var(--font-fraunces), serif">
                       {n.label}
                     </text>
-                    <circle cx={n.x - 40} cy={n.y} r="11" fill={st === "idle" ? "rgba(247,242,234,.08)" : "#d4a19c"} />
-                    {st === "done" ? (
-                      <path d={`M${n.x - 45} ${n.y} l3.5 3.5 l6.5 -7`} stroke="#2a2024" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx={n.x - 40} cy={n.y} r="13" fill="#fffdf8" stroke={st === "idle" ? "rgba(247,242,234,.25)" : "#d4a19c"} strokeWidth="1.5" />
+                    {logoSrc(n.logo ?? "") ? (
+                      <image href={logoSrc(n.logo ?? "")} x={n.x - 48} y={n.y - 8} width="16" height="16" />
                     ) : (
-                      <text x={n.x - 40} y={n.y + 3.5} textAnchor="middle" fontSize="9" fill={st === "idle" ? "#bfb0b3" : "#2a2024"} fontFamily="var(--font-jetbrains), monospace">
-                        {n.kind === "ai" ? "AI" : n.kind[0].toUpperCase()}
-                      </text>
+                      <g transform={`translate(${n.x - 48} ${n.y - 8})`} className={n.kind === "error" ? "text-[#c2410c]" : "text-wine"}>
+                        <Icon name={n.icon} size={16} strokeWidth={2} />
+                      </g>
+                    )}
+                    {st === "done" && (
+                      <g>
+                        <circle cx={n.x + 52} cy={n.y - 18} r="8" fill="#6f7f5c" stroke="#33242a" strokeWidth="1.5" />
+                        <path d={`M${n.x + 48.5} ${n.y - 18} l2.5 2.5 l4.5 -5`} stroke="#f7f2ea" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                      </g>
                     )}
                   </motion.g>
                 );
@@ -305,5 +328,44 @@ function Output({ id, result }: { id: WfId; result: RunResult | null }) {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+/** A broadcast-style LIVE badge. It pings the Python API and shows how fast it answered; tap to ping again. */
+function LiveBadge() {
+  const [state, setState] = useState<{ ok: boolean | null; ms?: number }>({ ok: null });
+  const ping = useCallback(async () => {
+    setState((s) => ({ ...s, ok: null }));
+    const t0 = performance.now();
+    try {
+      const r = await fetch("/api/health", { cache: "no-store" });
+      setState({ ok: r.ok, ms: Math.round(performance.now() - t0) });
+    } catch {
+      setState({ ok: false });
+    }
+  }, []);
+  useEffect(() => {
+    const t = setTimeout(ping, 0);
+    return () => clearTimeout(t);
+  }, [ping]);
+
+  return (
+    <motion.button
+      type="button"
+      onClick={ping}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.95 }}
+      title="Check the connection to my Python API"
+      className="group mt-6 inline-flex items-center gap-3 rounded-full bg-[#e0313b] py-2 pl-3 pr-4 text-sm font-bold uppercase tracking-[.16em] text-white shadow-[0_0_0_0_rgba(224,49,59,.6)] [animation:live-glow_2s_ease-out_infinite]"
+    >
+      <span className="relative flex h-2.5 w-2.5">
+        <span className="absolute inset-0 animate-ping rounded-full bg-white/80" />
+        <span className="relative h-2.5 w-2.5 rounded-full bg-white" />
+      </span>
+      Live
+      <span className="rounded-full bg-white/20 px-2 py-0.5 font-mono text-[11px] normal-case tracking-normal">
+        {state.ok === null ? "checking…" : state.ok ? `API online · ${state.ms} ms` : "demo mode"}
+      </span>
+    </motion.button>
   );
 }

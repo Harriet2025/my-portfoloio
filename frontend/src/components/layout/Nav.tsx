@@ -7,6 +7,7 @@ import { NAV, PROFILE } from "@/content/site";
 import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import { usePageTransition } from "@/components/providers/Transition";
 import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
@@ -57,7 +58,7 @@ export default function Nav() {
               <span className="soft-italic font-serif text-2xl leading-none text-ink">Harriet</span>
               <span className="font-serif text-2xl leading-none text-wine">Ayim</span>
               <span className="ml-2 hidden items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[.16em] text-ink-soft xl:flex">
-                <span className="h-1.5 w-1.5 rounded-full bg-sage" /> {PROFILE.status}
+                <Logo name="ATU" size={18} /> {PROFILE.status}
               </span>
             </button>
 

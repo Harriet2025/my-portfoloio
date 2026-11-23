@@ -8,6 +8,7 @@ import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import { SOCIAL_BG, SocialMark } from "@/components/ui/Logo";
 
 const TOPICS = ["Web project", "Automation", "Job opportunity", "Content collab", "Tutoring", "Something else"] as const;
 const STAMP_TONES = ["bg-blush", "bg-sage-soft", "bg-paper-3"];
@@ -42,7 +43,9 @@ export default function Contact() {
                   <a href={s.href} target="_blank" rel="noreferrer" className={`stamp block ${STAMP_TONES[i % STAMP_TONES.length]} shadow-[0_14px_30px_-18px_rgba(42,32,36,.5)]`}>
                     <span className="flex aspect-[4/5] flex-col justify-between border border-ink/15 p-4">
                       <span className="flex items-start justify-between">
-                        <Icon name={s.icon} size={24} className="text-wine" />
+                        <span className={`grid h-10 w-10 place-items-center rounded-full ${SOCIAL_BG[s.icon]}`}>
+                          <SocialMark name={s.icon} size={18} />
+                        </span>
                         <span className="soft-italic font-serif text-sm text-ink-soft">GH</span>
                       </span>
                       <span>

@@ -9,6 +9,7 @@ import { usePageTransition } from "@/components/providers/Transition";
 import { scrollToId, useLenis } from "@/components/providers/SmoothScroll";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import { SOCIAL_BG, SocialMark } from "@/components/ui/Logo";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const RING = "Developer ✦ AI automation ✦ Content creator ✦ Accra ✦ ";
@@ -54,8 +55,17 @@ export default function Hero() {
           <motion.p {...show(0)} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] font-bold uppercase tracking-[.18em] text-ink/80 sm:text-[13px]">
             <span>{PROFILE.role}</span>
             <span className="h-px w-6 bg-gold/60" aria-hidden="true" />
-            <span className="flex items-center gap-1.5">
-              <Icon name="pin" size={13} /> {PROFILE.location}
+            {/* A live location pin: it bobs while a signal ring pulses underneath */}
+            <span className="flex items-center gap-2">
+              <span className="relative grid h-5 w-5 place-items-center" aria-hidden="true">
+                <span className="absolute bottom-0 h-1.5 w-3 rounded-[50%] bg-wine/30" />
+                <span className="absolute bottom-[-2px] h-3 w-5 animate-ping rounded-[50%] border border-wine/60" />
+                <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }} className="relative -mt-1 text-wine">
+                  <Icon name="pin" size={15} strokeWidth={2.2} />
+                </motion.span>
+              </span>
+              {PROFILE.location}
+              <span className="rounded-full bg-sage/15 px-2 py-0.5 text-[10px] tracking-[.16em] text-sage">Now</span>
             </span>
           </motion.p>
 
@@ -86,7 +96,7 @@ export default function Hero() {
                 </AnimatePresence>
               </span>
             </span>
-            <SplitText text="and make it feel human." play={ready} delay={0.5} stagger={0.05} className="block" />
+            <SplitText text="from Accra, for the world." play={ready} delay={0.5} stagger={0.05} className="block" />
           </h1>
 
           <motion.p {...show(0.85)} className="mt-6 max-w-[46ch] text-[16px] font-medium leading-relaxed text-ink/85 sm:text-[17px]">
@@ -115,9 +125,9 @@ export default function Hero() {
                 rel="noreferrer"
                 aria-label={`${s.label}: ${s.handle}`}
                 title={s.label}
-                className="grid h-12 w-12 place-items-center rounded-full bg-wine text-paper shadow-[0_10px_22px_-10px_rgba(123,45,67,.7)] transition-colors hover:bg-ink"
+                className={`grid h-12 w-12 place-items-center rounded-full ${SOCIAL_BG[s.icon]} shadow-[0_10px_22px_-10px_rgba(42,32,36,.7)] ring-2 ring-paper transition-shadow hover:shadow-[0_14px_26px_-8px_rgba(42,32,36,.75)]`}
               >
-                <Icon name={s.icon} size={20} />
+                <SocialMark name={s.icon} size={20} />
               </motion.a>
             ))}
           </motion.div>

@@ -69,8 +69,8 @@ export const ABOUT_STORY: { kicker: string; title: string; italic: string; text:
   },
 ];
 
-export const STATS: { value: number; suffix: string; label: string; steps?: number[] }[] = [
-  { value: 300, suffix: "", label: "Level, B.Tech Computer Science at ATU", steps: [100, 200, 300] },
+export const STATS: { value: number; suffix: string; label: string; steps?: number[]; logo?: string }[] = [
+  { value: 300, suffix: "", label: "Level, B.Tech Computer Science at ATU", steps: [100, 200, 300], logo: "ATU" },
   { value: 9, suffix: "+", label: "Projects and workflows built" },
   { value: 6, suffix: "", label: "Live sites in production" },
   { value: 2, suffix: "", label: "Brands I create content for" },
@@ -265,7 +265,7 @@ export const PROJECTS: Project[] = [
 ];
 
 /* ---------------------------------------------------------------- automation demos */
-export type FlowNode = { id: string; label: string; kind: "trigger" | "data" | "logic" | "ai" | "output" | "error"; icon: string; x: number; y: number };
+export type FlowNode = { id: string; label: string; kind: "trigger" | "data" | "logic" | "ai" | "output" | "error"; icon: string; logo?: string; x: number; y: number };
 export type FlowField = { name: string; label: string; placeholder: string; type?: "text" | "toggle" };
 
 export const WORKFLOWS: Record<
@@ -280,8 +280,8 @@ export const WORKFLOWS: Record<
       { id: "serpapi", label: "SerpAPI", kind: "data", icon: "globe", x: 250, y: 70 },
       { id: "filter", label: "Filter", kind: "logic", icon: "filter", x: 430, y: 70 },
       { id: "groq", label: "Groq LLM", kind: "ai", icon: "spark", x: 430, y: 210 },
-      { id: "parse", label: "JSON parse", kind: "data", icon: "code", x: 250, y: 210 },
-      { id: "telegram", label: "Telegram", kind: "output", icon: "send", x: 70, y: 210 },
+      { id: "parse", label: "JSON parse", kind: "data", icon: "code", logo: "JSON", x: 250, y: 210 },
+      { id: "telegram", label: "Telegram", kind: "output", icon: "send", logo: "Telegram", x: 70, y: 210 },
     ],
     edges: [["webhook", "serpapi"], ["serpapi", "filter"], ["filter", "groq"], ["groq", "parse"], ["parse", "telegram"]],
     fields: [
@@ -293,11 +293,11 @@ export const WORKFLOWS: Record<
     title: "Email Outreach System",
     blurb: "Add a lead. The workflow checks the row, writes a personal email with an LLM, sends it and updates the sheet.",
     nodes: [
-      { id: "sheets", label: "Sheets row", kind: "trigger", icon: "sheet", x: 70, y: 70 },
+      { id: "sheets", label: "Sheets row", kind: "trigger", icon: "sheet", logo: "Google Sheets", x: 70, y: 70 },
       { id: "condition", label: "IF address", kind: "logic", icon: "branch", x: 250, y: 70 },
       { id: "groq", label: "Groq LLM", kind: "ai", icon: "spark", x: 430, y: 70 },
-      { id: "gmail", label: "Gmail", kind: "output", icon: "mail", x: 430, y: 210 },
-      { id: "update", label: "Update row", kind: "data", icon: "database", x: 250, y: 210 },
+      { id: "gmail", label: "Gmail", kind: "output", icon: "mail", logo: "Gmail", x: 430, y: 210 },
+      { id: "update", label: "Update row", kind: "data", icon: "database", logo: "Google Sheets", x: 250, y: 210 },
       { id: "error", label: "Error lane", kind: "error", icon: "alert", x: 250, y: 330 },
       { id: "log", label: "Log + flag", kind: "error", icon: "archive", x: 70, y: 330 },
     ],
@@ -319,7 +319,7 @@ export const TIMELINE = [
   { tag: "Chapter 04", title: "Administrative coordination", place: "Office", text: "Executive office operations and team coordination.", carry: "Fuels my focus on repeatable processes worth automating.", icon: "brief" },
   { tag: "2023", title: "BYU-Pathway Worldwide Certificate", place: "Certificate", text: "Completed the BYU-Pathway Worldwide certificate programme.", carry: "Built the study habits behind everything that followed.", icon: "medal" },
   { tag: "Now", title: "Content creator & tutor", place: "Student life · Tech · Brand partnerships", text: "Create content about student lifestyle and tech, work as an influencer for Tour 360 Travels and a content creator for VitalJunction, and teach others how to create content.", carry: "Keeps me close to real audiences, so I build things people actually want to use.", icon: "spark", live: true },
-  { tag: "Now", title: "B.Tech Computer Science", place: "Accra Technical University", text: "Level 300, building full-stack apps and AI automations alongside coursework.", carry: "Shipping real projects for real users while I learn.", icon: "cap", live: true },
+  { tag: "Now", title: "B.Tech Computer Science", place: "Accra Technical University", logo: "ATU", text: "Level 300, building full-stack apps and AI automations alongside coursework.", carry: "Shipping real projects for real users while I learn.", icon: "cap", live: true },
 ];
 
 /* ---------------------------------------------------------------- content creation ("Behind the camera") */

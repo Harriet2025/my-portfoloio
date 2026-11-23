@@ -6,6 +6,7 @@ import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 import Certificates from "./Certificates";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
@@ -64,6 +65,7 @@ export default function Experience() {
                   <article data-card className="group relative rounded-lg border border-paper-3 bg-[#fffdf8] p-6 shadow-[0_20px_50px_-30px_rgba(42,32,36,.45)] transition-transform duration-500 hover:-translate-y-1 sm:p-8">
                     <div className="flex items-baseline justify-between gap-4">
                       <span className="soft-italic font-serif text-5xl font-light leading-none text-wine/80">{ROMAN[i]}</span>
+                      {"logo" in item && item.logo && <Logo name={item.logo} size={40} className="ml-auto mr-1" />}
                       <span className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[.16em] ${item.live ? "bg-sage text-paper" : "border border-line text-ink-soft"}`}>{item.tag.startsWith("Chapter") ? item.place : item.tag}</span>
                     </div>
                     <h3 className="mt-5 font-serif text-[clamp(1.5rem,2.2vw,1.9rem)] leading-tight">{item.title}</h3>

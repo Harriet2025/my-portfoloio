@@ -7,6 +7,7 @@ import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 
 /* Every tool mentioned in the skills, split across two moving rows. */
 const TOOLS = Array.from(new Set(SKILLS.flatMap((s) => s.tools)));
@@ -72,9 +73,9 @@ export default function Skills() {
               {[0, 1].map((copy) => (
                 <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0 gap-3 pr-3 sm:gap-4 sm:pr-4">
                   {[...row, ...row].map((t, i) => (
-                    <li key={`${t}-${i}`} className={`whitespace-nowrap rounded-full px-5 py-2.5 text-[15px] font-semibold sm:px-6 sm:py-3 sm:text-base ${(i + r) % 4 === 0 ? "bg-wine text-paper" : (i + r) % 4 === 2 ? "bg-ink text-paper" : "border border-ink/15 bg-[#fffdf8] text-ink"}`}>
-                      <span className="mr-2 text-gold">✦</span>
-                      {t}
+                    <li key={`${t}-${i}`} className={`flex h-[84px] w-[92px] shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border bg-[#fffdf8] shadow-[0_12px_24px_-16px_rgba(42,32,36,.45)] sm:h-[100px] sm:w-[112px] ${(i + r) % 3 === 0 ? "border-wine/30" : "border-ink/10"}`}>
+                      <Logo name={t} size={34} />
+                      <span className="max-w-full truncate px-2 text-[10px] font-semibold uppercase tracking-[.08em] text-ink/60 sm:text-[11px]">{t}</span>
                     </li>
                   ))}
                 </ul>
@@ -140,7 +141,13 @@ function SkillRow({ skill: s, open, onToggle, replay }: { skill: (typeof SKILLS)
         <Ring level={s.level} icon={s.icon} open={open} replay={replay} />
         <span className="min-w-0 flex-1">
           <span className="block font-serif text-[20px] leading-tight sm:text-[22px]">{s.name}</span>
-          <span className={`mt-0.5 block truncate text-[13px] font-medium ${open ? "text-paper/75" : "text-ink/60"}`}>{s.tools.join(" · ")}</span>
+          <span className="mt-1.5 flex items-center gap-1.5" aria-label={s.tools.join(", ")}>
+            {s.tools.map((t) => (
+              <span key={t} title={t} className={`grid h-7 w-7 place-items-center rounded-lg ${open ? "bg-paper" : "bg-paper-2"}`}>
+                <Logo name={t} size={17} />
+              </span>
+            ))}
+          </span>
         </span>
         <motion.span animate={{ rotate: open ? 45 : 0 }} className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg leading-none ${open ? "bg-paper text-wine" : "bg-paper-2 text-ink group-hover:bg-wine group-hover:text-paper"}`}>
           +
@@ -152,8 +159,8 @@ function SkillRow({ skill: s, open, onToggle, replay }: { skill: (typeof SKILLS)
             <span className="block pt-4 text-[15px] font-medium leading-relaxed text-paper/90">{s.text}</span>
             <span className="mt-3 flex flex-wrap gap-2">
               {s.tools.map((t, i) => (
-                <motion.span key={t} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }} className="rounded-full bg-paper/15 px-3 py-1 text-xs font-semibold">
-                  {t}
+                <motion.span key={t} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }} className="inline-flex items-center gap-1.5 rounded-full bg-paper py-1 pl-1.5 pr-3 text-xs font-semibold text-ink">
+                  <Logo name={t} size={16} /> {t}
                 </motion.span>
               ))}
             </span>

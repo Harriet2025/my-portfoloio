@@ -117,3 +117,13 @@ html.lenis body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Pulsing glow for the LIVE badge in the automation lab */
+@keyframes live-glow {
+  0% { box-shadow: 0 0 0 0 rgba(224, 49, 59, 0.55); }
+  70% { box-shadow: 0 0 0 14px rgba(224, 49, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(224, 49, 59, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="live-glow"] { animation: none !important; }
+}
