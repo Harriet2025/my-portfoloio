@@ -56,7 +56,7 @@ export default function Nav() {
             <button type="button" onClick={() => (pathname === "/" ? scrollToId(lenis, "top") : navigate("/", "Home"))} className="group flex items-baseline gap-2 text-left" aria-label="Back to top">
               <span className="soft-italic font-serif text-2xl leading-none text-ink">Harriet</span>
               <span className="font-serif text-2xl leading-none text-wine">Ayim</span>
-              <span className="ml-2 hidden items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[.16em] text-ink-soft sm:flex">
+              <span className="ml-2 hidden items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[.16em] text-ink-soft xl:flex">
                 <span className="h-1.5 w-1.5 rounded-full bg-sage" /> {PROFILE.status}
               </span>
             </button>
@@ -74,7 +74,7 @@ export default function Nav() {
               <a href={PROFILE.cv} download className="hidden items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold transition-colors hover:border-wine hover:text-wine sm:inline-flex">
                 <Icon name="download" size={16} /> CV
               </a>
-              <button type="button" onClick={() => goTo("contact")} className="rounded-full bg-wine px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-ink">
+              <button type="button" onClick={() => goTo("contact")} className="whitespace-nowrap rounded-full bg-wine px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-ink">
                 Work with me
               </button>
               <button type="button" onClick={() => setOpen((o) => !o)} className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden" aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"}>

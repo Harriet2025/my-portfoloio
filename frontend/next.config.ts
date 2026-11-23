@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   // Produces a small self-contained server for the Docker image.
   output: "standalone",
   poweredByHeader: false,
+  // Vercel Services mode does not route /_next/image, so serve the (already small) images as-is.
+  images: { unoptimized: true },
   turbopack: {
     rules: {
       "*.css": {
