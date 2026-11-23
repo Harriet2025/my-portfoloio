@@ -49,7 +49,7 @@ export default function Projects() {
   return (
     <section ref={root} id="work" className="relative">
       <div ref={pin} className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-24 lg:h-[100svh] lg:py-0">
-        <div className="mx-auto mb-8 flex w-full max-w-[1240px] flex-wrap items-end justify-between gap-6 px-5 sm:px-8">
+        <div className="mx-auto mb-6 flex w-full max-w-[1240px] flex-wrap items-end justify-between gap-4 px-5 sm:px-8 [@media(max-height:640px)]:mb-2">
           <div>
             <SectionLabel index="III">Selected work</SectionLabel>
             <h2 className="mt-5 font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05]">
@@ -67,7 +67,7 @@ export default function Projects() {
             {PROJECTS.map((p, i) => (
               <Book key={p.slug} project={p} index={i} />
             ))}
-            <a href={PROFILE.socials[0].href} target="_blank" rel="noreferrer" data-book className="group flex h-[clamp(300px,calc(100svh-360px),520px)] w-[64vw] shrink-0 snap-start flex-col justify-end rounded-sm border border-dashed border-gold/60 p-7 transition-colors hover:bg-paper-2 sm:w-[300px]">
+            <a href={PROFILE.socials[0].href} target="_blank" rel="noreferrer" data-book className="group flex h-[clamp(250px,calc(100svh-290px),520px)] w-[64vw] shrink-0 snap-start flex-col justify-end rounded-sm border border-dashed border-gold/60 p-7 transition-colors hover:bg-paper-2 sm:w-[300px]">
               <span className="soft-italic font-serif text-3xl leading-tight">More on the shelf</span>
               <span className="mt-3 text-ink-soft">Coursework, experiments and source code on GitHub.</span>
               <span className="mt-6 inline-flex items-center gap-2 font-semibold text-wine">
@@ -79,7 +79,7 @@ export default function Projects() {
           <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-b from-[#c9b190] to-[#a88e6c] shadow-[0_18px_30px_-12px_rgba(42,32,36,.45)]" />
         </div>
 
-        <div className="mx-auto mt-8 hidden w-full max-w-[1240px] items-center gap-4 px-8 lg:flex" aria-hidden="true">
+        <div className="mx-auto mt-6 hidden w-full max-w-[1240px] items-center gap-4 px-8 lg:flex [@media(max-height:640px)]:hidden" aria-hidden="true">
           <span className="soft-italic font-serif text-sm text-ink-soft">Shelf</span>
           <div className="h-px flex-1 bg-line">
             <div data-progress className="h-px origin-left scale-x-0 bg-wine" />
@@ -93,9 +93,9 @@ export default function Projects() {
 function Book({ project: p, index }: { project: Project; index: number }) {
   const spine = SPINES[index % SPINES.length];
   return (
-    <article data-book className="group w-[78vw] shrink-0 snap-start sm:w-[380px] lg:w-[min(30vw,calc((100svh-360px)*0.78))]">
+    <article data-book className="group w-[78vw] shrink-0 snap-start sm:w-[380px] lg:w-[calc(clamp(250px,calc(100svh-290px),520px)*0.82)]">
       <TransitionLink href={`/projects/${p.slug}`} label={p.title} className="block" aria-label={`${p.title}: read the case study`}>
-        <div className="relative flex h-[clamp(300px,calc(100svh-360px),520px)] [perspective:1600px]">
+        <div className="relative flex h-[clamp(250px,calc(100svh-290px),520px)] [perspective:1600px]">
           {/* Spine */}
           <div className="relative z-10 flex w-11 shrink-0 flex-col items-center justify-between rounded-l-sm py-5 text-paper shadow-[inset_-6px_0_10px_rgba(0,0,0,.2)]" style={{ background: spine }}>
             <span className="h-px w-6 bg-gold/80" />
