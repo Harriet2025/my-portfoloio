@@ -235,7 +235,7 @@ function Lab({ id }: { id: WfId }) {
                       <motion.rect x={n.x - 64} y={n.y - 30} width="128" height="60" rx="30" fill="none" stroke="#d4a19c" initial={{ opacity: 0.9, scale: 1 }} animate={{ opacity: 0, scale: 1.35 }} transition={{ duration: 0.9, repeat: Infinity }} style={{ originX: `${n.x}px`, originY: `${n.y}px` }} />
                     )}
                     <rect x={n.x - 60} y={n.y - 24} width="120" height="48" rx="24" fill={st === "done" ? "#f7f2ea" : "#33242a"} stroke={st === "idle" ? "rgba(247,242,234,.22)" : "#d4a19c"} strokeWidth="1.5" strokeDasharray={n.kind === "error" && st === "idle" ? "5 4" : undefined} />
-                    <text x={n.x + 10} y={n.y + 4.5} textAnchor="middle" fontSize="13.5" fill={st === "done" ? "#2a2024" : "#f7f2ea"} fontFamily="var(--font-fraunces), serif">
+                    <text x={n.x - 22} y={n.y + 4.5} textAnchor="start" fontSize="13" fill={st === "done" ? "#2a2024" : "#f7f2ea"} fontFamily="var(--font-fraunces), serif">
                       {n.label}
                     </text>
                     <circle cx={n.x - 40} cy={n.y} r="13" fill="#fffdf8" stroke={st === "idle" ? "rgba(247,242,234,.25)" : "#d4a19c"} strokeWidth="1.5" />
