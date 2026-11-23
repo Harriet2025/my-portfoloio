@@ -40,7 +40,7 @@ export default function About() {
       mm.add(MOTION_OK, () => {
         const cards = gsap.utils.toArray<HTMLElement>("[data-acard]");
         gsap.set(cards, { gridArea: "1 / 1" });
-        gsap.set(cards.slice(1), { yPercent: 108 });
+        gsap.set(cards.slice(1), { y: () => window.innerHeight });
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: "[data-astack]",
@@ -63,7 +63,7 @@ export default function About() {
         cards.forEach((card, i) => {
           if (!i) return;
           const at = (i - 1) * STEP + HOLD * 0.4;
-          tl.to(card, { yPercent: 0, ease: "power2.out", duration: SLIDE }, at).to(cards[i - 1].querySelector("[data-shade]"), { opacity: 0.25, ease: "none", duration: SLIDE }, at);
+          tl.to(card, { y: 0, ease: "power2.out", duration: SLIDE }, at).to(cards[i - 1].querySelector("[data-shade]"), { opacity: 0.25, ease: "none", duration: SLIDE }, at);
         });
         tl.to({}, { duration: HOLD });
         tlRef.current = tl;
@@ -95,7 +95,7 @@ export default function About() {
   return (
     <section ref={root} id="about" className="relative overflow-x-clip">
       {/* Pinned stage: the story cards stack here */}
-      <div data-astack className="relative flex min-h-[100svh] flex-col pb-5 pt-[4.5rem] motion-safe:h-[100svh] sm:pt-[5.5rem]">
+      <div data-astack className="relative flex min-h-[100svh] flex-col pb-5 pt-[4.5rem] motion-safe:h-[100svh] motion-safe:overflow-hidden sm:pt-[5.5rem]">
         <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-2 px-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:px-8">
           <div>
             <SectionLabel index="I">About me</SectionLabel>
