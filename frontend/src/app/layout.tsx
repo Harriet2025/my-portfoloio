@@ -10,7 +10,10 @@ const syne = Syne({ variable: "--font-syne", subsets: ["latin"], weight: ["500",
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400", "500"] });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+// Used for link previews. On Vercel the production domain is provided automatically.
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
 const DESCRIPTION = `${PROFILE.fullName}: Computer Science student, software developer and AI automation specialist based in ${PROFILE.location}.`;
 
 export const metadata: Metadata = {
