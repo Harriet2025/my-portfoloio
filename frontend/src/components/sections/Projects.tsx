@@ -105,11 +105,11 @@ function Book({ project: p, index }: { project: Project; index: number }) {
 
           <div className="relative flex-1">
             {/* Inside page, revealed when the cover swings open */}
-            <div className="absolute inset-0 flex flex-col justify-between rounded-r-sm border border-paper-3 bg-[#fffdf8] p-6">
+            <div className="absolute inset-0 flex flex-col justify-between gap-3 overflow-hidden rounded-r-sm border border-paper-3 bg-[#fffdf8] p-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[.18em] text-ink-soft">{p.category}</p>
-                <p className="soft-italic mt-3 font-serif text-2xl leading-tight text-wine">{p.title}</p>
-                <p className="mt-4 text-[14.5px] leading-relaxed text-ink-soft">{p.summary}</p>
+                <p className="soft-italic mt-2 font-serif text-xl leading-tight text-wine">{p.title}</p>
+                <p className="mt-3 line-clamp-5 text-[14px] leading-relaxed text-ink-soft">{p.summary}</p>
               </div>
               <span className="inline-flex items-center gap-2 font-semibold text-wine">
                 Read the case study <Icon name="arrow" size={16} />
@@ -123,8 +123,8 @@ function Book({ project: p, index }: { project: Project; index: number }) {
             <div className="absolute inset-0 origin-left overflow-hidden rounded-r-sm shadow-[0_24px_50px_-26px_rgba(42,32,36,.6)] transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] [transform-style:preserve-3d] lg:group-hover:[transform:rotateY(-80deg)] group-focus-visible:[transform:rotateY(-80deg)]">
               {p.image ? <Image src={p.image} alt={`${p.title} screenshot`} fill sizes="(min-width:1024px) 30vw, 78vw" className="object-cover object-top" /> : <ProjectArt workflow={p.workflow!} />}
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
-              <div className="absolute inset-x-4 bottom-4 rounded-sm bg-paper/95 px-4 py-3 shadow-sm">
-                <p className="font-serif text-xl leading-tight">{p.title}</p>
+              <div className="absolute inset-x-3 bottom-3 rounded-sm bg-paper/95 px-3.5 py-2.5 shadow-sm">
+                <p className="font-serif text-lg leading-tight">{p.title}</p>
                 <p className="mt-0.5 text-xs text-ink-soft">
                   {p.category} · {p.year}
                 </p>
