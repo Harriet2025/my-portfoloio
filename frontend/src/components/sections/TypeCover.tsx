@@ -7,28 +7,45 @@ const TONES = {
   gold: { bg: "#8a6a3f", ink: "#fffaf0", accent: "#f2e2c4" },
 };
 
-/** A designed book cover for projects that are not live yet (no screenshot to show). */
+/**
+ * A designed book cover for projects with no screenshot (not live yet).
+ * Text sizes use container units, so the cover reads well on a small shelf book and on a wide case-study banner.
+ */
 export default function TypeCover({ project }: { project: Project }) {
   const t = TONES[project.cover?.tone ?? "wine"];
+  const inProgress = project.status === "in-progress";
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-between px-6 py-8 text-center" style={{ background: t.bg, color: t.ink }}>
-      {/* double rule frame, like a cloth-bound book */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-3 border" style={{ borderColor: `${t.accent}66` }} />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-[18px] border" style={{ borderColor: `${t.accent}33` }} />
+    <div className="@container absolute inset-0" style={{ background: t.bg, color: t.ink }}>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-[4cqw] border" style={{ borderColor: `${t.accent}66` }} />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-[6cqw] border" style={{ borderColor: `${t.accent}33` }} />
 
-      <p className="relative text-[10px] font-semibold uppercase tracking-[.3em]" style={{ color: t.accent }}>
-        {project.category}
-      </p>
-      <div className="relative">
-        <p className="text-lg" style={{ color: t.accent }} aria-hidden="true">
-          ❦
-        </p>
-        <p className="mt-3 font-serif text-[clamp(1.8rem,3vw,2.6rem)] font-light leading-none">{project.title}</p>
-        {project.cover?.tagline && <p className="soft-italic mx-auto mt-4 max-w-[18ch] font-serif text-base leading-snug" style={{ color: t.accent }}>{project.cover.tagline}</p>}
+      <div className="relative flex h-full flex-col items-center justify-between px-[10cqw] py-[11cqw] text-center">
+        {inProgress ? (
+          <span className="flex items-center gap-[1.5cqw] rounded-full bg-paper px-[3.5cqw] py-[1.2cqw] text-[clamp(9px,3.6cqw,13px)] font-semibold uppercase tracking-[.14em] text-wine">
+            <span className="h-[1.6cqw] max-h-2 min-h-1.5 w-[1.6cqw] min-w-1.5 max-w-2 animate-pulse rounded-full bg-gold" /> In progress
+          </span>
+        ) : (
+          <span className="text-[clamp(9px,3.4cqw,13px)] font-semibold uppercase tracking-[.25em]" style={{ color: t.accent }}>
+            {project.category}
+          </span>
+        )}
+
+        <div>
+          <p className="text-[clamp(14px,6cqw,26px)]" style={{ color: t.accent }} aria-hidden="true">
+            ❦
+          </p>
+          <p className="mt-[2cqw] font-serif text-[clamp(22px,13cqw,64px)] font-light leading-none">{project.title}</p>
+          {project.cover?.tagline && (
+            <p className="soft-italic mx-auto mt-[3cqw] max-w-[22ch] font-serif text-[clamp(12px,6cqw,26px)] leading-snug" style={{ color: t.accent }}>
+              {project.cover.tagline}
+            </p>
+          )}
+        </div>
+
+        <span className="text-[clamp(9px,3.2cqw,13px)] font-semibold uppercase tracking-[.25em]" style={{ color: t.accent }}>
+          {inProgress ? project.category : `Harriet Ayim · ${project.year}`}
+        </span>
       </div>
-      <p className="relative text-[10px] font-semibold uppercase tracking-[.3em]" style={{ color: t.accent }}>
-        Harriet Ayim · {project.year}
-      </p>
     </div>
   );
 }

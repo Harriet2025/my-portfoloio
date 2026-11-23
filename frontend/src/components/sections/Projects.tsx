@@ -149,7 +149,7 @@ function Book({ project: p, index }: { project: Project; index: number }) {
                   </div>
                 </>
               )}
-              {p.status === "in-progress" && <InProgress />}
+              {p.status === "in-progress" && p.image && <InProgress />}
             </div>
           </div>
         </div>

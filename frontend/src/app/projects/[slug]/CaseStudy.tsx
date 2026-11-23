@@ -97,7 +97,7 @@ export default function CaseStudy({ project: p, index, next }: { project: Projec
             )}
           </div>
           {p.liveLabel && <span className="absolute bottom-5 left-5 rounded-full bg-paper/90 px-4 py-2 font-mono text-xs backdrop-blur">{p.liveLabel}</span>}
-          {p.status === "in-progress" && <InProgress className="right-5 top-5" />}
+          {p.status === "in-progress" && p.image && <InProgress className="right-5 top-5" />}
         </motion.div>
 
         <div className="mt-20 grid gap-14 lg:grid-cols-[1fr_1.6fr]">
