@@ -104,7 +104,7 @@ export default function Skills() {
           ))}
         </div>
 
-        <motion.ul layout className="mt-8 grid gap-3 lg:grid-cols-2 lg:gap-x-6">
+        <motion.ul layout className="mt-8 grid grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-x-6">
           <AnimatePresence mode="popLayout">
             {list.map((s, i) => (
               <motion.li
@@ -115,6 +115,7 @@ export default function Skills() {
                 viewport={{ once: true, amount: 0.4 }}
                 exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                 transition={{ duration: 0.6, delay: (i % 6) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                className="min-w-0"
               >
                 <SkillRow skill={s} open={open === s.name} onToggle={() => setOpen((o) => (o === s.name ? null : s.name))} replay={tab} />
               </motion.li>
