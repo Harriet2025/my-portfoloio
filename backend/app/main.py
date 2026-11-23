@@ -68,7 +68,7 @@ def health() -> dict:
 class ContactIn(BaseModel):
     name: str = Field(min_length=2, max_length=80)
     email: EmailStr
-    topic: Literal["Web project", "Automation", "Job opportunity", "Something else"] = "Something else"
+    topic: Literal["Web project", "Automation", "Job opportunity", "Content collab", "Tutoring", "Something else"] = "Something else"
     message: str = Field(min_length=10, max_length=4000)
     # Honeypot: hidden in the form, so real people leave it empty.
     website: str = ""

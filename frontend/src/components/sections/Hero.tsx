@@ -11,7 +11,7 @@ import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const RING = "Software developer ✦ AI automation ✦ Accra, Ghana ✦ ";
+const RING = "Developer ✦ AI automation ✦ Content creator ✦ Accra ✦ ";
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);

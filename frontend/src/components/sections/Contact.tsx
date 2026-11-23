@@ -9,7 +9,7 @@ import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Icon from "@/components/ui/Icon";
 
-const TOPICS = ["Web project", "Automation", "Job opportunity", "Something else"] as const;
+const TOPICS = ["Web project", "Automation", "Job opportunity", "Content collab", "Tutoring", "Something else"] as const;
 const STAMP_TONES = ["bg-blush", "bg-sage-soft", "bg-paper-3"];
 const EASE = [0.22, 1, 0.36, 1] as const;
 type Status = "idle" | "sending" | "sent" | "error";
@@ -18,7 +18,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative overflow-x-clip bg-paper-2 pt-28 sm:pt-36">
       <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8">
-        <SectionLabel index="VI">Contact</SectionLabel>
+        <SectionLabel index="VII">Contact</SectionLabel>
         <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
           <h2 className="max-w-[16ch] font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05]">
             <SplitText text="Write me" /> <SplitText text="a letter" className="soft-italic text-wine" delay={0.08} />

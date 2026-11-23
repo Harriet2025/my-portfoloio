@@ -109,7 +109,7 @@ export default function Nav() {
                     className="flex w-full items-baseline justify-between py-3 text-left font-serif text-4xl"
                   >
                     {label}
-                    <span className="soft-italic text-base text-ink-soft">{["I", "II", "III", "IV", "V", "VI"][i]}</span>
+                    <span className="soft-italic text-base text-ink-soft">{["I", "II", "III", "IV", "V", "VI", "VII"][i]}</span>
                   </motion.button>
                 </li>
               ))}

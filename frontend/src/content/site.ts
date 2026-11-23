@@ -21,6 +21,7 @@ export const NAV = [
   { id: "skills", label: "Skills" },
   { id: "work", label: "Work" },
   { id: "automation", label: "Automation" },
+  { id: "content", label: "Content" },
   { id: "experience", label: "Journey" },
   { id: "contact", label: "Contact" },
 ] as const;
@@ -280,5 +281,56 @@ export const TIMELINE = [
   { tag: "Chapter 03", title: "Customer service & front desk", place: "Front desk", text: "Front-line client communication and task coordination.", carry: "Builds the empathy and clarity I bring to user-facing software.", icon: "users" },
   { tag: "Chapter 04", title: "Administrative coordination", place: "Office", text: "Executive office operations and team coordination.", carry: "Fuels my focus on repeatable processes worth automating.", icon: "brief" },
   { tag: "2023", title: "BYU-Pathway Worldwide Certificate", place: "Certificate", text: "Completed the BYU-Pathway Worldwide certificate programme.", carry: "Built the study habits behind everything that followed.", icon: "medal" },
+  { tag: "Now", title: "Content creator & tutor", place: "Student life · Tech · Brand partnerships", text: "Create content about student lifestyle and tech, work as an influencer for Tour 360 Travels and a content creator for VitalJunction, and teach others how to create content.", carry: "Keeps me close to real audiences, so I build things people actually want to use.", icon: "spark", live: true },
   { tag: "Now", title: "B.Tech Computer Science", place: "Accra Technical University", text: "Level 300, building full-stack apps and AI automations alongside coursework.", carry: "Shipping real projects for real users while I learn.", icon: "cap", live: true },
+];
+
+/* ---------------------------------------------------------------- content creation ("Behind the camera") */
+export type CreatorRole = {
+  masthead: string;
+  issue: string;
+  role: string;
+  headline: string;
+  lines: string[];
+  tone: "blush" | "sage" | "night" | "gold";
+  portrait?: boolean;
+  link?: { label: string; href: string };
+};
+
+/* Add a brand's website or handle as `link` once you have it. */
+export const CREATOR_ROLES: CreatorRole[] = [
+  {
+    masthead: "Student & Tech",
+    issue: "Ongoing series",
+    role: "Content creator",
+    headline: "Campus life, explained honestly",
+    lines: ["Student lifestyle", "Beginner-friendly tech", "Study tips & tools"],
+    tone: "blush",
+    portrait: true,
+    link: { label: "@ms.harriet4u on TikTok", href: "https://www.tiktok.com/@ms.harriet4u" },
+  },
+  {
+    masthead: "Tour 360 Travels",
+    issue: "Brand partnership",
+    role: "Influencer",
+    headline: "Travel stories worth packing for",
+    lines: ["Travel content", "Brand storytelling", "Social media"],
+    tone: "sage",
+  },
+  {
+    masthead: "VitalJunction",
+    issue: "Brand partnership",
+    role: "Content creator",
+    headline: "Creating content that connects",
+    lines: ["Content creation", "Brand storytelling", "Social media"],
+    tone: "night",
+  },
+  {
+    masthead: "Create With Me",
+    issue: "Lessons & coaching",
+    role: "Content creation tutor",
+    headline: "I teach you to create content too",
+    lines: ["Planning & ideas", "Filming on your phone", "Editing & posting"],
+    tone: "gold",
+  },
 ];

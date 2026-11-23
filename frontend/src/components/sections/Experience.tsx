@@ -43,7 +43,7 @@ export default function Experience() {
         my story, so far
       </p>
       <div className="relative mx-auto w-full max-w-[1240px] px-5 sm:px-8">
-        <SectionLabel index="V">Experience & education</SectionLabel>
+        <SectionLabel index="VI">Experience & education</SectionLabel>
         <h2 className="mt-6 max-w-[18ch] font-serif text-[clamp(2.4rem,5vw,4.4rem)] font-light leading-[1.05]">
           <SplitText text="From the classroom" /> <SplitText text="to the codebase" className="soft-italic text-wine" delay={0.1} />
         </h2>
