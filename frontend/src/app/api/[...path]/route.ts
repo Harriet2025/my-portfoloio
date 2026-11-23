@@ -1,10 +1,11 @@
 /**
  * Forwards /api/* to the Python backend so the browser only ever talks to this site
- * (no CORS, and the backend can stay on a private network).
+ * (no CORS, and the backend can stay private).
  */
+export const dynamic = "force-dynamic";
 import type { NextRequest } from "next/server";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://127.0.0.1:8000";
+const LOCAL_BACKEND = "http://127.0.0.1:8000";
 const ALLOWED = /^(health|contact|workflows(\/[a-z-]+\/run)?)$/;
 
 async function proxy(req: NextRequest, ctx: RouteContext<"/api/[...path]">) {
@@ -18,7 +19,9 @@ async function proxy(req: NextRequest, ctx: RouteContext<"/api/[...path]">) {
   if (clientIp) headers.set("X-Forwarded-For", clientIp);
 
   try {
-    const res = await fetch(`${BACKEND_URL}/api/${subpath}`, {
+    // On Vercel, BACKEND_URL is injected by the service binding in vercel.json.
+    const base = (process.env.BACKEND_URL || LOCAL_BACKEND).replace(/\/?$/, "/");
+    const res = await fetch(new URL(`api/${subpath}`, base), {
       method: req.method,
       headers,
       body: req.method === "GET" ? undefined : await req.text(),
